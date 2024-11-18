@@ -77,7 +77,7 @@ const Navbar = () => {
               className="text-white/90 hover:text-white transition-colors relative group"
             >
               <span>Home</span>
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#181c52] group-hover:w-full transition-all duration-300"></span>
             </Link>
             
             <div className="relative group">
@@ -117,7 +117,7 @@ const Navbar = () => {
               className="text-white/90 hover:text-white transition-colors relative group"
             >
               <span>About Us</span>
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#181c52] group-hover:w-full transition-all duration-300"></span>
             </Link>
 
             <Link 
@@ -125,7 +125,7 @@ const Navbar = () => {
               className="text-white/90 hover:text-white transition-colors relative group"
             >
               <span>Blog</span>
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#181c52] group-hover:w-full transition-all duration-300"></span>
             </Link>
 
             <Link 
