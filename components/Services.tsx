@@ -101,7 +101,7 @@ export default function Services() {
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 animate-gradient"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#00B4D8] animate-gradient"></div>
       </div>
 
       <div className="container mx-auto px-4 relative">

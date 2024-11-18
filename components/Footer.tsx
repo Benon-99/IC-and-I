@@ -165,18 +165,18 @@ const Footer = () => {
           viewport={{ once: true }}
           className="relative py-8 border-t border-white/20"
         >
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+          <div className="flex flex-col md:flex-row center items-center space-y-4 md:space-y-0">
             <p className="text-sm text-white/80">
               &copy; {new Date().getFullYear()} Information Consultancies & Installations (IC&I). All rights reserved.
             </p>
-            <div className="flex space-x-6">
+            {/* <div className="flex space-x-6">
               <Link href="/privacy" className="text-sm text-white/80 hover:text-white transition-colors duration-300">
                 Privacy Policy
               </Link>
               <Link href="/terms" className="text-sm text-white/80 hover:text-white transition-colors duration-300">
                 Terms of Service
               </Link>
-            </div>
+            </div> */}
           </div>
         </motion.div>
       </div>
