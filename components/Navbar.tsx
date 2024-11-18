@@ -126,7 +126,7 @@ const Navbar = () => {
 
             <Link 
               href="/contact"
-              className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full 
+              className="px-6 py-2 bg-gradient-to-r from-[#002060] to-[#002060] text-white rounded-full 
                 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 hover:scale-105"
             >
               Contact Us

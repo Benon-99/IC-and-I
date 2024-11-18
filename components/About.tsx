@@ -38,7 +38,7 @@ export default function About() {
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 animate-gradient"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#F7F9FE] to-[#F7F9FE] animate-gradient"></div>
       </div>
 
       <div className="container mx-auto px-4 relative">
@@ -50,13 +50,13 @@ export default function About() {
             transition={{ duration: 0.6 }}
             className="inline-block"
           >
-            <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-4 inline-block">
+            <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-gray-200 text-[#111240] backdrop-blur-sm mb-4 inline-block">
               About Us
             </span>
-            <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent">
+            <h2 className="text-5xl font-bold mb-6 text-[#111240] bg-clip-text text-transparent">
               DISCOVER IC&I
             </h2>
-            <p className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-[#111240] max-w-2xl mx-auto leading-relaxed">
               Your Reliable Partner in ICT Consulting, Solutions & Services
             </p>
           </motion.div>
@@ -87,12 +87,12 @@ export default function About() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors duration-300"
+                  className="p-6 rounded-xl bg-transparent backdrop-blur-sm border border-[#B5C6F4] transition-colors duration-300"
                 >
-                  <div className="text-3xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent mb-2">
+                  <div className="text-3xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent mb-2 text-[#111240]">
                     {stat.number}
                   </div>
-                  <div className="text-white/60 text-sm">
+                  <div className="text-[#111240] text-sm">
                     {stat.label}
                   </div>
                 </motion.div>
@@ -107,7 +107,7 @@ export default function About() {
             transition={{ duration: 0.6 }}
             className="space-y-8"
           >
-            <div className="space-y-6 text-lg text-white/80 leading-relaxed">
+            <div className="space-y-6 text-lg text-[#111240] leading-relaxed">
               <p>
                 A leading provider of ICT solutions, IC&I specializes in comprehensive consultancy, 
                 installation, commissioning, and outsourcing services. Our corporate business 
@@ -127,15 +127,15 @@ export default function About() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300"
+                  className="group p-6 rounded-xl bg-white/10 backdrop-blur-sm border border-[#B5C6F4] hover:bg-[#B5C6F4] transition-all duration-300"
                 >
                   <div className="flex items-start space-x-4">
                     <div className={`p-3 rounded-lg bg-gradient-to-r ${feature.color} group-hover:scale-110 transition-transform duration-300`}>
                       <feature.icon className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
-                      <p className="text-white/60">{feature.text}</p>
+                      <h3 className="text-xl font-semibold text-[#111240] mb-2">{feature.title}</h3>
+                      <p className="text-[#111240]">{feature.text}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -144,7 +144,7 @@ export default function About() {
 
             <Link 
               href="/about"
-              className="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white 
+              className="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-[#111240]
                 backdrop-blur-sm border border-white/10 transition-all duration-300 group"
             >
               <span>Learn More About Us</span>
