@@ -16,37 +16,6 @@ import {
 
 const services = [
   {
-    category: "ICT Solutions",
-    description: "Our ICT solutions focus on optimizing business operations, driving process efficiency, and keeping your company competitive in today's technology-driven landscape.",
-    gradient: "from-blue-500 via-cyan-500 to-teal-500",
-    services: [
-      {
-        icon: Server,
-        title: "Data Center Infrastructure",
-        description: "From design and build to ongoing management, our end-to-end data center infrastructure solutions support your growing technology needs.",
-        gradient: "from-blue-500 to-cyan-500"
-      },
-      {
-        icon: Network,
-        title: "Solutions Integration",
-        description: "Our technology solutions are designed to optimize operations, lower cost and fuel long-term growth.",
-        gradient: "from-cyan-500 to-teal-500"
-      },
-      {
-        icon: Shield,
-        title: "Information Security",
-        description: "Comprehensive security solutions to protect sensitive information from evolving cyber threats.",
-        gradient: "from-teal-500 to-green-500"
-      },
-      {
-        icon: Code,
-        title: "Software Development",
-        description: "Custom web and mobile applications tailored to meet business needs and drive digital transformation.",
-        gradient: "from-green-500 to-emerald-500"
-      }
-    ]
-  },
-  {
     category: "Business Outsourcing",
     description: "Let us manage the complexity of HR recruitment, contracting and payroll services, so you can focus your resources and efforts on your core business.",
     gradient: "from-purple-500 via-pink-500 to-rose-500",
@@ -55,22 +24,54 @@ const services = [
         icon: UserPlus,
         title: "Jobs.ici – Recruiting",
         description: "Connect with top talents across various industries for permanent positions, contract roles, or specialized vacancies.",
-        gradient: "from-purple-500 to-pink-500"
+        gradient: "from-[#00B4D8] to-[#3E9DE5]"
       },
       {
         icon: Users,
         title: "HR & Recruitment Management",
         description: "End-to-end HR and recruitment solutions to streamline your hiring strategies.",
-        gradient: "from-pink-500 to-rose-500"
+        gradient: "from-[#3E9DE5] to-[#7B8EEC]"
       },
       {
         icon: ClipboardList,
         title: "HR Payroll & Performance",
         description: "Simplify payroll and performance tracking to ensure compliance and boost productivity.",
-        gradient: "from-rose-500 to-red-500"
+        gradient: "from-[#7B8EEC] to-[#B5C6F4]"
+      }
+    ]
+  },
+  {
+    category: "ICT Solutions",
+    description: "Our ICT solutions focus on optimizing business operations, driving process efficiency, and keeping your company competitive in today's technology-driven landscape.",
+    gradient: "from-blue-500 via-cyan-500 to-teal-500",
+    services: [
+      {
+        icon: Server,
+        title: "Data Center Infrastructure",
+        description: "From design and build to ongoing management, our end-to-end data center infrastructure solutions support your growing technology needs.",
+        gradient: "from-[#00B4D8] to-[#4A9BE4]"
+      },
+      {
+        icon: Network,
+        title: "Solutions Integration",
+        description: "Our technology solutions are designed to optimize operations, lower cost and fuel long-term growth.",
+        gradient: "from-[#4A9BE4] to-[#5B8AF0]"
+      },
+      {
+        icon: Shield,
+        title: "Information Security",
+        description: "Comprehensive security solutions to protect sensitive information from evolving cyber threats.",
+        gradient: "from-[#5B8AF0] to-[#8590EA]"
+      },
+      {
+        icon: Code,
+        title: "Software Development",
+        description: "Custom web and mobile applications tailored to meet business needs and drive digital transformation.",
+        gradient: "from-[#8590EA] to-[#B5C6F4]"
       }
     ]
   }
+  
 ];
 
 export default function Services() {
@@ -96,7 +97,7 @@ export default function Services() {
   };
 
   return (
-    <section className="py-24 bg-gray-900 relative overflow-hidden">
+    <section className="py-24 bg-[#111240] relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
@@ -113,16 +114,19 @@ export default function Services() {
             variants={containerVariants}
             className={`mb-20 ${idx !== 0 ? 'mt-32' : ''}`}
           >
+            
             <div className="text-center mb-16">
-              <motion.span
-                variants={itemVariants} 
-                className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-4 inline-block"
-              >
-                Our Services
-              </motion.span>
+              {idx === 0 && (
+                <motion.span
+                  variants={itemVariants} 
+                  className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-4 inline-block"
+                >
+                  Our Services
+                </motion.span>
+              )}
               <motion.h2
                 variants={itemVariants}
-                className={`text-5xl font-bold mb-6 bg-gradient-to-r ${category.gradient} bg-clip-text text-transparent`}
+                className={`text-5xl font-bold mb-6 bg-gradient-to-r ${category.gradient} bg-clip-text text-[#00B4D8]`}
               >
                 {category.category}
               </motion.h2>

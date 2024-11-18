@@ -11,21 +11,21 @@ export default function BlogPreview() {
       date: "20-Aug-2024",
       excerpt: "As businesses face new challenges in 2024, effective HR management becomes crucial...",
       image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
-      gradient: "from-blue-500 to-cyan-500"
+      gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       title: "The Role of Cybersecurity in Modern Business",
       date: "20-Aug-2024",
       excerpt: "In today's digital era, cybersecurity is essential for protecting business assets...",
       image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80",
-      gradient: "from-purple-500 to-pink-500"
+      gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
       title: "How Digital Transformation is Shaping the Future",
       date: "20-Aug-2024",
       excerpt: "As the business landscape evolves, digital transformation becomes increasingly important...",
       image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
-      gradient: "from-orange-500 to-yellow-500"
+      gradient: "from-[#8590EA] to-[#B5C6F4]"
     }
   ];
 
@@ -51,11 +51,11 @@ export default function BlogPreview() {
   };
 
   return (
-    <section className="py-32 bg-gray-900 relative overflow-hidden">
+    <section className="py-32 bg-white relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-orange-500/10 animate-gradient"></div>
+        <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-5"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#00B4D8]/5 via-[#5B8AF0]/5 to-[#8590EA]/5 animate-gradient"></div>
       </div>
 
       <div className="container mx-auto px-4 relative">
@@ -68,19 +68,19 @@ export default function BlogPreview() {
         >
           <motion.span
             variants={itemVariants}
-            className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-4 inline-block"
+            className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#111240]/5 text-[#111240] backdrop-blur-sm mb-4 inline-block"
           >
             Our Blog
           </motion.span>
           <motion.h2
             variants={itemVariants}
-            className="text-5xl font-bold mb-6 bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent"
+            className="text-5xl font-bold mb-6 bg-gradient-to-r from-[#111240] to-[#111240]/80 bg-clip-text text-transparent"
           >
             Latest Insights
           </motion.h2>
           <motion.p
             variants={itemVariants}
-            className="text-xl text-white/80 max-w-2xl mx-auto"
+            className="text-xl text-[#111240]/70 max-w-2xl mx-auto"
           >
             Stay updated with the latest trends and insights in technology and business
           </motion.p>
@@ -96,11 +96,11 @@ export default function BlogPreview() {
               variants={itemVariants}
               className="group relative"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
               <Link href={`/blog/${blog.title.toLowerCase().replace(/ /g, '-')}`}>
-                <div className="relative rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 overflow-hidden transition-all duration-300 group-hover:bg-white/10">
+                <div className="relative rounded-2xl bg-white backdrop-blur-sm border border-gray-100 overflow-hidden transition-all duration-300 group-hover:bg-gray-50 shadow-sm">
                   <div className="relative h-64 overflow-hidden">
-                    <div className={`absolute inset-0 bg-gradient-to-r ${blog.gradient} opacity-50`}></div>
+                    <div className={`absolute inset-0 bg-gradient-to-r ${blog.gradient} opacity-80`}></div>
                     <img 
                       src={blog.image} 
                       alt={blog.title}
@@ -108,17 +108,17 @@ export default function BlogPreview() {
                     />
                   </div>
                   <div className="p-8">
-                    <div className="flex items-center text-white/60 mb-4">
+                    <div className="flex items-center text-[#111240]/60 mb-4">
                       <Calendar className="w-4 h-4 mr-2" />
                       <span className="text-sm">{blog.date}</span>
                     </div>
-                    <h3 className="text-xl font-semibold text-white mb-4 group-hover:text-white/90 transition-colors duration-300">
+                    <h3 className="text-xl font-semibold text-[#111240] mb-4 group-hover:text-[#111240]/90 transition-colors duration-300">
                       {blog.title}
                     </h3>
-                    <p className="text-white/60 mb-6 line-clamp-2">
+                    <p className="text-[#111240]/60 mb-6 line-clamp-2">
                       {blog.excerpt}
                     </p>
-                    <div className="inline-flex items-center text-white/80 hover:text-white group/link">
+                    <div className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] group/link">
                       <span className="mr-2">Read More</span>
                       <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
                     </div>

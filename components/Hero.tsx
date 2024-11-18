@@ -18,7 +18,7 @@ const slides = [
     subtitle: "WELCOME TO IC&I",
     description: "Our customized ICT solutions are designed to drive client growth, adapt to their evolving needs, and ensure success in a constantly changing world.",
     image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
-    accent: "from-blue-600 to-purple-600",
+    accent: "from-[#002060] to-[#B5C6F4]",
     buttons: {
       primary: { text: "Learn More", href: "/about" },
       secondary: { text: "Contact Us", href: "/contact" }
@@ -29,7 +29,7 @@ const slides = [
     subtitle: "ACHIEVE YOUR BUSINESS GOALS",
     description: "Our consultancy services, ranging from market research to project management, are tailored to enhance your business strategy.",
     image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
-    accent: "from-emerald-600 to-cyan-600",
+    accent: "from-[#002060] to-[#B5C6F4]",
     buttons: {
       primary: { text: "Get a Consultation", href: "/contact" },
       secondary: { text: "Our Services", href: "/services" }
@@ -40,7 +40,7 @@ const slides = [
     subtitle: "SUCCESS ALL THE WAY",
     description: "Our solutions go beyond implementation, offering strong after-sales support to ensure maximum performance.",
     image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80",
-    accent: "from-purple-600 to-pink-600",
+    accent: "from-[#002060] to-[#B5C6F4]",
     buttons: {
       primary: { text: "What We Offer", href: "/services" },
       secondary: { text: "Contact Us", href: "/contact" }

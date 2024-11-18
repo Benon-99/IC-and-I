@@ -10,12 +10,12 @@ export default function CTA() {
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-orange-500/20 animate-gradient"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181C52] to-[#181C52] animate-gradient"></div>
         
         {/* Decorative Elements */}
         <div className="absolute top-0 left-0 w-full h-full">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-3xl opacity-30 animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full blur-3xl opacity-30 animate-pulse delay-1000"></div>
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#00B4D8] rounded-full blur-3xl opacity-30 animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-[#00B4D8] rounded-full blur-3xl opacity-30 animate-pulse delay-1000"></div>
         </div>
       </div>
 
@@ -42,7 +42,7 @@ export default function CTA() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <Link
               href="/contact"
-              className="group relative px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full 
+              className="group relative px-8 py-4 bg-gradient-to-r from-[#00B4D8] to-[#B5C6F4] rounded-full 
                 overflow-hidden transition-all duration-300 hover:scale-105"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 
