@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'IC&I - Information Consultancies & Installations',
   description: 'Leading provider of ICT solutions, specializing in comprehensive consultancy, installation, commissioning, and outsourcing services.',
-};
+}; 
 
 export default function RootLayout({
   children,

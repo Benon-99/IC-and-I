@@ -26,6 +26,7 @@ const Navbar = () => {
       submenu: [
         {
           title: "Business Outsourcing",
+          href: "/services/business-outsourcing",
           items: [
             { name: "Jobs.ici – Recruiting", href: "/services/business-outsourcing/jobs-ici" },
             { name: "HR & Recruitment Management", href: "/services/business-outsourcing/hr-recruitment" },
@@ -34,6 +35,7 @@ const Navbar = () => {
         },
         {
           title: "ICT Solutions",
+          href: "/services/ict-solutions",
           items: [
             { name: "Data Center Infrastructure", href: "/services/ict-solutions/data-center" },
             { name: "Solutions Integration", href: "/services/ict-solutions/solutions-integration" },
@@ -79,16 +81,18 @@ const Navbar = () => {
             </Link>
             
             <div className="relative group">
-              <button className="flex items-center text-white/90 hover:text-white transition-colors">
+              <Link href="/services" className="flex items-center text-white/90 hover:text-white transition-colors">
                 What We Offer
                 <ChevronDown className="ml-1 h-4 w-4 transform group-hover:rotate-180 transition-transform duration-300" />
-              </button>
-              <div className="absolute top-full left-0 hidden group-hover:block w-[600px] p-1">
+              </Link>
+              <div className="absolute top-full left-1/2 -translate-x-1/2 hidden group-hover:block w-[600px] p-1">
                 <div className="bg-gray-900/95 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl">
                   <div className="grid grid-cols-2 gap-8">
                     {menuItems[0].submenu.map((section) => (
                       <div key={section.title} className="space-y-4">
-                        <h3 className="text-white font-semibold mb-2">{section.title}</h3>
+                        <Link href={section.href} className="block">
+                          <h3 className="text-white font-semibold mb-2 hover:text-purple-400 transition-colors">{section.title}</h3>
+                        </Link>
                         <div className="space-y-2">
                           {section.items.map((item) => (
                             <Link 
@@ -163,7 +167,9 @@ const Navbar = () => {
                 
                 {menuItems[0].submenu.map((section) => (
                   <div key={section.title} className="space-y-2">
-                    <h3 className="text-white font-semibold">{section.title}</h3>
+                    <Link href={section.href} className="block">
+                      <h3 className="text-white font-semibold mb-2 hover:text-purple-400 transition-colors">{section.title}</h3>
+                    </Link>
                     {section.items.map((item) => (
                       <Link
                         key={item.name}
