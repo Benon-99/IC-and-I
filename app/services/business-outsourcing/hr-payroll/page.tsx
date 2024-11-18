@@ -1,53 +1,91 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Calculator, ChartBar, MessageSquare, Heart, ArrowsUpDown } from 'lucide-react';
+import { Calculator, BarChart, MessageSquare, Heart, ArrowUpDown, ArrowRight } from 'lucide-react';
 import ServiceHero from '@/components/services/ServiceHero';
+import Link from 'next/link';
 
 export default function HRPayrollPage() {
   const services = [
     {
       icon: Calculator,
       title: "Payroll Processing",
-      description: "Comprehensive payroll processing, from salary calculations to tax deductions, ensuring accurate and timely payments."
+      description: "Comprehensive payroll processing, from salary calculations to tax deductions, ensuring accurate and timely payments.",
+      gradient: "from-blue-500 to-cyan-500"
     },
     {
-      icon: ChartBar,
+      icon: BarChart,
       title: "Performance Monitoring",
-      description: "Development and implementation of performance metrics aligned with your business goals."
+      description: "Development and implementation of performance metrics aligned with your business goals.",
+      gradient: "from-purple-500 to-pink-500"
     },
     {
       icon: MessageSquare,
       title: "Feedback and Coaching",
-      description: "Regular feedback sessions and coaching to help employees improve performance and achieve goals."
+      description: "Regular feedback sessions and coaching to help employees improve performance and achieve goals.",
+      gradient: "from-orange-500 to-yellow-500"
     },
     {
       icon: Heart,
       title: "Employee Engagement Strategies",
-      description: "Development of strategies to increase employee engagement and satisfaction."
+      description: "Development of strategies to increase employee engagement and satisfaction.",
+      gradient: "from-emerald-500 to-green-500"
     },
     {
-      icon: ArrowsUpDown,
+      icon: ArrowUpDown,
       title: "Two-Way Communication",
-      description: "Systems designed to encourage open communication between employees and managers."
+      description: "Systems designed to encourage open communication between employees and managers.",
+      gradient: "from-pink-500 to-rose-500"
     }
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 }
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-900">
       <ServiceHero 
         title="HR Payroll & Performance Management"
         description="Optimizing Payroll and Driving Employee Performance."
       />
 
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="prose prose-lg max-w-none mb-16"
+          className="max-w-4xl mx-auto mb-24"
         >
-          <p>
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-6 inline-block"
+          >
+            Overview
+          </motion.span>
+          
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent mb-8">
+            Streamlined Payroll Solutions
+          </h2>
+          
+          <p className="text-lg text-white/70 leading-relaxed">
             Managing payroll and employee performance is a critical aspect of running a successful 
             business, and IC&I is here to simplify the process. We currently manage payroll for 
             over 700 personnel, ensuring timely and accurate payments, while also providing 
@@ -56,32 +94,64 @@ export default function HRPayrollPage() {
           </p>
         </motion.div>
 
-        <div>
-          <h2 className="text-3xl font-bold mb-8 text-center">
-            Our Payroll and Performance Management Services
-          </h2>
-          <p className="text-xl text-gray-600 text-center mb-12">
-            By outsourcing your payroll & performance management to us, you can focus on strategic 
-            business initiatives, knowing that your HR functions are in expert hands.
-          </p>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="space-y-16"
+        >
+          <div className="text-center mb-16">
+            <motion.span
+              variants={itemVariants}
+              className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-4 inline-block"
+            >
+              Our Services
+            </motion.span>
+            <motion.h2
+              variants={itemVariants}
+              className="text-4xl font-bold mb-6 bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent"
+            >
+              Payroll & Performance Solutions
+            </motion.h2>
+            <motion.p
+              variants={itemVariants}
+              className="text-xl text-white/80 max-w-2xl mx-auto"
+            >
+              By outsourcing your payroll & performance management to us, you can focus on strategic 
+              business initiatives, knowing that your HR functions are in expert hands.
+            </motion.p>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div 
+            variants={containerVariants}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
+          >
             {services.map((service, index) => (
               <motion.div
                 key={service.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl 
-                  transition-all duration-300 hover:-translate-y-2"
+                variants={itemVariants}
+                className="group relative"
               >
-                <service.icon className="w-12 h-12 text-primary mb-4" />
-                <h3 className="text-xl font-bold mb-2">{service.title}</h3>
-                <p className="text-gray-600">{service.description}</p>
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
+                <div className="relative p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300">
+                  <div className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
+                    <service.icon className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
+                  <p className="text-white/60 mb-6">{service.description}</p>
+                  <Link
+                    href="#"
+                    className="inline-flex items-center text-white/80 hover:text-white group/link"
+                  >
+                    <span className="mr-2">Learn More</span>
+                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
+                  </Link>
+                </div>
               </motion.div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );

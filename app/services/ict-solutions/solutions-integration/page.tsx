@@ -1,35 +1,41 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Network, CreditCard, Users, Settings, Tool } from 'lucide-react';
+import { Network, CreditCard, Users, Settings, Hammer, ArrowRight } from 'lucide-react';
 import ServiceHero from '@/components/services/ServiceHero';
+import Link from 'next/link';
 
 export default function SolutionsIntegrationPage() {
   const services = [
     {
       icon: Network,
       title: "BSCS System Expertise",
-      description: "Implementation and management of Business Support and Control Systems (BSCS) for utility companies."
+      description: "Implementation and management of Business Support and Control Systems (BSCS) for utility companies.",
+      gradient: "from-blue-500 to-cyan-500"
     },
     {
       icon: CreditCard,
       title: "E-Payment Integration",
-      description: "First e-payment system connecting Syrian Telecom Company (STC) with Syrian Electronic Payment (SEP) platform."
+      description: "First e-payment system connecting Syrian Telecom Company (STC) with Syrian Electronic Payment (SEP) platform.",
+      gradient: "from-purple-500 to-pink-500"
     },
     {
       icon: Users,
       title: "Customer Care & Billing Systems",
-      description: "Operating and developing CCBS for Syrian Telecom Company since 2013."
+      description: "Operating and developing CCBS for Syrian Telecom Company since 2013.",
+      gradient: "from-orange-500 to-yellow-500"
     },
     {
       icon: Settings,
       title: "System Integration Services",
-      description: "End-to-end integration ensuring seamless operation of all technology components."
+      description: "End-to-end integration ensuring seamless operation of all technology components.",
+      gradient: "from-emerald-500 to-green-500"
     },
     {
-      icon: Tool,
+      icon: Hammer,
       title: "Ongoing Support",
-      description: "Continuous support and maintenance to ensure optimal system performance."
+      description: "Continuous support and maintenance to ensure optimal system performance.",
+      gradient: "from-pink-500 to-rose-500"
     }
   ];
 
@@ -37,34 +43,49 @@ export default function SolutionsIntegrationPage() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2 }
+      transition: {
+        staggerChildren: 0.1
+      }
     }
   };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
-      y: 0,
       opacity: 1,
+      y: 0,
       transition: { duration: 0.5 }
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-900">
       <ServiceHero 
         title="Solutions Integration"
         description="Delivering Tailored Technology Solutions for Complex Business Challenges."
       />
 
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="prose prose-lg max-w-none mb-16"
+          className="max-w-4xl mx-auto mb-24"
         >
-          <p>
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-6 inline-block"
+          >
+            Overview
+          </motion.span>
+          
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent mb-8">
+            Enterprise Solutions Integration
+          </h2>
+          
+          <p className="text-lg text-white/70 leading-relaxed">
             IC&I brings a wealth of experience to the integration of complex technology solutions, 
             particularly in the utility and telecommunications sectors. Our approach is rooted in a 
             deep understanding of industry-specific challenges and a commitment to delivering solutions 
@@ -72,35 +93,64 @@ export default function SolutionsIntegrationPage() {
           </p>
         </motion.div>
 
-        <div>
-          <h2 className="text-3xl font-bold mb-8 text-center">
-            Our Solutions Integration Services
-          </h2>
-          <p className="text-xl text-gray-600 text-center mb-12">
-            Our solutions integration services are customized to meet the unique needs of each client, 
-            ensuring that technology not only supports but enhances your business operations.
-          </p>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="space-y-16"
+        >
+          <div className="text-center mb-16">
+            <motion.span
+              variants={itemVariants}
+              className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-4 inline-block"
+            >
+              Our Services
+            </motion.span>
+            <motion.h2
+              variants={itemVariants}
+              className="text-4xl font-bold mb-6 bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent"
+            >
+              Integration Solutions & Services
+            </motion.h2>
+            <motion.p
+              variants={itemVariants}
+              className="text-xl text-white/80 max-w-2xl mx-auto"
+            >
+              Our solutions integration services are customized to meet the unique needs of each client, 
+              ensuring that technology not only supports but enhances your business operations.
+            </motion.p>
+          </div>
 
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
           >
-            {services.map((service) => (
+            {services.map((service, index) => (
               <motion.div
                 key={service.title}
                 variants={itemVariants}
-                className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl 
-                  transition-all duration-300 hover:-translate-y-2"
+                className="group relative"
               >
-                <service.icon className="w-12 h-12 text-primary mb-4" />
-                <h3 className="text-xl font-bold mb-2">{service.title}</h3>
-                <p className="text-gray-600">{service.description}</p>
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
+                <div className="relative p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300">
+                  <div className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
+                    <service.icon className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
+                  <p className="text-white/60 mb-6">{service.description}</p>
+                  <Link
+                    href="#"
+                    className="inline-flex items-center text-white/80 hover:text-white group/link"
+                  >
+                    <span className="mr-2">Learn More</span>
+                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
+                  </Link>
+                </div>
               </motion.div>
             ))}
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
