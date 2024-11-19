@@ -30,21 +30,21 @@ export default function InformationSecurityPage() {
     {
       icon: Server,
       title: "IT Security Infrastructure",
-      description: "Secure infrastructure design with firewalls, encryption, and access control systems.",
+      description: "Robust security architecture implementing advanced firewalls and encryption systems designed to protect critical assets and ensure data integrity.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
 
     },
     {
       icon: FileCheck,
       title: "Compliance and Risk Management",
-      description: "Navigate compliance requirements and manage risks to meet industry standards.",
+      description: "Strategic guidance to ensure compliance with industry standards and regulations while optimizing operational efficiency.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
 
     },
     {
       icon: Zap,
       title: "Incident Response",
-      description: "Quick response to security breaches with post-incident analysis and prevention.",
+      description: "Rapid security incident management with thorough analysis and preventive measures to minimize impact, ensure business continuity, and prevent future occurrences.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
 
     }

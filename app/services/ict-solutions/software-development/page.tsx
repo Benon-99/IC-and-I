@@ -9,37 +9,37 @@ export default function SoftwareDevelopmentPage() {
     {
       icon: Globe,
       title: "Custom Web Applications",
-      description: "Tailored web applications that streamline business processes and enhance user experience.",
+      description: "Build powerful web solutions that streamline your business processes and deliver exceptional user experiences across platforms.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: Smartphone,
       title: "Mobile Applications",
-      description: "Engaging mobile applications for seamless customer and employee interaction.",
+      description: "Create innovative mobile experiences that enhance customer engagement and streamline employee workflows across iOS and Android.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
       icon: Code,
       title: "High-Level Programming",
-      description: "Expertise in .NET and Java for building robust, scalable applications.",
+      description: "Leverage our expertise in .NET and Java technologies to develop secure, scalable, and maintainable enterprise applications.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
     },
     {
       icon: Database,
       title: "Large-Scale Applications",
-      description: "Advanced architecture for high-volume data and transaction handling.",
+      description: "Design and implement robust architectures that efficiently handle high-volume data processing and complex transactions.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: Link2,
       title: "Integration Services",
-      description: "Seamless integration with existing systems through APIs and custom connectors.",
+      description: "Connect and optimize your business systems through custom API development and seamless third-party integrations.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
       icon: Layout,
       title: "User-Centric Design",
-      description: "Intuitive interfaces created through user testing and continuous feedback.",
+      description: "Create beautiful, intuitive interfaces through comprehensive user research and iterative design processes for maximum engagement.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
     }
   ];

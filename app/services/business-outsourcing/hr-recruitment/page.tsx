@@ -9,21 +9,21 @@ export default function HRRecruitmentPage() {
     {
       icon: Users,
       title: "Talent Acquisition",
-      description: "We specialize in identifying and recruiting top-tier experts and support personnel across various industries.",
+      description: "Expert recruitment services for identifying and attracting top-tier professionals across industries",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
 
     },
     {
       icon: Search,
       title: "Candidate Assessment",
-      description: "Our thorough assessment procedures evaluate candidates on multiple levels, including skills, experience, and cultural fit.",
+      description: "Comprehensive evaluation of skills, experience, and cultural fit for optimal placement.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
 
     },
     {
       icon: FileCheck,
       title: "Contracting & Deployment",
-      description: "We manage the entire contracting process, including negotiations and deployment logistics.",
+      description: "Streamlined management of contract negotiations and seamless deployment processes.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
 
     },
