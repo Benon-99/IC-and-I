@@ -9,68 +9,44 @@ export default function InformationSecurityPage() {
     {
       icon: Shield,
       title: "Traffic Management Solutions",
-<<<<<<< HEAD
       description: "DPI, DLP, and IDS tools to monitor and control network traffic for protection and efficiency.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
-=======
-      description: "Advanced network monitoring tools including DPI, DLP, and IDS for comprehensive security control.",
-      gradient: "from-blue-500 to-cyan-500"
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
+
     },
     {
       icon: Search,
       title: "Security Consultations",
-<<<<<<< HEAD
       description: "Expert consultations to assess security posture and develop defense strategies.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
-=======
-      description: "Professional security assessments and strategic planning to enhance your organization's defenses.",
-      gradient: "from-purple-500 to-pink-500"
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
+
     },
     {
       icon: Laptop,
       title: "Endpoint Security Solutions",
-<<<<<<< HEAD
       description: "Protection for all devices against malware, ransomware, and various threats.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
-=======
-      description: "Comprehensive protection systems for all devices against modern cybersecurity threats.",
-      gradient: "from-orange-500 to-yellow-500"
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
+
     },
     {
       icon: Server,
       title: "IT Security Infrastructure",
-<<<<<<< HEAD
       description: "Secure infrastructure design with firewalls, encryption, and access control systems.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
-=======
-      description: "Robust security architecture implementing advanced firewalls and encryption systems designed to protect critical assets and ensure data integrity.",
-      gradient: "from-emerald-500 to-green-500"
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
+
     },
     {
       icon: FileCheck,
       title: "Compliance and Risk Management",
-<<<<<<< HEAD
       description: "Navigate compliance requirements and manage risks to meet industry standards.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
-=======
-      description: "Strategic guidance to ensure compliance with industry standards and regulations while optimizing operational efficiency.",
-      gradient: "from-pink-500 to-rose-500"
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
+
     },
     {
       icon: Zap,
       title: "Incident Response",
-<<<<<<< HEAD
       description: "Quick response to security breaches with post-incident analysis and prevention.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
-=======
-      description: "Rapid security incident management with thorough analysis and preventive measures to minimize impact, ensure business continuity, and prevent future occurrences.",
-      gradient: "from-blue-500 to-indigo-500"
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
+
     }
   ];
 
@@ -172,13 +148,9 @@ export default function InformationSecurityPage() {
                   <div className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
-<<<<<<< HEAD
                   <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
                   <p className="text-[#111240]/60">{service.description}</p>
-=======
-                  <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
-                  <p className="text-white/60 text-justify">{service.description}</p>
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
+
                 </div>
               </motion.div>
             ))}
