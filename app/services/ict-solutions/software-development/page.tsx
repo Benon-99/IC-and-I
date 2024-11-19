@@ -1,77 +1,46 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Globe, Smartphone, Code, Database, Link2, Layout, ArrowRight } from 'lucide-react';
+import { Globe, Smartphone, Code, Database, Link2, Layout } from 'lucide-react';
 import ServiceHero from '@/components/services/ServiceHero';
-import Link from 'next/link';
 
 export default function SoftwareDevelopmentPage() {
   const services = [
     {
       icon: Globe,
       title: "Custom Web Applications",
-<<<<<<< HEAD
       description: "Tailored web applications that streamline business processes and enhance user experience.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
-=======
-      description: "Build powerful web solutions that streamline your business processes and deliver exceptional user experiences across platforms.",
-      gradient: "from-blue-500 to-cyan-500"
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
     },
     {
       icon: Smartphone,
       title: "Mobile Applications",
-<<<<<<< HEAD
       description: "Engaging mobile applications for seamless customer and employee interaction.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
-=======
-      description: "Create innovative mobile experiences that enhance customer engagement and streamline employee workflows across iOS and Android.",
-      gradient: "from-purple-500 to-pink-500"
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
     },
     {
       icon: Code,
       title: "High-Level Programming",
-<<<<<<< HEAD
       description: "Expertise in .NET and Java for building robust, scalable applications.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
-=======
-      description: "Leverage our expertise in .NET and Java technologies to develop secure, scalable, and maintainable enterprise applications.",
-      gradient: "from-orange-500 to-yellow-500"
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
     },
     {
       icon: Database,
       title: "Large-Scale Applications",
-<<<<<<< HEAD
       description: "Advanced architecture for high-volume data and transaction handling.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
-=======
-      description: "Design and implement robust architectures that efficiently handle high-volume data processing and complex transactions.",
-      gradient: "from-emerald-500 to-green-500"
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
     },
     {
       icon: Link2,
       title: "Integration Services",
-<<<<<<< HEAD
       description: "Seamless integration with existing systems through APIs and custom connectors.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
-=======
-      description: "Connect and optimize your business systems through custom API development and seamless third-party integrations.",
-      gradient: "from-pink-500 to-rose-500"
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
     },
     {
       icon: Layout,
       title: "User-Centric Design",
-<<<<<<< HEAD
       description: "Intuitive interfaces created through user testing and continuous feedback.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
-=======
-      description: "Create beautiful, intuitive interfaces through comprehensive user research and iterative design processes for maximum engagement.",
-      gradient: "from-indigo-500 to-blue-500"
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
     }
   ];
 
@@ -120,12 +89,7 @@ export default function SoftwareDevelopmentPage() {
           <h2 className="text-4xl font-bold bg-gradient-to-r from-[#00B4D8] to-[#4A9BE4] bg-clip-text text-transparent mb-8">
             Enterprise Software Solutions
           </h2>
-          
-<<<<<<< HEAD
-          <p className="text-lg text-[#111240]/70 leading-relaxed">
-=======
-          <p className="text-lg text-white/70 leading-relaxed text-justify">
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
+          <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
             IC&I, in collaboration with our sister company Intelligent Data System (IDS), offers 
             comprehensive software development services that are designed to meet the unique needs 
             of businesses in Syria and the UAE (Dubai). Our team of experienced developers specializes 
@@ -177,13 +141,9 @@ export default function SoftwareDevelopmentPage() {
                   <div className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
-<<<<<<< HEAD
+
                   <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
                   <p className="text-[#111240]/60">{service.description}</p>
-=======
-                  <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
-                  <p className="text-white/60 mb-6">{service.description}</p>
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
                 </div>
               </motion.div>
             ))}

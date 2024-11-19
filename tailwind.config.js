@@ -11,6 +11,21 @@ module.exports = {
         primary: 'var(--primary)',
         secondary: 'var(--secondary)',
       },
+      animation: {
+        gradient: 'gradient 15s ease infinite',
+      },
+      keyframes: {
+        gradient: {
+          '0%, 100%': {
+            'background-size': '200% 200%',
+            'background-position': 'left center',
+          },
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'right center',
+          },
+        },
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

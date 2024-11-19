@@ -85,11 +85,8 @@ export default function DataCenterPage() {
             Next-Generation Infrastructure
           </h2>
           
-<<<<<<< HEAD
-          <p className="text-lg text-[#111240]/70 leading-relaxed">
-=======
-          <p className="text-lg text-white/70 leading-relaxed text-justify">
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
+
+          <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
             In today's digital world, a robust and reliable data center infrastructure is critical 
             to the success of any organization. IC&I specializes in the design, implementation, 
             and support of data centers that meet the highest standards of performance and security. 
@@ -142,13 +139,9 @@ export default function DataCenterPage() {
                   <div className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
-<<<<<<< HEAD
+
                   <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
                   <p className="text-[#111240]/60">{service.description}</p>
-=======
-                  <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
-                  <p className="text-white/60 mb-6">{service.description}</p>
->>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
                 </div>
               </motion.div>
             ))}
