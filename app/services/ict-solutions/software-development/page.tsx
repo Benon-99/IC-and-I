@@ -10,37 +10,37 @@ export default function SoftwareDevelopmentPage() {
     {
       icon: Globe,
       title: "Custom Web Applications",
-      description: "Tailored web applications that streamline business processes and enhance user experience.",
+      description: "Build powerful web solutions that streamline your business processes and deliver exceptional user experiences across platforms.",
       gradient: "from-blue-500 to-cyan-500"
     },
     {
       icon: Smartphone,
       title: "Mobile Applications",
-      description: "Engaging mobile applications for seamless customer and employee interaction.",
+      description: "Create innovative mobile experiences that enhance customer engagement and streamline employee workflows across iOS and Android.",
       gradient: "from-purple-500 to-pink-500"
     },
     {
       icon: Code,
       title: "High-Level Programming",
-      description: "Expertise in .NET and Java for building robust, scalable applications.",
+      description: "Leverage our expertise in .NET and Java technologies to develop secure, scalable, and maintainable enterprise applications.",
       gradient: "from-orange-500 to-yellow-500"
     },
     {
       icon: Database,
       title: "Large-Scale Applications",
-      description: "Advanced architecture for high-volume data and transaction handling.",
+      description: "Design and implement robust architectures that efficiently handle high-volume data processing and complex transactions.",
       gradient: "from-emerald-500 to-green-500"
     },
     {
       icon: Link2,
       title: "Integration Services",
-      description: "Seamless integration with existing systems through APIs and custom connectors.",
+      description: "Connect and optimize your business systems through custom API development and seamless third-party integrations.",
       gradient: "from-pink-500 to-rose-500"
     },
     {
       icon: Layout,
       title: "User-Centric Design",
-      description: "Intuitive interfaces created through user testing and continuous feedback.",
+      description: "Create beautiful, intuitive interfaces through comprehensive user research and iterative design processes for maximum engagement.",
       gradient: "from-indigo-500 to-blue-500"
     }
   ];
@@ -76,7 +76,7 @@ export default function SoftwareDevelopmentPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto mb-24"
+          className="max-w-4xl mx-auto mb-24 flex flex-col items-center text-justify"
         >
           <motion.span
             initial={{ opacity: 0, y: 20 }}
@@ -91,7 +91,7 @@ export default function SoftwareDevelopmentPage() {
             Enterprise Software Solutions
           </h2>
           
-          <p className="text-lg text-white/70 leading-relaxed">
+          <p className="text-lg text-white/70 leading-relaxed text-justify">
             IC&I, in collaboration with our sister company Intelligent Data System (IDS), offers 
             comprehensive software development services that are designed to meet the unique needs 
             of businesses in Syria and the UAE (Dubai). Our team of experienced developers specializes 
@@ -145,13 +145,6 @@ export default function SoftwareDevelopmentPage() {
                   </div>
                   <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
                   <p className="text-white/60 mb-6">{service.description}</p>
-                  <Link
-                    href="#"
-                    className="inline-flex items-center text-white/80 hover:text-white group/link"
-                  >
-                    <span className="mr-2">Learn More</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
-                  </Link>
                 </div>
               </motion.div>
             ))}

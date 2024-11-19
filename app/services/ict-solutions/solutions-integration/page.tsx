@@ -10,31 +10,31 @@ export default function SolutionsIntegrationPage() {
     {
       icon: Network,
       title: "BSCS System Expertise",
-      description: "Implementation and management of Business Support and Control Systems (BSCS) for utility companies.",
+      description: "Comprehensive implementation and optimization of Business Support and Control Systems (BSCS) to enhance utility operations and customer service.",
       gradient: "from-blue-500 to-cyan-500"
     },
     {
       icon: CreditCard,
       title: "E-Payment Integration",
-      description: "First e-payment system connecting Syrian Telecom Company (STC) with Syrian Electronic Payment (SEP) platform.",
+      description: "Pioneering electronic payment solutions connecting Syrian Telecom Company with SEP platform, enabling secure and streamlined digital transactions.",
       gradient: "from-purple-500 to-pink-500"
     },
     {
       icon: Users,
       title: "Customer Care & Billing Systems",
-      description: "Operating and developing CCBS for Syrian Telecom Company since 2013.",
+      description: "Expert development and management of CCBS for Syrian Telecom Company, ensuring efficient customer service and billing operations since 2013.",
       gradient: "from-orange-500 to-yellow-500"
     },
     {
       icon: Settings,
       title: "System Integration Services",
-      description: "End-to-end integration ensuring seamless operation of all technology components.",
+      description: "Seamless integration of complex technology components, ensuring optimal performance and communication between diverse systems.",
       gradient: "from-emerald-500 to-green-500"
     },
     {
       icon: Hammer,
       title: "Ongoing Support",
-      description: "Continuous support and maintenance to ensure optimal system performance.",
+      description: "Dedicated maintenance and support services ensuring continuous system optimization, performance monitoring, and swift resolution of challenges to maximize operational efficiency.",
       gradient: "from-pink-500 to-rose-500"
     }
   ];
@@ -70,7 +70,7 @@ export default function SolutionsIntegrationPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto mb-24"
+          className="max-w-4xl mx-auto mb-24 flex flex-col items-center text-justify"
         >
           <motion.span
             initial={{ opacity: 0, y: 20 }}
@@ -85,7 +85,7 @@ export default function SolutionsIntegrationPage() {
             Enterprise Solutions Integration
           </h2>
           
-          <p className="text-lg text-white/70 leading-relaxed">
+          <p className="text-lg text-white/70 leading-relaxed text-justify">
             IC&I brings a wealth of experience to the integration of complex technology solutions, 
             particularly in the utility and telecommunications sectors. Our approach is rooted in a 
             deep understanding of industry-specific challenges and a commitment to delivering solutions 
@@ -139,13 +139,6 @@ export default function SolutionsIntegrationPage() {
                   </div>
                   <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
                   <p className="text-white/60 mb-6">{service.description}</p>
-                  <Link
-                    href="#"
-                    className="inline-flex items-center text-white/80 hover:text-white group/link"
-                  >
-                    <span className="mr-2">Learn More</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
-                  </Link>
                 </div>
               </motion.div>
             ))}

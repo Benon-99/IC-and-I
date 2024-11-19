@@ -70,7 +70,7 @@ export default function DataCenterPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto mb-24"
+          className="max-w-4xl mx-auto mb-24 flex flex-col items-center text-justify"
         >
           <motion.span
             initial={{ opacity: 0, y: 20 }}
@@ -85,7 +85,7 @@ export default function DataCenterPage() {
             Next-Generation Infrastructure
           </h2>
           
-          <p className="text-lg text-white/70 leading-relaxed">
+          <p className="text-lg text-white/70 leading-relaxed text-justify">
             In today's digital world, a robust and reliable data center infrastructure is critical 
             to the success of any organization. IC&I specializes in the design, implementation, 
             and support of data centers that meet the highest standards of performance and security. 
@@ -140,13 +140,6 @@ export default function DataCenterPage() {
                   </div>
                   <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
                   <p className="text-white/60 mb-6">{service.description}</p>
-                  <Link
-                    href="#"
-                    className="inline-flex items-center text-white/80 hover:text-white group/link"
-                  >
-                    <span className="mr-2">Learn More</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
-                  </Link>
                 </div>
               </motion.div>
             ))}
