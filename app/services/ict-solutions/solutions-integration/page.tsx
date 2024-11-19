@@ -10,32 +10,57 @@ export default function SolutionsIntegrationPage() {
     {
       icon: Network,
       title: "BSCS System Expertise",
+<<<<<<< HEAD
       description: "Implementation and management of Business Support and Control Systems (BSCS) for utility companies.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
+=======
+      description: "Comprehensive implementation and optimization of Business Support and Control Systems (BSCS) to enhance utility operations and customer service.",
+      gradient: "from-blue-500 to-cyan-500"
+>>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
     },
     {
       icon: CreditCard,
       title: "E-Payment Integration",
+<<<<<<< HEAD
       description: "First e-payment system connecting Syrian Telecom Company (STC) with Syrian Electronic Payment (SEP) platform.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
+=======
+      description: "Pioneering electronic payment solutions connecting Syrian Telecom Company with SEP platform, enabling secure and streamlined digital transactions.",
+      gradient: "from-purple-500 to-pink-500"
+>>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
     },
     {
       icon: Users,
       title: "Customer Care & Billing Systems",
+<<<<<<< HEAD
       description: "Operating and developing CCBS for Syrian Telecom Company since 2013.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
+=======
+      description: "Expert development and management of CCBS for Syrian Telecom Company, ensuring efficient customer service and billing operations since 2013.",
+      gradient: "from-orange-500 to-yellow-500"
+>>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
     },
     {
       icon: Settings,
       title: "System Integration Services",
+<<<<<<< HEAD
       description: "End-to-end integration ensuring seamless operation of all technology components.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
+=======
+      description: "Seamless integration of complex technology components, ensuring optimal performance and communication between diverse systems.",
+      gradient: "from-emerald-500 to-green-500"
+>>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
     },
     {
       icon: Hammer,
       title: "Ongoing Support",
+<<<<<<< HEAD
       description: "Continuous support and maintenance to ensure optimal system performance.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
+=======
+      description: "Dedicated maintenance and support services ensuring continuous system optimization, performance monitoring, and swift resolution of challenges to maximize operational efficiency.",
+      gradient: "from-pink-500 to-rose-500"
+>>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
     }
   ];
 
@@ -70,7 +95,7 @@ export default function SolutionsIntegrationPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto mb-24"
+          className="max-w-4xl mx-auto mb-24 flex flex-col items-center text-justify"
         >
           <motion.span
             initial={{ opacity: 0, y: 20 }}
@@ -85,7 +110,11 @@ export default function SolutionsIntegrationPage() {
             Enterprise Solutions Integration
           </h2>
           
+<<<<<<< HEAD
           <p className="text-lg text-[#111240]/70 leading-relaxed">
+=======
+          <p className="text-lg text-white/70 leading-relaxed text-justify">
+>>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
             IC&I brings a wealth of experience to the integration of complex technology solutions, 
             particularly in the utility and telecommunications sectors. Our approach is rooted in a 
             deep understanding of industry-specific challenges and a commitment to delivering solutions 
@@ -137,8 +166,13 @@ export default function SolutionsIntegrationPage() {
                   <div className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
+<<<<<<< HEAD
                   <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
                   <p className="text-[#111240]/60">{service.description}</p>
+=======
+                  <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
+                  <p className="text-white/60 mb-6">{service.description}</p>
+>>>>>>> b64cd30164817ae20b23a60d52a11fb6da205c2b
                 </div>
               </motion.div>
             ))}

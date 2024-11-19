@@ -3,38 +3,37 @@
 import { motion } from 'framer-motion';
 import { Calculator, BarChart, MessageSquare, Heart, ArrowUpDown, ArrowRight } from 'lucide-react';
 import ServiceHero from '@/components/services/ServiceHero';
-import Link from 'next/link';
 
 export default function HRPayrollPage() {
   const services = [
     {
       icon: Calculator,
       title: "Payroll Processing",
-      description: "Comprehensive payroll processing, from salary calculations to tax deductions, ensuring accurate and timely payments.",
+      description: "Streamline your payroll operations with automated calculations, tax processing, and timely payment distribution.",
       gradient: "from-blue-500 to-cyan-500"
     },
     {
       icon: BarChart,
       title: "Performance Monitoring",
-      description: "Development and implementation of performance metrics aligned with your business goals.",
+      description: "Track and analyze key metrics to measure success and align team performance with strategic business goals and opportunities.",
       gradient: "from-purple-500 to-pink-500"
     },
     {
       icon: MessageSquare,
       title: "Feedback and Coaching",
-      description: "Regular feedback sessions and coaching to help employees improve performance and achieve goals.",
+      description: "Foster professional growth through structured feedback sessions and personalized development strategies for continuous improvement.",
       gradient: "from-orange-500 to-yellow-500"
     },
     {
       icon: Heart,
-      title: "Employee Engagement Strategies",
-      description: "Development of strategies to increase employee engagement and satisfaction.",
+      title: "Employee Engagement",
+      description: "Build a positive workplace culture with targeted strategies to boost team satisfaction and retention.",
       gradient: "from-emerald-500 to-green-500"
     },
     {
       icon: ArrowUpDown,
       title: "Two-Way Communication",
-      description: "Systems designed to encourage open communication between employees and managers.",
+      description: "Enable transparent dialogue between team members and leadership through dedicated channels.",
       gradient: "from-pink-500 to-rose-500"
     }
   ];
@@ -70,7 +69,7 @@ export default function HRPayrollPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto mb-24"
+          className="max-w-4xl mx-auto mb-24 flex flex-col items-center text-justify"
         >
           <motion.span
             initial={{ opacity: 0, y: 20 }}
@@ -85,7 +84,7 @@ export default function HRPayrollPage() {
             Streamlined Payroll Solutions
           </h2>
           
-          <p className="text-lg text-white/70 leading-relaxed">
+          <p className="text-lg text-white/70 leading-relaxed text-justify">
             Managing payroll and employee performance is a critical aspect of running a successful 
             business, and IC&I is here to simplify the process. We currently manage payroll for 
             over 700 personnel, ensuring timely and accurate payments, while also providing 
@@ -140,13 +139,6 @@ export default function HRPayrollPage() {
                   </div>
                   <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
                   <p className="text-white/60 mb-6">{service.description}</p>
-                  <Link
-                    href="#"
-                    className="inline-flex items-center text-white/80 hover:text-white group/link"
-                  >
-                    <span className="mr-2">Learn More</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
-                  </Link>
                 </div>
               </motion.div>
             ))}
