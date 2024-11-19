@@ -9,32 +9,32 @@ export default function JobsIciPage() {
     {
       icon: Search,
       title: "Extensive Job Listings",
-      description: "Explore a broad range of job opportunities across various sectors, tailored to different levels of experience.",
+      description: "Browse through curated job opportunities matched to your experience level and preferences.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: Upload,
       title: "Resume Submission",
-      description: "Securely upload your resume to stay on the radar for upcoming job openings and career advancements.",
+      description: "Upload your resume securely to connect with potential employers and opportunities.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
       icon: Bell,
       title: "Personalized Job Alerts",
-      description: "Receive custom notifications about new job postings that match your unique profile and preferences.",
+      description: "Get notified about relevant job openings that match your career interests and skills.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
     },
     {
       icon: Activity,
       title: "Application Tracking",
-      description: "Easily monitor the progress of your job applications, keeping you informed every step of the way.",
+      description: "Monitor your job application progress with real-time updates and status tracking.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
 
     },
     {
       icon: BookOpen,
       title: "Career Resources",
-      description: "Access tools and resources to improve your job search, including resume tips, interview preparation, and career advice.",
+      description: "Access comprehensive tools and resources to enhance your job search and career development.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
 
     }
