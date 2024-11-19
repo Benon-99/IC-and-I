@@ -144,14 +144,6 @@ export default function JobsIciPage() {
                   </div>
                   <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
                   <p className="text-[#111240]/60 mb-6">{service.description}</p>
-                  <Link
-                    href="#"
-                    className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] group/link"
-                  >
-                    <span className="mr-2">Learn More</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
-                  </Link>
-
                 </div>
               </motion.div>
             ))}

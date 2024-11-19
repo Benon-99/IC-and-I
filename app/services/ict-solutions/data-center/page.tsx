@@ -139,7 +139,6 @@ export default function DataCenterPage() {
                   <div className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
-
                   <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
                   <p className="text-[#111240]/60">{service.description}</p>
                 </div>
