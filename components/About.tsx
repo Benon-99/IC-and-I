@@ -50,10 +50,10 @@ export default function About() {
             transition={{ duration: 0.6 }}
             className="inline-block"
           >
-            <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-gray-200 text-[#111240] backdrop-blur-sm mb-4 inline-block">
+            <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-gray-200 text-[#111241] backdrop-blur-sm mb-4 inline-block">
               About Us
             </span>
-            <h2 className="text-5xl font-bold mb-6 text-[#111241] bg-clip-text text-transparent">
+            <h2 className="text-5xl font-bold mb-6 text-[#011241] bg-clip-text text-transparent">
               DISCOVER IC&I
             </h2>
             <p className="text-xl text-[#111240] max-w-2xl mx-auto leading-relaxed">
@@ -89,7 +89,7 @@ export default function About() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="p-6 rounded-xl bg-transparent backdrop-blur-sm border border-[#B5C6F4] transition-colors duration-300"
                 >
-                  <div className="text-3xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent mb-2 text-[#111241]">
+                  <div className="text-3xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent mb-2 text-[#111444]">
                     {stat.number}
                   </div>
                   <div className="text-[#111240] text-sm">
