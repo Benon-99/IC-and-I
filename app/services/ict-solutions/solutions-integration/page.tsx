@@ -9,32 +9,32 @@ export default function SolutionsIntegrationPage() {
     {
       icon: Network,
       title: "BSCS System Expertise",
-      description: "Implementation and management of Business Support and Control Systems (BSCS) for utility companies.",
+      description: "Comprehensive implementation and optimization of Business Support and Control Systems (BSCS) to enhance utility operations and customer service.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
 
     },
     {
       icon: CreditCard,
       title: "E-Payment Integration",
-      description: "First e-payment system connecting Syrian Telecom Company (STC) with Syrian Electronic Payment (SEP) platform.",
+      description: "Pioneering electronic payment solutions connecting Syrian Telecom Company with SEP platform, enabling secure and streamlined digital transactions.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
       icon: Users,
       title: "Customer Care & Billing Systems",
-      description: "Operating and developing CCBS for Syrian Telecom Company since 2013.",
+      description: "Expert development and management of CCBS for Syrian Telecom Company, ensuring efficient customer service and billing operations since 2013.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
     },
     {
       icon: Settings,
       title: "System Integration Services",
-      description: "End-to-end integration ensuring seamless operation of all technology components.",
+      description: "Seamless integration of complex technology components, ensuring optimal performance and communication between diverse systems.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: Hammer,
       title: "Ongoing Support",
-      description: "Continuous support and maintenance to ensure optimal system performance.",
+      description: "Dedicated maintenance and support services ensuring continuous system optimization, performance monitoring, and swift resolution of challenges to maximize operational efficiency.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     }
   ];
