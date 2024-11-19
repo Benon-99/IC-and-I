@@ -141,8 +141,7 @@ export default function SolutionsIntegrationPage() {
                   </div>
 
                   <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
-                  <p className="text-[#111240]/60">{service.description}</p>console.log('SolutionsIntegrationPage component rendered');
-console.log('Services:', services);
+                  <p className="text-[#111240]/60">{service.description}</p>
 
                 </div>
               </motion.div>
