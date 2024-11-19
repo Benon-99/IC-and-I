@@ -1,9 +1,8 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Network, CreditCard, Users, Settings, Hammer, ArrowRight } from 'lucide-react';
+import { Network, CreditCard, Users, Settings, Hammer } from 'lucide-react';
 import ServiceHero from '@/components/services/ServiceHero';
-import Link from 'next/link';
 
 export default function SolutionsIntegrationPage() {
   const services = [

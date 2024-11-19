@@ -1,9 +1,8 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Globe, Smartphone, Code, Database, Link2, Layout, ArrowRight } from 'lucide-react';
+import { Globe, Smartphone, Code, Database, Link2, Layout } from 'lucide-react';
 import ServiceHero from '@/components/services/ServiceHero';
-import Link from 'next/link';
 
 export default function SoftwareDevelopmentPage() {
   const services = [
