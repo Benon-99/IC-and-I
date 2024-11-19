@@ -66,7 +66,7 @@ const Footer = () => {
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-10"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#00B4D8]/10 via-[#5B8AF0]/10 to-[#8590EA]/10 animate-gradient"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#3785CC]/10 via-[#5B8AF0]/10 to-[#8590EA]/10 animate-gradient"></div>
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -97,7 +97,7 @@ const Footer = () => {
                 <Link
                   key={social.label}
                   href={social.href}
-                  className="p-2 rounded-full bg-[#00B4D8]/10 hover:bg-[#00B4D8]/20 border border-[#00B4D8]/20 
+                  className="p-2 rounded-full bg-[#3785CC]/10 hover:bg-[#3785CC]/20 border border-[#3785CC]/20 
                     transition-colors duration-300 group"
                   aria-label={social.label}
                 >
@@ -109,7 +109,7 @@ const Footer = () => {
 
           {/* Business Outsourcing */}
           <motion.div variants={itemVariants} className="space-y-6">
-            <h3 className="text-lg font-semibold text-white bg-gradient-to-r from-[#00B4D8] to-[#4A9BE4] bg-clip-text text-transparent">{footerLinks.businessOutsourcing.title}</h3>
+            <h3 className="text-lg font-semibold text-white bg-gradient-to-r from-[#3785CC] to-[#4A9BE4] bg-clip-text text-transparent">{footerLinks.businessOutsourcing.title}</h3>
             <ul className="space-y-3">
               {footerLinks.businessOutsourcing.links.map((link) => (
                 <li key={link.href}>
@@ -147,7 +147,7 @@ const Footer = () => {
             <ul className="space-y-4">
               {contactInfo.map((item, index) => (
                 <li key={index} className="flex items-start space-x-3">
-                  <div className="p-2 rounded-lg bg-[#00B4D8]/10 border border-[#00B4D8]/20">
+                  <div className="p-2 rounded-lg bg-[#3785CC]/10 border border-[#3785CC]/20">
                     <item.Icon className="w-5 h-5 text-white/80" />
                   </div>
                   <span className="text-white/80">{item.text}</span>
@@ -165,7 +165,7 @@ const Footer = () => {
           viewport={{ once: true }}
           className="relative py-8 border-t border-white/20"
         >
-          <div className="flex flex-col md:flex-row center items-center space-y-4 md:space-y-0">
+          <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0">
             <p className="text-sm text-white/80">
               &copy; {new Date().getFullYear()} Information Consultancies & Installations (IC&I). All rights reserved.
             </p>

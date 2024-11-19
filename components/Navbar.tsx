@@ -91,14 +91,14 @@ const Navbar = () => {
                     {menuItems[0].submenu.map((section) => (
                       <div key={section.title} className="space-y-4">
                         <Link href={section.href} className="block">
-                          <h3 className="text-white font-semibold mb-2 hover:text-purple-400 transition-colors">{section.title}</h3>
+                          <h3 className="text-white font-semibold mb-2 hover:text-[#3785CC] transition-colors">{section.title}</h3>
                         </Link>
                         <div className="space-y-2">
                           {section.items.map((item) => (
                             <Link 
                               key={item.name}
                               href={item.href}
-                              className="group flex items-center text-white/70 hover:text-white transition-colors py-2"
+                              className="group flex items-center text-white hover:text-[#3785CC] transition-colors py-2"
                             >
                               <ChevronRight className="w-4 h-4 mr-2 transform group-hover:translate-x-1 transition-transform duration-300" />
                               {item.name}
@@ -128,10 +128,9 @@ const Navbar = () => {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#181c52] group-hover:w-full transition-all duration-300"></span>
             </Link>
 
-            <Link 
+            <Link
               href="/contact"
-              className="px-6 py-2 bg-gradient-to-r from-[#002060] to-[#002060] text-white rounded-full 
-                hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 hover:scale-105"
+              className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium rounded-full shadow-sm text-white bg-[#3785CC] hover:bg-[#3785CC]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3785CC]/50 transition-all duration-300"
             >
               Contact Us
             </Link>
@@ -168,7 +167,7 @@ const Navbar = () => {
                 {menuItems[0].submenu.map((section) => (
                   <div key={section.title} className="space-y-2">
                     <Link href={section.href} className="block">
-                      <h3 className="text-white font-semibold mb-2 hover:text-purple-400 transition-colors">{section.title}</h3>
+                      <h3 className="text-white font-semibold mb-2 hover:text-[#3785CC] transition-colors">{section.title}</h3>
                     </Link>
                     {section.items.map((item) => (
                       <Link

@@ -11,7 +11,7 @@ export default function BlogPreview() {
       date: "20-Aug-2024",
       excerpt: "As businesses face new challenges in 2024, effective HR management becomes crucial...",
       image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
-      gradient: "from-[#00B4D8] to-[#4A9BE4]"
+      gradient: "from-[#3785CC] to-[#4A9BE4]"
     },
     {
       title: "The Role of Cybersecurity in Modern Business",
@@ -55,7 +55,7 @@ export default function BlogPreview() {
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-5"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#00B4D8]/5 via-[#5B8AF0]/5 to-[#8590EA]/5 animate-gradient"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#3785CC]/5 via-[#5B8AF0]/5 to-[#8590EA]/5 animate-gradient"></div>
       </div>
 
       <div className="container mx-auto px-4 relative">

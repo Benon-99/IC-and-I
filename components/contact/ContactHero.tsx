@@ -4,11 +4,11 @@ import { motion } from 'framer-motion';
 
 export default function ContactHero() {
   return (
-    <div className="relative overflow-hidden py-32">
+    <div className="relative overflow-hidden py-32 bg-[#111240]">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-pink-500/20 animate-gradient"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
       </div>
 
       <div className="container mx-auto px-4 relative">

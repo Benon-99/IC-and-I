@@ -81,7 +81,7 @@ export default function Hero() {
                 <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20" />
               </div>
 
-              <div className="relative h-full flex items-center">
+              <div className="relative h-full flex items-center pt-24">
                 <div className="container mx-auto px-4">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -93,7 +93,7 @@ export default function Hero() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.6, delay: 0.2 }}
-                      className="inline-block text-lg font-medium mb-4 text-white/90 backdrop-blur-sm bg-white/10 px-4 py-1 rounded-full"
+                      className="inline-block text-lg font-medium mb-4 text-white/90 backdrop-blur-sm bg-white/10 px-4 py-1 rounded-full mt-8"
                     >
                       {slide.subtitle}
                     </motion.span>

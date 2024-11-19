@@ -14,28 +14,28 @@ export default function ServicesPage() {
           icon: Server,
           title: "Data Center Infrastructure",
           description: "End-to-end data center infrastructure solutions for your growing technology needs.",
-          gradient: "from-blue-500 to-cyan-500",
+          gradient: "from-[#3785CC] to-[#4A9BE4]",
           link: "/services/ict-solutions/data-center"
         },
         {
           icon: Network,
           title: "Solutions Integration",
           description: "Technology solutions designed to optimize operations and fuel growth.",
-          gradient: "from-purple-500 to-pink-500",
+          gradient: "from-[#4A9BE4] to-[#5B8AF0]",
           link: "/services/ict-solutions/solutions-integration"
         },
         {
           icon: Shield,
           title: "Information Security",
           description: "Comprehensive security solutions to protect sensitive information.",
-          gradient: "from-orange-500 to-yellow-500",
+          gradient: "from-[#5B8AF0] to-[#8590EA]",
           link: "/services/ict-solutions/information-security"
         },
         {
           icon: Code,
           title: "Software Development",
           description: "Custom web and mobile applications for digital transformation.",
-          gradient: "from-emerald-500 to-green-500",
+          gradient: "from-[#8590EA] to-[#B5C6F4]",
           link: "/services/ict-solutions/software-development"
         }
       ]
@@ -48,21 +48,21 @@ export default function ServicesPage() {
           icon: UserPlus,
           title: "Jobs.ici – Recruiting",
           description: "Connect with top talents across various industries.",
-          gradient: "from-indigo-500 to-blue-500",
+          gradient: "from-[#3785CC] to-[#5B8AF0]",
           link: "/services/business-outsourcing/jobs-ici"
         },
         {
           icon: Users,
           title: "HR & Recruitment",
           description: "End-to-end HR and recruitment solutions.",
-          gradient: "from-pink-500 to-rose-500",
+          gradient: "from-[#4A9BE4] to-[#B5C6F4]",
           link: "/services/business-outsourcing/hr-recruitment"
         },
         {
           icon: ClipboardList,
           title: "HR Payroll & Performance",
           description: "Streamlined payroll and performance management.",
-          gradient: "from-amber-500 to-yellow-500",
+          gradient: "from-[#5B8AF0] to-[#B5C6F4]",
           link: "/services/business-outsourcing/hr-payroll"
         }
       ]
@@ -89,13 +89,13 @@ export default function ServicesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden bg-[#111240]">
         {/* Animated Background */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-pink-500/20 animate-gradient"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
         </div>
         
         <div className="relative container mx-auto px-4 py-32">
@@ -113,7 +113,7 @@ export default function ServicesPage() {
             >
               Our Services
             </motion.span>
-            <h1 className="text-6xl font-bold bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent mb-6">
+            <h1 className="text-6xl font-bold bg-gradient-to-r from-[#3785CC] via-[#4A9BE4] to-[#5B8AF0] bg-clip-text text-transparent mb-6">
               Comprehensive Business Solutions
             </h1>
             <p className="text-xl text-white/80 max-w-2xl mx-auto">
@@ -136,19 +136,19 @@ export default function ServicesPage() {
             <div className="text-center mb-16">
               <motion.span
                 variants={itemVariants}
-                className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-4 inline-block"
+                className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#111240]/5 text-[#111240] backdrop-blur-sm mb-4 inline-block"
               >
                 {section.title}
               </motion.span>
               <motion.h2
                 variants={itemVariants}
-                className="text-4xl font-bold mb-6 bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent"
+                className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#111240] via-[#111240]/90 to-[#111240]/80 bg-clip-text text-transparent"
               >
                 {section.title}
               </motion.h2>
               <motion.p
                 variants={itemVariants}
-                className="text-xl text-white/80 max-w-2xl mx-auto"
+                className="text-xl text-[#111240]/70 max-w-2xl mx-auto"
               >
                 {section.description}
               </motion.p>
@@ -168,16 +168,16 @@ export default function ServicesPage() {
                   variants={itemVariants}
                   className="group relative"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
-                  <div className="relative p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 h-full">
-                    <div className={`p-4 rounded-xl bg-gradient-to-r ${item.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-14 h-14 flex items-center justify-center`}>
-                      <item.icon className="w-7 h-7 text-white" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#111240]/5 to-[#111240]/10 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
+                  <div className="relative p-8 rounded-2xl bg-white shadow-lg border border-[#111240]/10 hover:bg-[#111240]/5 transition-all duration-300">
+                    <div className={`p-4 rounded-xl bg-gradient-to-r ${item.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
+                      <item.icon className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-lg font-semibold text-white mb-3">{item.title}</h3>
-                    <p className="text-white/60 mb-6 text-sm">{item.description}</p>
+                    <h3 className="text-xl font-semibold text-[#111240] mb-4">{item.title}</h3>
+                    <p className="text-[#111240]/70 mb-6">{item.description}</p>
                     <Link
                       href={item.link}
-                      className="inline-flex items-center text-white/80 hover:text-white group/link text-sm"
+                      className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] group/link"
                     >
                       <span className="mr-2">Learn More</span>
                       <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />

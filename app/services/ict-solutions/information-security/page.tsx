@@ -11,37 +11,37 @@ export default function InformationSecurityPage() {
       icon: Shield,
       title: "Traffic Management Solutions",
       description: "DPI, DLP, and IDS tools to monitor and control network traffic for protection and efficiency.",
-      gradient: "from-blue-500 to-cyan-500"
+      gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: Search,
       title: "Security Consultations",
       description: "Expert consultations to assess security posture and develop defense strategies.",
-      gradient: "from-purple-500 to-pink-500"
+      gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
       icon: Laptop,
       title: "Endpoint Security Solutions",
       description: "Protection for all devices against malware, ransomware, and various threats.",
-      gradient: "from-orange-500 to-yellow-500"
+      gradient: "from-[#8590EA] to-[#B5C6F4]"
     },
     {
       icon: Server,
       title: "IT Security Infrastructure",
       description: "Secure infrastructure design with firewalls, encryption, and access control systems.",
-      gradient: "from-emerald-500 to-green-500"
+      gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: FileCheck,
       title: "Compliance and Risk Management",
       description: "Navigate compliance requirements and manage risks to meet industry standards.",
-      gradient: "from-pink-500 to-rose-500"
+      gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
       icon: Zap,
       title: "Incident Response",
       description: "Quick response to security breaches with post-incident analysis and prevention.",
-      gradient: "from-indigo-500 to-blue-500"
+      gradient: "from-[#8590EA] to-[#B5C6F4]"
     }
   ];
 
@@ -65,7 +65,7 @@ export default function InformationSecurityPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-white">
       <ServiceHero 
         title="Information Security"
         description="Protecting Your Digital Assets in an Evolving Threat Landscape."
@@ -82,16 +82,16 @@ export default function InformationSecurityPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-6 inline-block"
+            className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#111240]/5 text-[#111240] backdrop-blur-sm mb-6 inline-block"
           >
             Overview
           </motion.span>
           
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent mb-8">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#00B4D8] to-[#4A9BE4] bg-clip-text text-transparent mb-8">
             Advanced Security Solutions
           </h2>
           
-          <p className="text-lg text-white/70 leading-relaxed">
+          <p className="text-lg text-[#111240]/70 leading-relaxed">
             In an era where cyber threats are increasingly sophisticated, IC&I is dedicated to 
             providing comprehensive information security services that protect your organization's 
             digital assets. We offer a wide range of security solutions designed to safeguard your 
@@ -109,19 +109,19 @@ export default function InformationSecurityPage() {
           <div className="text-center mb-16">
             <motion.span
               variants={itemVariants}
-              className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-4 inline-block"
+              className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#111240]/5 text-[#111240] backdrop-blur-sm mb-4 inline-block"
             >
               Our Services
             </motion.span>
             <motion.h2
               variants={itemVariants}
-              className="text-4xl font-bold mb-6 bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent"
+              className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#4A9BE4] to-[#8590EA] bg-clip-text text-transparent"
             >
               Security Solutions & Services
             </motion.h2>
             <motion.p
               variants={itemVariants}
-              className="text-xl text-white/80 max-w-2xl mx-auto"
+              className="text-xl text-[#111240]/70 max-w-2xl mx-auto"
             >
               At IC&I, we are committed to staying ahead of emerging threats and providing our clients 
               with the most effective security solutions.
@@ -138,20 +138,13 @@ export default function InformationSecurityPage() {
                 variants={itemVariants}
                 className="group relative"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
-                <div className="relative p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
+                <div className="relative p-8 rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300 shadow-sm">
                   <div className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
-                  <p className="text-white/60 mb-6">{service.description}</p>
-                  <Link
-                    href="#"
-                    className="inline-flex items-center text-white/80 hover:text-white group/link"
-                  >
-                    <span className="mr-2">Learn More</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
-                  </Link>
+                  <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
+                  <p className="text-[#111240]/60">{service.description}</p>
                 </div>
               </motion.div>
             ))}

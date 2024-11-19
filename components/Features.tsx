@@ -9,7 +9,7 @@ const features = [
     title: 'Trustworthy',
     description: 'Over 25 years of expertise in delivering high-quality solutions',
     icon: Shield,
-    gradient: "from-[#00B4D8] to-[#4A9BE4]",
+    gradient: "from-[#3785CC] to-[#4A9BE4]",
     link: "/about#expertise"
   },
   {
@@ -62,7 +62,7 @@ export default function Features() {
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-5"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#00B4D8]/5 via-[#5B8AF0]/5 to-[#8590EA]/5 animate-gradient"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#3785CC]/5 via-[#5B8AF0]/5 to-[#8590EA]/5 animate-gradient"></div>
       </div>
 
       <div className="container mx-auto px-4 relative">
@@ -103,7 +103,7 @@ export default function Features() {
               variants={itemVariants}
               className="group relative"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-2 scale-[1.02] opacity-50 group-hover:rotate-1 transition-transform duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#3785CC]/5 to-[#5B8AF0]/5 rounded-2xl transform rotate-2 scale-[1.02] opacity-50 group-hover:rotate-1 transition-transform duration-300"></div>
               <Link href={feature.link}>
                 <div className="relative p-8 rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300 text-center group-hover:transform group-hover:scale-[1.02] shadow-sm">
                   <div className={`p-4 rounded-xl bg-gradient-to-r ${feature.gradient} mx-auto w-16 h-16 flex items-center justify-center mb-6 transform group-hover:scale-110 transition-transform duration-300`}>

@@ -24,7 +24,7 @@ const services = [
         icon: UserPlus,
         title: "Jobs.ici – Recruiting",
         description: "Connect with top talents across various industries for permanent positions, contract roles, or specialized vacancies.",
-        gradient: "from-[#00B4D8] to-[#3E9DE5]"
+        gradient: "from-[#3785CC] to-[#3E9DE5]"
       },
       {
         icon: Users,
@@ -49,7 +49,7 @@ const services = [
         icon: Server,
         title: "Data Center Infrastructure",
         description: "From design and build to ongoing management, our end-to-end data center infrastructure solutions support your growing technology needs.",
-        gradient: "from-[#00B4D8] to-[#4A9BE4]"
+        gradient: "from-[#3785CC] to-[#4A9BE4]"
       },
       {
         icon: Network,
@@ -101,7 +101,7 @@ export default function Services() {
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#00B4D8] animate-gradient"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
       </div>
 
       <div className="container mx-auto px-4 relative">
@@ -126,7 +126,7 @@ export default function Services() {
               )}
               <motion.h2
                 variants={itemVariants}
-                className={`text-5xl font-bold mb-6 bg-gradient-to-r ${category.gradient} bg-clip-text text-[#00B4D8]`}
+                className={`text-5xl font-bold mb-6 bg-gradient-to-r ${category.gradient} bg-clip-text text-[#3785CC]`}
               >
                 {category.category}
               </motion.h2>
@@ -152,7 +152,7 @@ export default function Services() {
                     category.category === "Business Outsourcing" && index === 0 ? "md:col-span-2 lg:col-span-1" : ""
                   }`}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl transform -rotate-2 scale-[1.02] opacity-50 group-hover:-rotate-1 transition-transform duration-300"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#3785CC]/5 to-[#5B8AF0]/5 rounded-2xl transform -rotate-2 scale-[1.02] opacity-50 group-hover:-rotate-1 transition-transform duration-300"></div>
                   <div className="relative p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors duration-300">
                     <div className={`p-3 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6`}>
                       <service.icon className="w-6 h-6 text-white" />

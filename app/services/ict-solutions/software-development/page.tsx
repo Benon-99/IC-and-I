@@ -11,37 +11,37 @@ export default function SoftwareDevelopmentPage() {
       icon: Globe,
       title: "Custom Web Applications",
       description: "Tailored web applications that streamline business processes and enhance user experience.",
-      gradient: "from-blue-500 to-cyan-500"
+      gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: Smartphone,
       title: "Mobile Applications",
       description: "Engaging mobile applications for seamless customer and employee interaction.",
-      gradient: "from-purple-500 to-pink-500"
+      gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
       icon: Code,
       title: "High-Level Programming",
       description: "Expertise in .NET and Java for building robust, scalable applications.",
-      gradient: "from-orange-500 to-yellow-500"
+      gradient: "from-[#8590EA] to-[#B5C6F4]"
     },
     {
       icon: Database,
       title: "Large-Scale Applications",
       description: "Advanced architecture for high-volume data and transaction handling.",
-      gradient: "from-emerald-500 to-green-500"
+      gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: Link2,
       title: "Integration Services",
       description: "Seamless integration with existing systems through APIs and custom connectors.",
-      gradient: "from-pink-500 to-rose-500"
+      gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
       icon: Layout,
       title: "User-Centric Design",
       description: "Intuitive interfaces created through user testing and continuous feedback.",
-      gradient: "from-indigo-500 to-blue-500"
+      gradient: "from-[#8590EA] to-[#B5C6F4]"
     }
   ];
 
@@ -65,7 +65,7 @@ export default function SoftwareDevelopmentPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-white">
       <ServiceHero 
         title="Software Development"
         description="Creating Innovative Software Solutions for Business Success."
@@ -82,16 +82,16 @@ export default function SoftwareDevelopmentPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-6 inline-block"
+            className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#111240]/5 text-[#111240] backdrop-blur-sm mb-6 inline-block"
           >
             Overview
           </motion.span>
           
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent mb-8">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#00B4D8] to-[#4A9BE4] bg-clip-text text-transparent mb-8">
             Enterprise Software Solutions
           </h2>
           
-          <p className="text-lg text-white/70 leading-relaxed">
+          <p className="text-lg text-[#111240]/70 leading-relaxed">
             IC&I, in collaboration with our sister company Intelligent Data System (IDS), offers 
             comprehensive software development services that are designed to meet the unique needs 
             of businesses in Syria and the UAE (Dubai). Our team of experienced developers specializes 
@@ -109,19 +109,19 @@ export default function SoftwareDevelopmentPage() {
           <div className="text-center mb-16">
             <motion.span
               variants={itemVariants}
-              className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-4 inline-block"
+              className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#111240]/5 text-[#111240] backdrop-blur-sm mb-4 inline-block"
             >
               Our Services
             </motion.span>
             <motion.h2
               variants={itemVariants}
-              className="text-4xl font-bold mb-6 bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent"
+              className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#4A9BE4] to-[#8590EA] bg-clip-text text-transparent"
             >
               Development Solutions & Services
             </motion.h2>
             <motion.p
               variants={itemVariants}
-              className="text-xl text-white/80 max-w-2xl mx-auto"
+              className="text-xl text-[#111240]/70 max-w-2xl mx-auto"
             >
               Our software development services are focused on delivering innovative, reliable, and 
               scalable solutions that help you stay ahead in a competitive market.
@@ -138,20 +138,13 @@ export default function SoftwareDevelopmentPage() {
                 variants={itemVariants}
                 className="group relative"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
-                <div className="relative p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
+                <div className="relative p-8 rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300 shadow-sm">
                   <div className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
-                  <p className="text-white/60 mb-6">{service.description}</p>
-                  <Link
-                    href="#"
-                    className="inline-flex items-center text-white/80 hover:text-white group/link"
-                  >
-                    <span className="mr-2">Learn More</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
-                  </Link>
+                  <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
+                  <p className="text-[#111240]/60">{service.description}</p>
                 </div>
               </motion.div>
             ))}
