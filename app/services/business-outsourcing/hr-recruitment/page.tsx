@@ -1,40 +1,39 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Users, UserCheck, ClipboardList, BarChart, Building2, ArrowRight } from 'lucide-react';
+import { Users, Search, FileCheck, ClipboardList, Briefcase } from 'lucide-react';
 import ServiceHero from '@/components/services/ServiceHero';
-import Link from 'next/link';
 
 export default function HRRecruitmentPage() {
   const services = [
     {
       icon: Users,
       title: "Talent Acquisition",
-      description: "We specialize in identifying and recruiting top-tier experts and support personnel across various industries.",
+      description: "Expert recruitment services for identifying and attracting top-tier professionals across industries.",
       gradient: "from-blue-500 to-cyan-500"
     },
     {
-      icon: UserCheck,
+      icon: Search,
       title: "Candidate Assessment",
-      description: "Our thorough assessment procedures evaluate candidates on multiple levels, including skills, experience, and cultural fit.",
+      description: "Comprehensive evaluation of skills, experience, and cultural fit for optimal placement.",
       gradient: "from-purple-500 to-pink-500"
     },
     {
-      icon: ClipboardList,
+      icon: FileCheck,
       title: "Contracting & Deployment",
-      description: "We manage the entire contracting process, including negotiations and deployment logistics.",
+      description: "Streamlined management of contract negotiations and seamless deployment processes.",
       gradient: "from-orange-500 to-yellow-500"
     },
     {
-      icon: BarChart,
+      icon: ClipboardList,
       title: "HR Strategy Consulting",
-      description: "Strategic advice on HR practices, including workforce planning, succession planning, and talent development.",
+      description: "Strategic guidance on workforce planning and talent development initiatives.",
       gradient: "from-emerald-500 to-green-500"
     },
     {
-      icon: Building2,
-      title: "Contract & Benefits Administration",
-      description: "Ongoing support in managing employee contracts and benefits administration.",
+      icon: Briefcase,
+      title: "Benefits Administration",
+      description: "Professional management of employee contracts and comprehensive benefits packages.",
       gradient: "from-pink-500 to-rose-500"
     }
   ];
@@ -85,7 +84,7 @@ export default function HRRecruitmentPage() {
             Empowering Your Workforce
           </h2>
           
-          <p className="text-lg text-white/70 leading-relaxed">
+          <p className="text-lg text-white/70 leading-relaxed text-justify">
             At IC&I, we understand that the success of your organization hinges on the quality 
             of your workforce. That's why we offer comprehensive HR and recruitment management 
             services that go beyond simply filling positions. Our services are designed to attract, 
@@ -116,7 +115,7 @@ export default function HRRecruitmentPage() {
             </motion.h2>
             <motion.p
               variants={itemVariants}
-              className="text-xl text-white/80 max-w-2xl mx-auto"
+              className="text-xl text-white/80 max-w-2xl mx-auto text-justify"
             >
               Our HR management services are designed to provide your organization with the support 
               it needs to build and maintain a high-performing workforce.
@@ -139,14 +138,7 @@ export default function HRRecruitmentPage() {
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
-                  <p className="text-white/60 mb-6">{service.description}</p>
-                  <Link
-                    href="#"
-                    className="inline-flex items-center text-white/80 hover:text-white group/link"
-                  >
-                    <span className="mr-2">Learn More</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
-                  </Link>
+                  <p className="text-white/60 text-justify">{service.description}</p>
                 </div>
               </motion.div>
             ))}

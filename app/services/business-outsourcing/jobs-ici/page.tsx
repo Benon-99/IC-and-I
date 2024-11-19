@@ -3,39 +3,38 @@
 import { motion } from 'framer-motion';
 import { Search, Upload, Bell, Activity, BookOpen, ArrowRight } from 'lucide-react';
 import ServiceHero from '@/components/services/ServiceHero';
-import Link from 'next/link';
 
 export default function JobsIciPage() {
   const services = [
     {
-      icon: Search,
-      title: "Extensive Job Listings",
-      description: "Explore a broad range of job opportunities across various sectors, tailored to different levels of experience.",
-      gradient: "from-blue-500 to-cyan-500"
-    },
-    {
-      icon: Upload,
-      title: "Resume Submission",
-      description: "Securely upload your resume to stay on the radar for upcoming job openings and career advancements.",
-      gradient: "from-purple-500 to-pink-500"
-    },
-    {
-      icon: Bell,
-      title: "Personalized Job Alerts",
-      description: "Receive custom notifications about new job postings that match your unique profile and preferences.",
-      gradient: "from-orange-500 to-yellow-500"
-    },
-    {
       icon: Activity,
       title: "Application Tracking",
-      description: "Easily monitor the progress of your job applications, keeping you informed every step of the way.",
+      description: "Monitor your job application progress with real-time updates and status tracking.",
       gradient: "from-emerald-500 to-green-500"
     },
     {
       icon: BookOpen,
       title: "Career Resources",
-      description: "Access tools and resources to improve your job search, including resume tips, interview preparation, and career advice.",
+      description: "Access comprehensive tools and resources to enhance your job search and career development.",
       gradient: "from-pink-500 to-rose-500"
+    },
+    {
+      icon: Search,
+      title: "Extensive Job Listings",
+      description: "Browse through curated job opportunities matched to your experience level and preferences.",
+      gradient: "from-blue-500 to-cyan-500"
+    },
+    {
+      icon: Upload,
+      title: "Resume Submission",
+      description: "Upload your resume securely to connect with potential employers and opportunities.",
+      gradient: "from-purple-500 to-pink-500"
+    },
+    {
+      icon: Bell,
+      title: "Personalized Job Alerts",
+      description: "Get notified about relevant job openings that match your career interests and skills.",
+      gradient: "from-orange-500 to-yellow-500"
     }
   ];
 
@@ -70,18 +69,18 @@ export default function JobsIciPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto mb-24"
+          className="max-w-4xl mx-auto mb-24 flex flex-col items-center text-justify"
         >
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-6 inline-block"
+            className="px-4 py-1.5 rounded-full  text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-6 inline-block"
           >
             Overview
           </motion.span>
           
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent mb-8">
+          <h2 className="text-4xl font-bold bg-gradient-to-r text-center from-white via-purple-100 to-white/80 bg-clip-text text-transparent mb-8">
             Building Careers in Syria
           </h2>
           
@@ -116,7 +115,7 @@ export default function JobsIciPage() {
             </motion.h2>
             <motion.p
               variants={itemVariants}
-              className="text-xl text-white/80 max-w-2xl mx-auto"
+              className="text-xl text-white/80 max-w-2xl mx-auto text-justify"
             >
               Jobs.ici is more than just a job board—it's a comprehensive career-building tool designed 
               to empower Syrian professionals to achieve their career aspirations.
@@ -139,14 +138,7 @@ export default function JobsIciPage() {
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
-                  <p className="text-white/60 mb-6">{service.description}</p>
-                  <Link
-                    href="#"
-                    className="inline-flex items-center text-white/80 hover:text-white group/link"
-                  >
-                    <span className="mr-2">Learn More</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
-                  </Link>
+                  <p className="text-white/60 text-justify">{service.description}</p>
                 </div>
               </motion.div>
             ))}

@@ -3,45 +3,44 @@
 import { motion } from 'framer-motion';
 import { Shield, Search, Laptop, Server, FileCheck, Zap, ArrowRight } from 'lucide-react';
 import ServiceHero from '@/components/services/ServiceHero';
-import Link from 'next/link';
 
 export default function InformationSecurityPage() {
   const services = [
     {
       icon: Shield,
       title: "Traffic Management Solutions",
-      description: "DPI, DLP, and IDS tools to monitor and control network traffic for protection and efficiency.",
+      description: "Advanced network monitoring tools including DPI, DLP, and IDS for comprehensive security control.",
       gradient: "from-blue-500 to-cyan-500"
     },
     {
       icon: Search,
       title: "Security Consultations",
-      description: "Expert consultations to assess security posture and develop defense strategies.",
+      description: "Professional security assessments and strategic planning to enhance your organization's defenses.",
       gradient: "from-purple-500 to-pink-500"
     },
     {
       icon: Laptop,
       title: "Endpoint Security Solutions",
-      description: "Protection for all devices against malware, ransomware, and various threats.",
+      description: "Comprehensive protection systems for all devices against modern cybersecurity threats.",
       gradient: "from-orange-500 to-yellow-500"
     },
     {
       icon: Server,
       title: "IT Security Infrastructure",
-      description: "Secure infrastructure design with firewalls, encryption, and access control systems.",
+      description: "Robust security architecture implementing advanced firewalls and encryption systems designed to protect critical assets and ensure data integrity.",
       gradient: "from-emerald-500 to-green-500"
     },
     {
       icon: FileCheck,
       title: "Compliance and Risk Management",
-      description: "Navigate compliance requirements and manage risks to meet industry standards.",
+      description: "Strategic guidance to ensure compliance with industry standards and regulations while optimizing operational efficiency.",
       gradient: "from-pink-500 to-rose-500"
     },
     {
       icon: Zap,
       title: "Incident Response",
-      description: "Quick response to security breaches with post-incident analysis and prevention.",
-      gradient: "from-indigo-500 to-blue-500"
+      description: "Rapid security incident management with thorough analysis and preventive measures to minimize impact, ensure business continuity, and prevent future occurrences.",
+      gradient: "from-blue-500 to-indigo-500"
     }
   ];
 
@@ -144,14 +143,7 @@ export default function InformationSecurityPage() {
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
-                  <p className="text-white/60 mb-6">{service.description}</p>
-                  <Link
-                    href="#"
-                    className="inline-flex items-center text-white/80 hover:text-white group/link"
-                  >
-                    <span className="mr-2">Learn More</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
-                  </Link>
+                  <p className="text-white/60 text-justify">{service.description}</p>
                 </div>
               </motion.div>
             ))}
