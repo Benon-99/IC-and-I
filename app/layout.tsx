@@ -18,6 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.className}>
+      <head>
+        <link rel="icon" href="/logo.webp" type="image/png" />
+      </head>
       <body className="flex flex-col min-h-screen bg-gray-50">
         <Navbar />
         <main className="flex-grow">{children}</main>
