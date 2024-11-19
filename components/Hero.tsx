@@ -52,7 +52,7 @@ export default function Hero() {
   const swiperRef = useRef(null);
 
   return (
-    <div className="relative h-screen">
+    <div className="relative h-[120vh]">
       <Swiper
         ref={swiperRef}
         effect="fade"
