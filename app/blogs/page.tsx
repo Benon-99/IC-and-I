@@ -1,41 +1,41 @@
 export default function EnhancedBlogPage() {
   const blogs = [
     {
-      title: "5 Key Strategies for Effective HR Management in 2024",
-      date: "20-Aug-2024",
-      excerpt: "As businesses face new challenges in 2024, effective HR management becomes crucial for maintaining productivity and employee satisfaction...",
-      image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80",
+      slug: "hr-management-trends",
+      title: "HR Management Trends in 2024",
+      excerpt: "Explore the latest trends in HR management and how they're shaping the future of work.",
+      date: "Jan 15, 2024",
       category: "HR Management",
-      slug: "5-key-strategies-for-effective-hr-management-in-2024"
+      image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80"
     },
     {
-      title: "The Role of Cybersecurity in Modern Business",
-      date: "20-Aug-2024",
-      excerpt: "In today's digital era, cybersecurity is essential for protecting business assets and maintaining customer trust in an increasingly connected world...",
-      image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80",
+      slug: "digital-transformation",
+      title: "Digital Transformation Success Stories",
+      excerpt: "Real-world examples of successful digital transformation initiatives and their impact.",
+      date: "Jan 10, 2024",
       category: "Technology",
-      slug: "the-role-of-cybersecurity-in-modern-business"
+      image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80"
     },
     {
-      title: "How Digital Transformation is Shaping the Future of Business in Syria",
-      date: "20-Aug-2024",
-      excerpt: "As the business landscape evolves, digital transformation becomes increasingly important for companies looking to stay competitive and innovative...",
-      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
+      slug: "innovation-workplace",
+      title: "Innovation in the Modern Workplace",
+      excerpt: "How innovative technologies are revolutionizing the way we work and collaborate.",
+      date: "Jan 5, 2024",
       category: "Digital Innovation",
-      slug: "how-digital-transformation-is-shaping-the-future-of-business-in-syria"
+      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80"
     }
   ];
 
   const getCategoryGradient = (category: string) => {
     switch (category) {
       case 'HR Management':
-        return 'from-blue-500 to-cyan-500';
+        return 'from-[#3785CC] to-[#4A9BE4]';
       case 'Technology':
-        return 'from-purple-500 to-pink-500';
+        return 'from-[#4A9BE4] to-[#5B8AF0]';
       case 'Digital Innovation':
-        return 'from-emerald-500 to-green-500';
+        return 'from-[#5B8AF0] to-[#8590EA]';
       default:
-        return 'from-gray-500 to-gray-600';
+        return 'from-[#3785CC] to-[#4A9BE4]';
     }
   };
 
@@ -84,13 +84,13 @@ export default function EnhancedBlogPage() {
         }
       `}</style>
 
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-white">
         {/* Hero Section */}
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden bg-[#111240]">
           {/* Animated Background */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-pink-500/20 animate-gradient"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
           </div>
           
           <div className="relative container mx-auto px-4 py-32">
@@ -98,7 +98,7 @@ export default function EnhancedBlogPage() {
               <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-6 inline-block">
                 Our Blog
               </span>
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent mb-6">
+              <h1 className="text-6xl font-bold bg-gradient-to-r from-[#3785CC] via-[#4A9BE4] to-[#5B8AF0] bg-clip-text text-transparent mb-6">
                 Latest Insights
               </h1>
               <p className="text-xl text-white/80 max-w-2xl mx-auto">
@@ -110,7 +110,7 @@ export default function EnhancedBlogPage() {
         </div>
 
         {/* Blog Grid */}
-        <div className="container mx-auto px-4 py-24">
+        <div className="container mx-auto px-4 py-24 bg-white">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs.map((blog, index) => (
               <div
@@ -118,13 +118,13 @@ export default function EnhancedBlogPage() {
                 className="group relative opacity-0 animate-fade-in-up"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#F7F9FE] to-[#F7F9FE] rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
                 <a href={`/blogs/${blog.slug}`} className="block">
-                  <div className="relative rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 overflow-hidden h-full">
+                  <div className="relative rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300 overflow-hidden h-full">
                     <div className="relative h-56 overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#111240]/50 to-transparent z-10"></div>
                       <img 
-                        src="/api/placeholder/800/600"
+                        src={blog.image}
                         alt={blog.title}
                         className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                       />
@@ -134,7 +134,7 @@ export default function EnhancedBlogPage() {
                     </div>
                     
                     <div className="p-6">
-                      <div className="flex items-center text-sm text-white/60 mb-3">
+                      <div className="flex items-center text-sm text-[#111240]/60 mb-3">
                         <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                           <line x1="16" y1="2" x2="16" y2="6"></line>
@@ -143,12 +143,12 @@ export default function EnhancedBlogPage() {
                         </svg>
                         {blog.date}
                       </div>
-                      <h2 className="text-xl font-bold mb-3 text-white group-hover:text-white/90 transition-colors">
+                      <h2 className="text-xl font-bold mb-3 text-[#111240] group-hover:text-[#111240]/90 transition-colors">
                         {blog.title}
                       </h2>
-                      <p className="text-white/60 mb-4 line-clamp-3">{blog.excerpt}</p>
+                      <p className="text-[#111240]/60 mb-4 line-clamp-3">{blog.excerpt}</p>
                       
-                      <div className="inline-flex items-center text-white/80 hover:text-white font-medium group/link">
+                      <div className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] font-medium group/link">
                         Read More 
                         <svg className="ml-2 w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <line x1="5" y1="12" x2="19" y2="12"></line>
