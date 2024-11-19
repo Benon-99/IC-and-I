@@ -1,10 +1,4 @@
-"use client";
-
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { Calendar, Tag, ArrowRight } from 'lucide-react';
-
-export default function BlogsPage() {
+export default function EnhancedBlogPage() {
   const blogs = [
     {
       title: "5 Key Strategies for Effective HR Management in 2024",
@@ -32,101 +26,142 @@ export default function BlogsPage() {
     }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5
-      }
+  const getCategoryGradient = (category: string) => {
+    switch (category) {
+      case 'HR Management':
+        return 'from-blue-500 to-cyan-500';
+      case 'Technology':
+        return 'from-purple-500 to-pink-500';
+      case 'Digital Innovation':
+        return 'from-emerald-500 to-green-500';
+      default:
+        return 'from-gray-500 to-gray-600';
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-primary to-secondary overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-white opacity-10 transform -skew-x-12"></div>
-          <div className="absolute bottom-0 left-0 w-1/3 h-2/3 bg-white opacity-10 transform skew-x-12"></div>
-        </div>
-        
-        <div className="relative container mx-auto px-4 py-24">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="text-5xl font-bold text-white mb-6">Latest Insights</h1>
-            <p className="text-xl text-white/90 max-w-2xl">
-              Stay updated with the latest insights on consultancy, IT solutions, and business strategies. 
-              Explore topics from tech advancements to HR best practices and more.
-            </p>
-          </motion.div>
-        </div>
-      </div>
+    <div>
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
 
-      {/* Blog Grid */}
-      <div className="container mx-auto px-4 py-16">
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {blogs.map((blog) => (
-            <motion.div
-              key={blog.slug}
-              variants={itemVariants}
-              className="group"
-            >
-              <Link href={`/blogs/${blog.slug}`}>
-                <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl 
-                  transition-all duration-500 transform hover:-translate-y-2">
-                  <div className="relative h-56 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10"></div>
-                    <img 
-                      src={blog.image} 
-                      alt={blog.title}
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <span className="absolute top-4 left-4 z-20 px-3 py-1 bg-white/90 rounded-full 
-                      text-sm font-medium text-primary">
-                      {blog.category}
-                    </span>
-                  </div>
-                  
-                  <div className="p-6">
-                    <div className="flex items-center text-sm text-gray-500 mb-3">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      {blog.date}
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fade-in {
+          animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .animate-fade-in-up {
+          animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        @keyframes gradient {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        .animate-gradient {
+          animation: gradient 15s ease infinite;
+          background-size: 400% 400%;
+        }
+      `}</style>
+
+      <div className="min-h-screen bg-gray-900">
+        {/* Hero Section */}
+        <div className="relative overflow-hidden">
+          {/* Animated Background */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-pink-500/20 animate-gradient"></div>
+          </div>
+          
+          <div className="relative container mx-auto px-4 py-32">
+            <div className="text-center opacity-0 animate-fade-in">
+              <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-6 inline-block">
+                Our Blog
+              </span>
+              <h1 className="text-6xl font-bold bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent mb-6">
+                Latest Insights
+              </h1>
+              <p className="text-xl text-white/80 max-w-2xl mx-auto">
+                Stay updated with the latest insights on consultancy, IT solutions, and business strategies. 
+                Explore topics from tech advancements to HR best practices and more.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Blog Grid */}
+        <div className="container mx-auto px-4 py-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {blogs.map((blog, index) => (
+              <div
+                key={blog.slug}
+                className="group relative opacity-0 animate-fade-in-up"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-900 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
+                <a href={`/blogs/${blog.slug}`} className="block">
+                  <div className="relative rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 overflow-hidden h-full">
+                    <div className="relative h-56 overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10"></div>
+                      <img 
+                        src="/api/placeholder/800/600"
+                        alt={blog.title}
+                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div className={`absolute top-4 left-4 z-20 px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r ${getCategoryGradient(blog.category)} text-white`}>
+                        {blog.category}
+                      </div>
                     </div>
-                    <h2 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
-                      {blog.title}
-                    </h2>
-                    <p className="text-gray-600 mb-4 line-clamp-3">{blog.excerpt}</p>
                     
-                    <div className="inline-flex items-center text-primary font-medium group/link">
-                      Read More 
-                      <ArrowRight className="ml-2 w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" />
+                    <div className="p-6">
+                      <div className="flex items-center text-sm text-white/60 mb-3">
+                        <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                          <line x1="16" y1="2" x2="16" y2="6"></line>
+                          <line x1="8" y1="2" x2="8" y2="6"></line>
+                          <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        {blog.date}
+                      </div>
+                      <h2 className="text-xl font-bold mb-3 text-white group-hover:text-white/90 transition-colors">
+                        {blog.title}
+                      </h2>
+                      <p className="text-white/60 mb-4 line-clamp-3">{blog.excerpt}</p>
+                      
+                      <div className="inline-flex items-center text-white/80 hover:text-white font-medium group/link">
+                        Read More 
+                        <svg className="ml-2 w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="5" y1="12" x2="19" y2="12"></line>
+                          <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </motion.div>
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
