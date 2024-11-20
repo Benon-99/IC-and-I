@@ -1,149 +1,214 @@
-import { useState } from 'react';
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import styled from "styled-components";
+import axios from "axios";
 
-const ContactForm = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
-    });
+// Define form data type
+interface FormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
 
-    const handleChange = (event: { target: { name: string; value: string; }; }) => {
-        const { name, value } = event.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
+const ContactForm: React.FC = () => {
+  const validationSchema = Yup.object({
+    name: Yup.string()
+      .min(2, "Name must be at least 2 characters")
+      .required("Name is required"),
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email is required"),
+    subject: Yup.string()
+      .min(5, "Subject must be at least 5 characters")
+      .required("Subject is required"),
+    message: Yup.string()
+      .min(10, "Message must be at least 10 characters")
+      .required("Message is required"),
+  });
 
-    const handleSubmit = (event: { preventDefault: () => void; }) => {
-        event.preventDefault();
-        // Handle form submission logic here
-        console.log(formData);
-    };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<FormData>({
+    resolver: yupResolver(validationSchema),
+  });
 
-    return (
-        <div style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: "100vh",
-            padding: "2rem",
-            // background: "linear-gradient(135deg, #1e1e2f, #121212)"
-        }}>
-            <div style={{
-                maxWidth: "500px",
-                width: "100%",
-                backgroundColor: "#1e1e2f",
-                padding: "2rem",
-                borderRadius: "8px",
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)"
-            }}>
-                <form onSubmit={handleSubmit}>
-                    <h2 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "1rem", color: "#ffffff" }}>
-                        Send us a message
-                    </h2>
-                    <p style={{ fontSize: "0.875rem", marginBottom: "1.5rem", color: "#9c3aaf" }}>
-                        Fill out the form below and we'll get back to you shortly.
-                    </p>
+  // Form submission handler
+  const onSubmit = async (data: FormData) => {
+    try {
+      // Send data to backend
+      await axios.post("http://localhost:3001/api/send-email", data);
+      // alert("Email sent successfully!");
+      reset();
+    } catch (error) {
+      console.error("Error sending email:", error);
+      alert("Failed to send the email. Please try again.");
+    }
+  };
 
-                    {/* Name Field */}
-                    <div style={{ marginBottom: "1rem" }}>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Your name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            required
-                            style={{
-                                width: "100%",
-                                padding: "0.75rem",
-                                borderRadius: "6px",
-                                border: "1px solid #444",
-                                backgroundColor: "#2a2a42",
-                                color: "#ffffff",
-                            }}
-                        />
-                    </div>
+  return (
+    <Container>
+      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+        <Title>Contact Us</Title>
+        <Description>
+          We would love to hear from you! Fill out the form below.
+        </Description>
 
-                    {/* Email Field */}
-                    <div style={{ marginBottom: "1rem" }}>
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Your email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                            style={{
-                                width: "100%",
-                                padding: "0.75rem",
-                                borderRadius: "6px",
-                                border: "1px solid #444",
-                                backgroundColor: "#2a2a42",
-                                color: "#ffffff",
-                            }}
-                        />
-                    </div>
+        <InputWrapper>
+          <Input
+            type="text"
+            placeholder="Your Name"
+            {...register("name")}
+            isError={!!errors.name}
+          />
+          {errors.name && <Error>{errors.name.message}</Error>}
+        </InputWrapper>
 
-                    {/* Subject Field */}
-                    <div style={{ marginBottom: "1rem" }}>
-                        <input
-                            type="text"
-                            name="subject"
-                            placeholder="Subject"
-                            value={formData.subject}
-                            onChange={handleChange}
-                            required
-                            style={{
-                                width: "100%",
-                                padding: "0.75rem",
-                                borderRadius: "6px",
-                                border: "1px solid #444",
-                                backgroundColor: "#2a2a42",
-                                color: "#ffffff",
-                            }}
-                        />
-                    </div>
+        <InputWrapper>
+          <Input
+            type="email"
+            placeholder="Your Email"
+            {...register("email")}
+            isError={!!errors.email}
+          />
+          {errors.email && <Error>{errors.email.message}</Error>}
+        </InputWrapper>
 
-                    {/* Message Field */}
-                    <div style={{ marginBottom: "1.5rem" }}>
-                        <textarea
-                            name="message"
-                            placeholder="Your message"
-                            value={formData.message}
-                            onChange={handleChange}
-                            required
-                            style={{
-                                width: "100%",
-                                padding: "0.75rem",
-                                borderRadius: "6px",
-                                border: "1px solid #444",
-                                backgroundColor: "#2a2a42",
-                                color: "#ffffff",
-                                minHeight: "120px",
-                            }}
-                        ></textarea>
-                    </div>
+        <InputWrapper>
+          <Input
+            type="text"
+            placeholder="Subject"
+            {...register("subject")}
+            isError={!!errors.subject}
+          />
+          {errors.subject && <Error>{errors.subject.message}</Error>}
+        </InputWrapper>
 
-                    {/* Submit Button */}
-                    <button type="submit" style={{
-                        width: "100%",
-                        padding: "0.75rem",
-                        backgroundColor: "#9c3aaf",
-                        color: "#ffffff",
-                        border: "none",
-                        borderRadius: "6px",
-                        cursor: "pointer",
-                        fontWeight: "bold",
-                    }}>
-                        Send Message
-                    </button>
-                </form>
-            </div>
-        </div>
-    );
+        <InputWrapper>
+          <Textarea
+            placeholder="Your Message"
+            {...register("message")}
+            isError={!!errors.message}
+          />
+          {errors.message && <Error>{errors.message.message}</Error>}
+        </InputWrapper>
+
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Sending..." : "Send Message"}
+        </Button>
+      </FormWrapper>
+    </Container>
+  );
 };
 
 export default ContactForm;
+
+// Styled-components for design (same as before)
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: transparent;
+  padding: 2rem;
+`;
+
+const FormWrapper = styled.form`
+  background: #ffffff;
+  max-width: 500px;
+  width: 100%;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+`;
+
+const Title = styled.h2`
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #333333;
+  text-align: center;
+`;
+
+const Description = styled.p`
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  color: #666666;
+  text-align: center;
+`;
+
+const InputWrapper = styled.div`
+  margin-bottom: 1.5rem;
+`;
+
+const Input = styled.input<{ isError?: boolean }>`
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid ${({ isError }) => (isError ? "#ff4d4f" : "#cccccc")};
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  background: ${({ isError }) => (isError ? "#ffeef0" : "#ffffff")};
+
+  &:focus {
+    border-color: ${({ isError }) => (isError ? "#ff4d4f" : "#9c3aaf")};
+  }
+`;
+
+const Textarea = styled.textarea<{ isError?: boolean }>`
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid ${({ isError }) => (isError ? "#ff4d4f" : "#cccccc")};
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  min-height: 100px;
+  background: ${({ isError }) => (isError ? "#ffeef0" : "#ffffff")};
+
+  &:focus {
+    border-color: ${({ isError }) => (isError ? "#ff4d4f" : "#9c3aaf")};
+  }
+`;
+
+const Error = styled.div`
+  color: #ff4d4f;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+`;
+
+const Button = styled.button`
+  width: 100%; /* Full width */
+  padding: 1rem 2rem; /* Padding similar to */
+  font-size: 1rem; /* Font size */
+  font-weight: 500; /* Font medium */
+  color: #ffffff; /* Text color */
+  background: linear-gradient(
+    to right,
+    #3785cc,
+    #5b8af0
+  ); /* Gradient background */
+  border: none; /* No border */
+  border-radius: 0.5rem; /* Rounded corners similar to  */
+  display: inline-flex; /* Inline flex for proper alignment */
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally */
+  gap: 0.5rem; /* Spacing between items similar to  */
+  cursor: pointer; /* Pointer cursor on hover */
+  box-shadow: 0 0 0 transparent; /* Initial shadow */
+  transition: all 0.3s ease; /* Smooth transition */
+
+  &:hover {
+    box-shadow: 0 4px 10px rgba(55, 133, 204, 0.2); /* Shadow on hover */
+  }
+
+  &:disabled {
+    background: #cccccc; /* Disabled background color */
+    cursor: not-allowed; /* Disabled cursor */
+    box-shadow: none; /* Remove hover shadow when disabled */
+  }
+`;
