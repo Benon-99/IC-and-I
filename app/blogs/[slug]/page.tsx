@@ -215,22 +215,21 @@ export default function BlogPost() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div className="relative h-[60vh] overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${post.image})` }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50" />
+      <div className="relative overflow-hidden bg-[#111240]">
+        {/* Animated Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
         </div>
         
-        <div className="relative container mx-auto px-4 h-full flex items-center">
+        <div className="relative container mx-auto px-4 py-32">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="max-w-3xl"
+            className="max-w-4xl mx-auto"
           >
             <Link 
               href="/blogs"
@@ -240,7 +239,9 @@ export default function BlogPost() {
               <ArrowLeft className="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" />
               Back to Blogs
             </Link>
-            <h1 className="text-5xl font-bold text-white mb-6">{post.title}</h1>
+            <h1 className="text-6xl font-bold bg-gradient-to-r from-[#3785CC] via-[#4A9BE4] to-[#5B8AF0] bg-clip-text text-transparent mb-6">
+              {post.title}
+            </h1>
             <div className="flex flex-wrap items-center gap-6 text-white/80">
               <div className="flex items-center">
                 <Calendar className="w-5 h-5 mr-2" />
@@ -271,40 +272,41 @@ export default function BlogPost() {
 
       {/* Content */}
       <motion.div 
-        className="container mx-auto px-4 py-16"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        className="container mx-auto px-4 py-24"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <div className="max-w-3xl mx-auto">
-          <div 
-            className="prose prose-lg prose-headings:text-gray-900 prose-p:text-gray-600 
-              prose-a:text-primary hover:prose-a:text-secondary prose-strong:text-gray-900"
-          >
+        <div className="max-w-4xl mx-auto">
+          <div className="prose prose-lg max-w-none">
             {post.content.split('\n').map((paragraph, index) => {
               if (paragraph.startsWith('###')) {
                 return (
-                  <h3 key={index} className="text-2xl font-bold mt-8 mb-4">
+                  <h3 key={index} className="text-2xl font-bold mt-12 mb-6 text-[#111240]">
                     {paragraph.replace('### ', '')}
                   </h3>
                 );
               }
               if (paragraph.startsWith('####')) {
                 return (
-                  <h4 key={index} className="text-xl font-bold mt-6 mb-3">
+                  <h4 key={index} className="text-xl font-bold mt-8 mb-4 text-[#111240]">
                     {paragraph.replace('#### ', '')}
                   </h4>
                 );
               }
               if (paragraph.startsWith('-')) {
                 return (
-                  <li key={index} className="ml-6">
+                  <li key={index} className="ml-6 text-[#111240]/70">
                     {paragraph.replace('- ', '')}
                   </li>
                 );
               }
               if (paragraph.trim()) {
-                return <p key={index} className="mb-4">{paragraph}</p>;
+                return (
+                  <p key={index} className="mb-6 text-[#111240]/70 leading-relaxed">
+                    {paragraph}
+                  </p>
+                );
               }
               return null;
             })}

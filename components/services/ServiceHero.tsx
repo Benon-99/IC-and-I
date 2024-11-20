@@ -9,19 +9,18 @@ interface ServiceHeroProps {
 
 export default function ServiceHero({ title, description }: ServiceHeroProps) {
   return (
-    <div className="relative overflow-hidden py-32 bg-gradient-to-b from-[#111240] via-[#181c52] to-[#1E2875]">
+    <div className="relative overflow-hidden bg-[#111240]">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-10"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#3785CC]/20 via-[#4A9BE4]/20 to-[#8590EA]/20 animate-gradient"></div>
+        <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
       </div>
       
-      <div className="relative container mx-auto px-4">
+      <div className="relative container mx-auto px-4 py-32">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center opacity-0 animate-fade-in"
         >
           <motion.span
             initial={{ opacity: 0, y: 20 }}
@@ -32,7 +31,7 @@ export default function ServiceHero({ title, description }: ServiceHeroProps) {
             Our Services
           </motion.span>
           
-          <h1 className="text-6xl font-bold bg-gradient-to-r from-[#3785CC] via-[#4A9BE4] to-[#8590EA] bg-clip-text text-transparent mb-6">
+          <h1 className="text-6xl font-bold bg-gradient-to-r from-[#3785CC] via-[#4A9BE4] to-[#5B8AF0] bg-clip-text text-transparent mb-6">
             {title}
           </h1>
           

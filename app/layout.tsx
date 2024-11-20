@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <head>
-        <link rel="icon" href="/logo.webp" type="image/png" />
+        <link rel="icon" href="/ici-favicon.png" type="image/png" />
       </head>
       <body className="flex flex-col min-h-screen bg-gray-50">
         <Navbar />

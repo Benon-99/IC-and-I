@@ -97,7 +97,7 @@ export default function BlogPreview() {
               className="group relative"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
-              <Link href={`/blog/${blog.title.toLowerCase().replace(/ /g, '-')}`}>
+              <Link href={`/blogs/${blog.title.toLowerCase().replace(/ /g, '-')}`}>
                 <div className="relative rounded-2xl bg-white backdrop-blur-sm border border-gray-100 overflow-hidden transition-all duration-300 group-hover:bg-gray-50 shadow-sm">
                   <div className="relative h-64 overflow-hidden">
                     <div className={`absolute inset-0 bg-gradient-to-r ${blog.gradient} opacity-80`}></div>
