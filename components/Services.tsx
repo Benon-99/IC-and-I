@@ -104,7 +104,7 @@ export default function Services() {
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
       </div>
 
-      <div className="w-[1280px] mx-auto px-4 relative">
+      <div className="w-full lg:w-[1280px] mx-auto px-4 relative">
         {services.map((category, idx) => (
           <motion.div
             key={category.category}

@@ -3,7 +3,7 @@ export default function EnhancedBlogPage() {
     {
       slug: "hr-management-trends",
       title: "HR Management Trends in 2024",
-      excerpt: "Explore the latest trends in HR management and how they're shaping the future of work.",
+      excerpt: "Discover the emerging trends in HR management and their transformative impact on workplace dynamics, employee engagement, and organizational success in today's rapidly evolving business landscape. From AI-driven recruitment to remote work policies, explore how modern HR practices are reshaping the future of work.",
       date: "Jan 15, 2024",
       category: "HR Management",
       image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80"
@@ -11,7 +11,7 @@ export default function EnhancedBlogPage() {
     {
       slug: "digital-transformation",
       title: "Digital Transformation Success Stories",
-      excerpt: "Real-world examples of successful digital transformation initiatives and their impact.",
+      excerpt: "Exploring real-world examples of successful digital transformation initiatives and their business impact.",
       date: "Jan 10, 2024",
       category: "Technology",
       image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80"
@@ -87,21 +87,20 @@ export default function EnhancedBlogPage() {
       <div className="min-h-screen bg-white">
         {/* Hero Section */}
         <div className="relative overflow-hidden bg-[#111240]">
-          {/* Animated Background */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
           </div>
           
-          <div className="relative container mx-auto px-4 py-32">
+          <div className="relative w-full lg:w-[1280px]  mx-auto px-4 py-32">
             <div className="text-center opacity-0 animate-fade-in">
               <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-6 inline-block">
                 Our Blog
               </span>
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-[#3785CC] via-[#4A9BE4] to-[#5B8AF0] bg-clip-text text-transparent mb-6">
+              <h1 className="text-6xl font-bold bg-gradient-to-r from-[#3785CC] via-[#4A9BE4] to-[#5B8AF0] bg-clip-text text-transparent mb-6 leading-normal">
                 Latest Insights
               </h1>
-              <p className="text-xl text-white/80 max-w-2xl mx-auto">
+              <p className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
                 Stay updated with the latest insights on consultancy, IT solutions, and business strategies. 
                 Explore topics from tech advancements to HR best practices and more.
               </p>
@@ -110,7 +109,7 @@ export default function EnhancedBlogPage() {
         </div>
 
         {/* Blog Grid */}
-        <div className="container mx-auto px-4 py-24 bg-white">
+        <div className="w-full lg:w-[1280px] mx-auto px-4 py-24 bg-white">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs.map((blog, index) => (
               <div

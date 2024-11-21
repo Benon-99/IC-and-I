@@ -10,31 +10,31 @@ export default function DataCenterPage() {
     {
       icon: Server,
       title: "Design and Implementation",
-      description: "Holistic approach to data center design, considering scalability, energy efficiency, and security.",
+      description: "Comprehensive approach to data center design and implementation, optimizing scalability, energy efficiency, and security measures.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: Network,
       title: "Network Infrastructure",
-      description: "Complete network solutions including fiber and copper cabling, patching, racks, and accessories.",
+      description: "Advanced network infrastructure solutions including comprehensive fiber and copper cabling systems, patching, racks, and accessories.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
       icon: Shield,
       title: "Security and Compliance",
-      description: "Advanced security measures including physical security, access control, and data encryption.",
+      description: "Comprehensive security infrastructure including advanced physical security systems, access control protocols, and data encryption solutions.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
     },
     {
       icon: Zap,
       title: "Cooling and Power Solutions",
-      description: "Efficient cooling and power systems that ensure optimal temperatures and reliable power supply.",
+      description: "Advanced cooling and power management systems engineered to maintain optimal temperatures and ensure reliable power distribution.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: Hammer,
       title: "Ongoing Support",
-      description: "Dedicated support team providing ongoing maintenance and troubleshooting services.",
+      description: "Dedicated technical support team providing comprehensive maintenance, monitoring, and rapid troubleshooting services.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     }
   ];
@@ -65,7 +65,7 @@ export default function DataCenterPage() {
         description="Building and Supporting World-Class Data Centers."
       />
 
-      <div className="container mx-auto px-4 py-24">
+      <div className="w-full lg:w-[1280px]  mx-auto px-4 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

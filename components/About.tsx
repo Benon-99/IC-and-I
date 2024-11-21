@@ -41,7 +41,7 @@ export default function About() {
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#F7F9FE] to-[#F7F9FE] animate-gradient"></div>
       </div>
 
-      <div className="w-[1280px] mx-auto px-4 relative">
+      <div className="w-full lg:w-[1280px] mx-auto px-4 relative">
         {/* Section Header */}
         <div className="text-center mb-20">
           <motion.div

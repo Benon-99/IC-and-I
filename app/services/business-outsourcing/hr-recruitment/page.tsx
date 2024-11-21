@@ -68,12 +68,12 @@ export default function HRRecruitmentPage() {
         description="Tailored HR Solutions to Attract, Develop, and Retain Top Talent."
       />
 
-      <div className="container mx-auto px-4 py-24">
+      <div className="w-full lg:w-[1280px] mx-auto px-4 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto mb-24"
+          className="max-w-4xl mx-auto mb-24 flex flex-col items-center text-justify"
         >
           <motion.span
             initial={{ opacity: 0, y: 20 }}
@@ -88,7 +88,7 @@ export default function HRRecruitmentPage() {
             Empowering Your Workforce
           </h2>
           
-          <p className="text-lg text-[#111240]/70 leading-relaxed">
+          <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
             At IC&I, we understand that the success of your organization hinges on the quality 
             of your workforce. That's why we offer comprehensive HR and recruitment management 
             services that go beyond simply filling positions. Our services are designed to attract, 
@@ -128,7 +128,7 @@ export default function HRRecruitmentPage() {
 
           <motion.div 
             variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {services.map((service, index) => (
               <motion.div

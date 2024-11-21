@@ -17,7 +17,7 @@ export default function ICTSolutionsPage() {
     {
       icon: Network,
       title: "Solutions Integration",
-      description: "Our technology solutions are designed to optimize operations, lower cost and fuel long-term growth.",
+      description: "Our advanced technology solutions are strategically designed to optimize operations, reduce costs, and fuel sustainable business growth.",
       link: "/services/ict-solutions/solutions-integration",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
@@ -63,12 +63,12 @@ export default function ICTSolutionsPage() {
         description="IC&I brings over 20 years of experience in ICT consultation, installation, and commissioning services, delivering reliable solutions tailored to meet diverse business needs."
       />
 
-      <div className="container mx-auto px-4 py-24">
+      <div className="w-full lg:w-[1280px] mx-auto px-4 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto mb-24"
+          className="max-w-4xl mx-auto mb-24 flex flex-col items-center text-justify"
         >
           <motion.span
             initial={{ opacity: 0, y: 20 }}
@@ -83,7 +83,7 @@ export default function ICTSolutionsPage() {
             Technology Solutions for Growth
           </h2>
           
-          <p className="text-lg text-[#111240]/70 leading-relaxed">
+          <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
             Our comprehensive ICT solutions are designed to help businesses optimize their operations, 
             enhance security, and stay competitive in today's technology-driven landscape. With over two 
             decades of experience, we provide expert consultation, installation, and commissioning services 
@@ -122,7 +122,7 @@ export default function ICTSolutionsPage() {
 
           <motion.div 
             variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto"
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full"
           >
             {services.map((service) => (
               <motion.div

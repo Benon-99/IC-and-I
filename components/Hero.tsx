@@ -84,7 +84,7 @@ export default function Hero() {
                 </div>
 
                 <div className="relative h-full flex items-center pt-15">
-                  <div className="w-[1280px] mx-auto px-4">
+                  <div className="w-full lg:w-[1280px] mx-auto px-4">
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}

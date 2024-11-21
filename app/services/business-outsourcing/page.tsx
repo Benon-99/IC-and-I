@@ -17,7 +17,7 @@ export default function BusinessOutsourcingPage() {
     {
       icon: Users,
       title: "HR & Recruitment Management",
-      description: "Focusing on talent acquisition, ensuring that the right candidates are sourced, assessed, and placed in positions that align with business goals.",
+      description: "Strategic talent acquisition and assessment, ensuring candidates are matched to positions that drive business success.",
       link: "/services/business-outsourcing/hr-recruitment",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
@@ -57,12 +57,12 @@ export default function BusinessOutsourcingPage() {
         crafted to deliver optimal efficiency and support your business's evolving needs."
       />
 
-      <div className="container mx-auto px-4 py-24">
+      <div className="w-full lg:w-[1280px]  mx-auto px-4 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto mb-24"
+          className="max-w-4xl mx-auto mb-24 flex flex-col items-center text-justify"
         >
           <motion.span
             initial={{ opacity: 0, y: 20 }}
@@ -77,7 +77,7 @@ export default function BusinessOutsourcingPage() {
             Market Leading HR Solutions
           </h2>
           
-          <p className="text-lg text-[#111240]/70 leading-relaxed">
+          <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
             We are the Syrian market leader with the largest market share in providing full
             recruitment services in UN agencies, NPO's and NGO's. Our comprehensive HR outsourcing 
             solutions are designed to streamline your operations and drive organizational success 
