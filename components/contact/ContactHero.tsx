@@ -32,7 +32,7 @@ export default function ContactHero() {
           </h1>
           
           <p className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
-            We're here to help! Whether you have questions, need support, or want to learn more about our services, 
+            We're here to help! Whether you have questions, need support, or want to learn more about what we offer, 
             don't hesitate to reach out.
           </p>
         </motion.div>
