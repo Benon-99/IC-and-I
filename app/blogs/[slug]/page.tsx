@@ -61,7 +61,57 @@ const blogPosts = {
       
       As we progress through 2024, HR managers must stay agile and responsive to changing workplace dynamics. By implementing these strategies, organizations can build a more resilient and effective workforce while maintaining high levels of employee engagement and satisfaction.
     `
-  }
+  },
+  'the-role-of-cybersecurity-in-modern-business': {
+    title: "The Role of Cybersecurity in Modern Business",
+    date: "20-Aug-2024",
+    category: "HR Management",
+    author: "IC&I Team",
+    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&amp;fit=crop&amp;q=80",
+    content: `
+      In today’s digital era, cybersecurity is essential for every business, no matter its size or industry. With cyber threats becoming more frequent and sophisticated, companies must implement strong security measures to protect their assets, data, and reputation. A robust cybersecurity framework ensures trust and credibility with clients and stakeholders.
+
+**Here are Essential Components for Building a Robust Cybersecurity Strategy:**
+
+__Incident Response Plans:__ Prepare for breaches with a clear action plan to minimize damage, restore operations quickly, and prevent future incidents.
+
+**Understanding Cyber Threats:** Malware, ransomware, phishing, and insider threats are on the rise, posing significant risks to businesses.
+
+**Strong Security Protocols:** Implement firewalls, encryption, and multi-factor authentication to secure systems and sensitive data.
+
+**Employee Training:** Educating staff on best practices reduces human error, which is often exploited in cyberattacks.
+
+**Endpoint Security:** Protect mobile and remote devices with antivirus software, VPNs, and mobile device management.
+
+**Cybersecurity in Digital Transformation:**
+
+As businesses embrace digital tools, cybersecurity must be a top priority. By proactively addressing threats, companies can protect their data, reputation, and future success. In today’s world, cybersecurity is no longer optional—it’s critical to thriving in the digital landscape.
+    `
+  },
+  'how-digital-transformation-is-shaping-the-future-of-business-in-syria': {
+    title: "How Digital Transformation is Shaping The Future of Business in Syria",
+    date: "20-Aug-2024",
+    category: "HR Management",
+    author: "IC&I Team",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
+    content: `
+      As the business landscape evolves, digital transformation is becoming a key enabler of growth and innovation in Syria. Companies are rapidly embracing new technologies to streamline processes, enhance customer engagement, and improve overall efficiency. With advancements like cloud computing, artificial intelligence, and big data, businesses have more opportunities than ever to modernize and remain competitive.
+
+In this blog, We will discuss:
+
+**The Rise of Cloud Services:** How cloud-based infrastructure is reducing costs, improving scalability, and enabling remote collaboration.
+
+**Automation and Efficiency:** How automating routine tasks is freeing up human resources for more value-added activities.
+
+**Artificial Intelligence (AI):** AI-powered solutions are enhancing customer service and decision-making across industries.
+
+**Data-Driven Decisions:** How businesses are leveraging big data analytics to understand market trends and consumer behavior.
+
+**Overcoming Challenges:** Key barriers to digital adoption, including infrastructure issues and regulatory concerns, and strategies to overcome them.
+
+As digital transformation continues to shape the future, businesses in Syria need to remain agile and open to integrating technology into their operations. The companies that succeed will be those that can harness digital tools to create smarter, faster, and more customer-centric business models.
+    `
+  },
 };
 
 export default function BlogPost() {
@@ -205,9 +255,19 @@ export default function BlogPost() {
                   );
                 }
                 if (paragraph.trim() && !paragraph.startsWith('Key benefits include:')) {
+                  // Process inline bold text
+                  const parts = paragraph.split(/(\*\*.*?\*\*|__.*?__)/g);
                   return (
                     <p key={index} className="text-[#111240]/80 text-lg leading-relaxed mb-8 hover:text-[#111240] transition-colors duration-300">
-                      {paragraph}
+                      {parts.map((part, i) => {
+                        if (part.startsWith('**') && part.endsWith('**')) {
+                          return <span key={i} className="font-semibold">{part.slice(2, -2)}</span>;
+                        }
+                        if (part.startsWith('__') && part.endsWith('__')) {
+                          return <span key={i} className="font-semibold">{part.slice(2, -2)}</span>;
+                        }
+                        return part;
+                      })}
                     </p>
                   );
                 }
