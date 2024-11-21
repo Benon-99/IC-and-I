@@ -7,28 +7,28 @@ import Link from 'next/link';
 const features = [
   {
     title: 'Trustworthy',
-    description: 'Over 25 years of expertise in delivering high-quality solutions',
+    description: 'Over 25 years of expertise in delivering innovative and high-quality business solutions',
     icon: Shield,
     gradient: "from-[#3785CC] to-[#4A9BE4]",
     link: "/about#expertise"
   },
   {
     title: '24/7 Support',
-    description: 'Round-the-clock technical support and assistance',
+    description: 'Comprehensive round-the-clock technical support and professional assistance for all your business needs',
     icon: Clock,
     gradient: "from-[#4A9BE4] to-[#5B8AF0]",
     link: "/services#support"
   },
   {
     title: 'Expert Team',
-    description: 'Dedicated professionals with deep industry knowledge',
+    description: 'Dedicated team of professionals with extensive industry knowledge and experience',
     icon: Users,
     gradient: "from-[#5B8AF0] to-[#8590EA]",
     link: "/about#team"
   },
   {
     title: 'Scalable Solutions',
-    description: 'Flexible solutions that grow with your business',
+    description: 'Flexible and adaptable solutions designed to grow seamlessly with your business',
     icon: TrendingUp,
     gradient: "from-[#8590EA] to-[#B5C6F4]",
     link: "/services#solutions"
@@ -65,7 +65,7 @@ export default function Features() {
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#3785CC]/5 via-[#5B8AF0]/5 to-[#8590EA]/5 animate-gradient"></div>
       </div>
 
-      <div className="container mx-auto px-4 relative">
+      <div className="w-[1280px] mx-auto px-4 relative">
         <motion.div 
           initial="hidden"
           whileInView="visible"

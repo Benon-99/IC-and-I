@@ -11,6 +11,7 @@ import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import CenterLayout from './CenterLayout';
 
 const slides = [
   {
@@ -52,107 +53,108 @@ export default function Hero() {
   const swiperRef = useRef(null);
 
   return (
-    <div className="relative h-[120vh]">
-      <Swiper
-        ref={swiperRef}
-        effect="fade"
-        autoplay={{
-          delay: 5000,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-        }}
-        navigation={{
-          prevEl: '.swiper-button-prev',
-          nextEl: '.swiper-button-next',
-        }}
-        modules={[Autoplay, EffectFade, Navigation, Pagination]}
-        className="h-full w-full"
-      >
-        {slides.map((slide, index) => (
-          <SwiperSlide key={index}>
-            <div className="relative h-full w-full">
-              <div 
-                className="absolute inset-0 bg-cover bg-center bg-fixed transform hover:scale-105 transition-transform duration-[2s]"
-                style={{ backgroundImage: `url(${slide.image})` }}
-              >
-                <div className={`absolute inset-0 bg-gradient-to-r ${slide.accent} opacity-90`} />
-                <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20" />
-              </div>
 
-              <div className="relative h-full flex items-center pt-24">
-                <div className="container mx-auto px-4">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="max-w-3xl"
-                  >
-                    <motion.span 
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.6, delay: 0.2 }}
-                      className="inline-block text-lg font-medium mb-4 text-white/90 backdrop-blur-sm bg-white/10 px-4 py-1 rounded-full mt-8"
-                    >
-                      {slide.subtitle}
-                    </motion.span>
-                    <motion.h1 
+        <div className="relative h-[120vh]">
+        <Swiper
+          ref={swiperRef}
+          effect="fade"
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+          }}
+          pagination={{
+            clickable: true,
+          }}
+          navigation={{
+            prevEl: '.swiper-button-prev',
+            nextEl: '.swiper-button-next',
+          }}
+          modules={[Autoplay, EffectFade, Navigation, Pagination]}
+          className="h-full w-full"
+        >
+          {slides.map((slide, index) => (
+            <SwiperSlide key={index}>
+              <div className="relative h-full w-full">
+                <div 
+                  className="absolute inset-0 bg-cover bg-center bg-fixed transform hover:scale-105 transition-transform duration-[2s]"
+                  style={{ backgroundImage: `url(${slide.image})` }}
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-r ${slide.accent} opacity-90`} />
+                  <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20" />
+                </div>
+
+                <div className="relative h-full flex items-center pt-15">
+                  <div className="w-[1280px] mx-auto px-4">
+                    <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.4 }}
-                      className="text-6xl md:text-7xl font-bold mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80"
+                      transition={{ duration: 0.8 }}
+                      className="max-w-3xl"
                     >
-                      {slide.title}
-                    </motion.h1>
-                    <motion.p 
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.6 }}
-                      className="text-xl mb-8 text-white/80 leading-relaxed max-w-2xl backdrop-blur-sm bg-black/10 p-4 rounded-lg"
-                    >
-                      {slide.description}
-                    </motion.p>
-                    <motion.div 
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.8 }}
-                      className="flex flex-wrap gap-4"
-                    >
-                      <Link
-                        href={slide.buttons.primary.href}
-                        className="group relative bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 
-                          text-white px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105
-                          hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] overflow-hidden"
+                      <motion.span 
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="inline-block text-lg font-medium mb-4 text-white/90 backdrop-blur-sm bg-white/10 px-4 py-1 rounded-full mt-8"
                       >
-                        <span className="relative z-10">{slide.buttons.primary.text}</span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 
-                          translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                      </Link>
-                      <Link
-                        href={slide.buttons.secondary.href}
-                        className="group relative bg-transparent border border-white/30 hover:border-white/50
-                          text-white px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105"
+                        {slide.subtitle}
+                      </motion.span>
+                      <motion.h1 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.4 }}
+                        className="text-6xl md:text-7xl font-bold mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80"
                       >
-                        <span className="relative z-10">{slide.buttons.secondary.text}</span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 
-                          translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                      </Link>
+                        {slide.title}
+                      </motion.h1>
+                      <motion.p 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.6 }}
+                        className="text-xl mb-8 text-white/80 leading-relaxed max-w-2xl backdrop-blur-sm bg-black/10 p-4 rounded-lg"
+                      >
+                        {slide.description}
+                      </motion.p>
+                      <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.8 }}
+                        className="flex flex-wrap gap-4"
+                      >
+                        <Link
+                          href={slide.buttons.primary.href}
+                          className="group relative bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 
+                            text-white px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105
+                            hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] overflow-hidden"
+                        >
+                          <span className="relative z-10">{slide.buttons.primary.text}</span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 
+                            translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                        </Link>
+                        <Link
+                          href={slide.buttons.secondary.href}
+                          className="group relative bg-transparent border border-white/30 hover:border-white/50
+                            text-white px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105"
+                        >
+                          <span className="relative z-10">{slide.buttons.secondary.text}</span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 
+                            translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                        </Link>
+                      </motion.div>
                     </motion.div>
-                  </motion.div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </SwiperSlide>
-        ))}
+            </SwiperSlide>
+          ))}
 
-        <div className="swiper-button-prev !text-white hover:text-secondary transition-colors">
-          <ChevronLeft className="w-8 h-8" />
-        </div>
-        <div className="swiper-button-next !text-white hover:text-secondary transition-colors">
-          <ChevronRight className="w-8 h-8" />
-        </div>
-      </Swiper>
-    </div>
+          <div className="swiper-button-prev !text-white hover:text-secondary transition-colors">
+            <ChevronLeft className="w-8 h-8" />
+          </div>
+          <div className="swiper-button-next !text-white hover:text-secondary transition-colors">
+            <ChevronRight className="w-8 h-8" />
+          </div>
+        </Swiper>
+      </div>
   );
 }

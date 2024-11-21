@@ -23,19 +23,19 @@ const services = [
       {
         icon: UserPlus,
         title: "Jobs.ici – Recruiting",
-        description: "Connect with top talents across various industries for permanent positions, contract roles, or specialized vacancies.",
+        description: "Connect with top industry talents for permanent positions, contract roles, and specialized recruitment solutions.",
         gradient: "from-[#3785CC] to-[#3E9DE5]"
       },
       {
         icon: Users,
         title: "HR & Recruitment Management",
-        description: "End-to-end HR and recruitment solutions to streamline your hiring strategies.",
+        description: "Comprehensive HR and recruitment solutions to optimize your hiring process and talent management strategies.",
         gradient: "from-[#3E9DE5] to-[#7B8EEC]"
       },
       {
         icon: ClipboardList,
         title: "HR Payroll & Performance",
-        description: "Simplify payroll and performance tracking to ensure compliance and boost productivity.",
+        description: "Streamline your payroll processing and performance management systems to enhance compliance and productivity.",
         gradient: "from-[#7B8EEC] to-[#B5C6F4]"
       }
     ]
@@ -48,25 +48,25 @@ const services = [
       {
         icon: Server,
         title: "Data Center Infrastructure",
-        description: "From design and build to ongoing management, our end-to-end data center infrastructure solutions support your growing technology needs.",
+        description: "Comprehensive data center infrastructure solutions to design, build, and manage your evolving technology requirements.",
         gradient: "from-[#3785CC] to-[#4A9BE4]"
       },
       {
         icon: Network,
         title: "Solutions Integration",
-        description: "Our technology solutions are designed to optimize operations, lower cost and fuel long-term growth.",
+        description: "Advanced technology integration solutions to optimize business operations, reduce costs, and drive sustainable enterprise growth.",
         gradient: "from-[#4A9BE4] to-[#5B8AF0]"
       },
       {
         icon: Shield,
         title: "Information Security",
-        description: "Comprehensive security solutions to protect sensitive information from evolving cyber threats.",
+        description: "Advanced security solutions and monitoring systems to protect your critical data and infrastructure from sophisticated cyber threats and vulnerabilities.",
         gradient: "from-[#5B8AF0] to-[#8590EA]"
       },
       {
         icon: Code,
         title: "Software Development",
-        description: "Custom web and mobile applications tailored to meet business needs and drive digital transformation.",
+        description: "Innovative web and mobile application development solutions designed to accelerate your digital transformation journey and enhance business efficiency.",
         gradient: "from-[#8590EA] to-[#B5C6F4]"
       }
     ]
@@ -104,7 +104,7 @@ export default function Services() {
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
       </div>
 
-      <div className="container mx-auto px-4 relative">
+      <div className="w-[1280px] mx-auto px-4 relative">
         {services.map((category, idx) => (
           <motion.div
             key={category.category}
@@ -141,7 +141,7 @@ export default function Services() {
             <motion.div 
               variants={containerVariants}
               className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ${
-                category.category === "Business Outsourcing" ? "max-w-5xl mx-auto" : "lg:grid-cols-4"
+                category.category === "Business Outsourcing" ? "w-[1280]! mx-auto justify-between" : "lg:grid-cols-4"
               }`}
             >
               {category.services.map((service, index) => (
