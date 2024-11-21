@@ -21,7 +21,7 @@ export default function BlogPreview() {
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
-      title: "How Digital Transformation is Shaping the Future",
+      title: "How Digital Transformation is Shaping the Future of Business in Syria",
       date: "20-Aug-2024",
       excerpt: "As the business landscape evolves, digital transformation becomes increasingly important...",
       image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
