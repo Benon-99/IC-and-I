@@ -4,6 +4,9 @@ import cors from "cors";
 
 import createSubmission from "./repositories/messageRepo.js";
 import helmet from "helmet";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
@@ -20,10 +23,12 @@ app.use(express.json()); // Middleware to parse JSON requests
 // Email sending function
 const sendEmail = async (name, email, subject, message) => {
   const transporter = nodemailer.createTransport({
-    service: "Gmail", // Use Gmail's free SMTP service
+    host: "smtp.gmail.com", // Gmail SMTP server
+    port: 465, // Secure port for SMTP
+    secure: true, // Use SSL
     auth: {
-      user: process.env.EMAIL_USER, // Your email address
-      pass: process.env.EMAIL_PASS, // Your app-specific password
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
   });
 
