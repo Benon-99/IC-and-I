@@ -1,41 +1,55 @@
+"use client";
+
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { ArrowRight, Calendar } from 'lucide-react';
+
 export default function EnhancedBlogPage() {
   const blogs = [
     {
-      slug: "hr-management-trends",
-      title: "HR Management Trends in 2024",
-      excerpt: "Explore the latest trends in HR management and how they're shaping the future of work.",
-      date: "Jan 15, 2024",
-      category: "HR Management",
-      image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80"
+      title: "5 Key Strategies for Effective HR Management in 2024",
+      date: "20-Aug-2024",
+      excerpt: "As businesses face new challenges in 2024, effective HR management becomes crucial...",
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
+      gradient: "from-[#3785CC] to-[#4A9BE4]",
+      slug: "5-key-strategies-for-effective-hr-management-2024"
     },
     {
-      slug: "digital-transformation",
-      title: "Digital Transformation Success Stories",
-      excerpt: "Real-world examples of successful digital transformation initiatives and their impact.",
-      date: "Jan 10, 2024",
-      category: "Technology",
-      image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80"
+      title: "The Role of Cybersecurity in Modern Business",
+      date: "20-Aug-2024",
+      excerpt: "In today's digital era, cybersecurity is essential for protecting business assets...",
+      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80",
+      gradient: "from-[#4A9BE4] to-[#8590EA]",
+      slug: "role-of-cybersecurity-in-modern-business"
     },
     {
-      slug: "innovation-workplace",
-      title: "Innovation in the Modern Workplace",
-      excerpt: "How innovative technologies are revolutionizing the way we work and collaborate.",
-      date: "Jan 5, 2024",
-      category: "Digital Innovation",
-      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80"
+      title: "How Digital Transformation is Shaping the Future of Business in Syria",
+      date: "20-Aug-2024",
+      excerpt: "As the business landscape evolves, digital transformation becomes increasingly important...",
+      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
+      gradient: "from-[#8590EA] to-[#B5C6F4]",
+      slug: "digital-transformation-shaping-future-business-syria"
     }
   ];
 
-  const getCategoryGradient = (category: string) => {
-    switch (category) {
-      case 'HR Management':
-        return 'from-[#3785CC] to-[#4A9BE4]';
-      case 'Technology':
-        return 'from-[#4A9BE4] to-[#5B8AF0]';
-      case 'Digital Innovation':
-        return 'from-[#5B8AF0] to-[#8590EA]';
-      default:
-        return 'from-[#3785CC] to-[#4A9BE4]';
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5
+      }
     }
   };
 
@@ -110,58 +124,61 @@ export default function EnhancedBlogPage() {
         </div>
 
         {/* Blog Grid */}
-        <div className="container mx-auto px-4 py-24 bg-white">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogs.map((blog, index) => (
-              <div
-                key={blog.slug}
-                className="group relative opacity-0 animate-fade-in-up"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#F7F9FE] to-[#F7F9FE] rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
-                <a href={`/blogs/${blog.slug}`} className="block">
-                  <div className="relative rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300 overflow-hidden h-full">
-                    <div className="relative h-56 overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#111240]/50 to-transparent z-10"></div>
-                      <img 
-                        src={blog.image}
-                        alt={blog.title}
-                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                      />
-                      <div className={`absolute top-4 left-4 z-20 px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r ${getCategoryGradient(blog.category)} text-white`}>
-                        {blog.category}
-                      </div>
-                    </div>
-                    
-                    <div className="p-6">
-                      <div className="flex items-center text-sm text-[#111240]/60 mb-3">
-                        <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                          <line x1="16" y1="2" x2="16" y2="6"></line>
-                          <line x1="8" y1="2" x2="8" y2="6"></line>
-                          <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                        {blog.date}
-                      </div>
-                      <h2 className="text-xl font-bold mb-3 text-[#111240] group-hover:text-[#111240]/90 transition-colors">
-                        {blog.title}
-                      </h2>
-                      <p className="text-[#111240]/60 mb-4 line-clamp-3">{blog.excerpt}</p>
-                      
-                      <div className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] font-medium group/link">
-                        Read More 
-                        <svg className="ml-2 w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <line x1="5" y1="12" x2="19" y2="12"></line>
-                          <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            ))}
+        <section className="py-32 bg-white relative overflow-hidden">
+          {/* Animated Background */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-5"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#3785CC]/5 via-[#5B8AF0]/5 to-[#8590EA]/5 animate-gradient"></div>
           </div>
-        </div>
+
+          <div className="container mx-auto px-4 relative">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={containerVariants}
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            >
+              {blogs.map((blog, index) => (
+                <motion.div
+                  key={blog.slug}
+                  variants={itemVariants}
+                  className="group relative"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
+                  <Link href={`/blogs/${blog.slug}`}>
+                    <div className="relative rounded-2xl bg-white backdrop-blur-sm border border-gray-100 overflow-hidden transition-all duration-300 group-hover:bg-gray-50 shadow-sm">
+                      <div className="relative h-64 overflow-hidden">
+                        <div className={`absolute inset-0 bg-gradient-to-r ${blog.gradient} opacity-80`}></div>
+                        <img 
+                          src={blog.image} 
+                          alt={blog.title}
+                          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                        />
+                      </div>
+                      <div className="p-8">
+                        <div className="flex items-center text-[#111240]/60 mb-4">
+                          <Calendar className="w-4 h-4 mr-2" />
+                          <span className="text-sm">{blog.date}</span>
+                        </div>
+                        <h3 className="text-xl font-semibold text-[#111240] mb-4 group-hover:text-[#111240]/90 transition-colors duration-300">
+                          {blog.title}
+                        </h3>
+                        <p className="text-[#111240]/60 mb-6 line-clamp-2">
+                          {blog.excerpt}
+                        </p>
+                        <div className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] group/link">
+                          <span className="mr-2">Read More</span>
+                          <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
       </div>
     </div>
   );

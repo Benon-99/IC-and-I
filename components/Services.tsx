@@ -121,7 +121,7 @@ export default function Services() {
                   variants={itemVariants} 
                   className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-4 inline-block"
                 >
-                  Our Services
+                  What We Offer
                 </motion.span>
               )}
               <motion.h2

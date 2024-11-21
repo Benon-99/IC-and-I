@@ -91,7 +91,7 @@ export default function HRRecruitmentPage() {
           <p className="text-lg text-[#111240]/70 leading-relaxed">
             At IC&I, we understand that the success of your organization hinges on the quality 
             of your workforce. That's why we offer comprehensive HR and recruitment management 
-            services that go beyond simply filling positions. Our services are designed to attract, 
+            services that go beyond simply filling positions. What we offer is designed to attract, 
             assess, and deploy the right talent, ensuring your organization is equipped with the 
             expertise it needs to thrive.
           </p>
@@ -109,7 +109,7 @@ export default function HRRecruitmentPage() {
               variants={itemVariants}
               className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#111240]/5 text-[#111240] backdrop-blur-sm mb-4 inline-block"
             >
-              Our Services
+              What We Offer
             </motion.span>
             <motion.h2
               variants={itemVariants}

@@ -105,7 +105,7 @@ export default function HRPayrollPage() {
               variants={itemVariants}
               className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#111240]/5 text-[#111240] backdrop-blur-sm mb-4 inline-block"
             >
-              Our Services
+              What We Offer
             </motion.span>
             <motion.h2
               variants={itemVariants}
