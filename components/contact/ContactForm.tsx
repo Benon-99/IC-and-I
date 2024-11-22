@@ -1,101 +1,214 @@
-"use client";
+import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
+import React from "react";
+import { useForm } from "react-hook-form";
+import styled from "styled-components";
+import * as Yup from "yup";
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Send } from 'lucide-react';
+// Define form data type
+interface FormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
 
-export default function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+const ContactForm: React.FC = () => {
+  const validationSchema = Yup.object({
+    name: Yup.string()
+      .min(2, "Name must be at least 2 characters")
+      .required("Name is required"),
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email is required"),
+    subject: Yup.string()
+      .min(5, "Subject must be at least 5 characters")
+      .required("Subject is required"),
+    message: Yup.string()
+      .min(10, "Message must be at least 10 characters")
+      .required("Message is required"),
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission
-    console.log(formData);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<FormData>({
+    resolver: yupResolver(validationSchema),
+  });
+
+  // Form submission handler
+  const onSubmit = async (data: FormData) => {
+    try {
+      // Send data to backend
+      await axios.post("http://localhost:3001/api/send-email", data);
+      // alert("Email sent successfully!");
+      reset();
+    } catch (error) {
+      console.error("Error sending email:", error);
+      alert("Failed to send the email. Please try again.");
+    }
   };
 
-  const inputClasses = "w-full bg-[#111240]/5 border border-[#111240]/10 rounded-lg px-4 py-3 text-[#111240] placeholder:text-[#111240]/50 focus:outline-none focus:ring-2 focus:ring-[#3785CC]/50 focus:border-transparent backdrop-blur-sm transition-all duration-300";
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="relative"
-    >
-      <div className="absolute inset-0 bg-gradient-to-r from-[#3785CC]/5 to-[#5B8AF0]/5 rounded-2xl blur-2xl"></div>
-      <div className="relative p-8 rounded-2xl bg-white shadow-lg border border-[#111240]/10">
-        <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-[#111240] via-[#111240]/90 to-[#111240]/80 bg-clip-text text-transparent">
-          Send Message
-        </h2>
-        <p className="text-[#111240]/70 mb-8">
-          Fill out the form below and we'll get back to you shortly.
-        </p>
+    <Container>
+      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+        <Title>Contact Us</Title>
+        <Description>
+          We would love to hear from you! Fill out the form below.
+        </Description>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <input
-                type="text"
-                placeholder="Full name"
-                className={inputClasses}
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                required
-              />
-            </div>
+        <InputWrapper>
+          <Input
+            type="text"
+            placeholder="Your Name"
+            {...register("name")}
+            isError={!!errors.name}
+          />
+          {errors.name && <Error>{errors.name.message}</Error>}
+        </InputWrapper>
 
-            <div>
-              <input
-                type="email"
-                placeholder="Email address"
-                className={inputClasses}
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
-              />
-            </div>
-          </div>
+        <InputWrapper>
+          <Input
+            type="email"
+            placeholder="Your Email"
+            {...register("email")}
+            isError={!!errors.email}
+          />
+          {errors.email && <Error>{errors.email.message}</Error>}
+        </InputWrapper>
 
-          <div>
-            <input
-              type="text"
-              placeholder="Subject"
-              className={inputClasses}
-              value={formData.subject}
-              onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-              required
-            />
-          </div>
+        <InputWrapper>
+          <Input
+            type="text"
+            placeholder="Subject"
+            {...register("subject")}
+            isError={!!errors.subject}
+          />
+          {errors.subject && <Error>{errors.subject.message}</Error>}
+        </InputWrapper>
 
-          <div>
-            <textarea
-              placeholder="Your message"
-              rows={6}
-              className={`${inputClasses} resize-none`}
-              value={formData.message}
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              required
-            ></textarea>
-          </div>
+        <InputWrapper>
+          <Textarea
+            placeholder="Your Message"
+            {...register("message")}
+            isError={!!errors.message}
+          />
+          {errors.message && <Error>{errors.message.message}</Error>}
+        </InputWrapper>
 
-          <motion.button
-            type="submit"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full bg-gradient-to-r from-[#3785CC] to-[#5B8AF0] text-white rounded-lg px-8 py-4 
-              font-medium inline-flex items-center justify-center space-x-2 hover:shadow-lg 
-              hover:shadow-[#3785CC]/20 transition-all duration-300"
-          >
-            <span>Send Message</span>
-            <Send className="w-4 h-4" />
-          </motion.button>
-        </form>
-      </div>
-    </motion.div>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Sending..." : "Send Message"}
+        </Button>
+      </FormWrapper>
+    </Container>
   );
-}
+};
+
+export default ContactForm;
+
+// Styled-components for design (same as before)
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: transparent;
+  padding: 2rem;
+`;
+
+const FormWrapper = styled.form`
+  background: #ffffff;
+  max-width: 500px;
+  width: 100%;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+`;
+
+const Title = styled.h2`
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #333333;
+  text-align: center;
+`;
+
+const Description = styled.p`
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  color: #666666;
+  text-align: center;
+`;
+
+const InputWrapper = styled.div`
+  margin-bottom: 1.5rem;
+`;
+
+const Input = styled.input<{ isError?: boolean }>`
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid ${({ isError }) => (isError ? "#ff4d4f" : "#cccccc")};
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  background: ${({ isError }) => (isError ? "#ffeef0" : "#ffffff")};
+
+  &:focus {
+    border-color: ${({ isError }) => (isError ? "#ff4d4f" : "#9c3aaf")};
+  }
+`;
+
+const Textarea = styled.textarea<{ isError?: boolean }>`
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid ${({ isError }) => (isError ? "#ff4d4f" : "#cccccc")};
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  min-height: 100px;
+  background: ${({ isError }) => (isError ? "#ffeef0" : "#ffffff")};
+
+  &:focus {
+    border-color: ${({ isError }) => (isError ? "#ff4d4f" : "#9c3aaf")};
+  }
+`;
+
+const Error = styled.div`
+  color: #ff4d4f;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+`;
+
+const Button = styled.button`
+  width: 100%; /* Full width */
+  padding: 1rem 2rem; /* Padding similar to */
+  font-size: 1rem; /* Font size */
+  font-weight: 500; /* Font medium */
+  color: #ffffff; /* Text color */
+  background: linear-gradient(
+    to right,
+    #3785cc,
+    #5b8af0
+  ); /* Gradient background */
+  border: none; /* No border */
+  border-radius: 0.5rem; /* Rounded corners similar to  */
+  display: inline-flex; /* Inline flex for proper alignment */
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally */
+  gap: 0.5rem; /* Spacing between items similar to  */
+  cursor: pointer; /* Pointer cursor on hover */
+  box-shadow: 0 0 0 transparent; /* Initial shadow */
+  transition: all 0.3s ease; /* Smooth transition */
+
+  &:hover {
+    box-shadow: 0 4px 10px rgba(55, 133, 204, 0.2); /* Shadow on hover */
+  }
+
+  &:disabled {
+    background: #cccccc; /* Disabled background color */
+    cursor: not-allowed; /* Disabled cursor */
+    box-shadow: none; /* Remove hover shadow when disabled */
+  }
+`;

@@ -59,7 +59,7 @@ export default function CTA() {
                 backdrop-blur-sm transition-all duration-300"
             >
               <span className="text-white/90 group-hover:text-white flex items-center font-medium">
-                Explore Our Services
+                Explore What We Offer
                 <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" />
               </span>
             </Link>

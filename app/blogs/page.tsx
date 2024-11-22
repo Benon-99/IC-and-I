@@ -1,9 +1,15 @@
+"use client";
+
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { ArrowRight, Calendar } from 'lucide-react';
+
 export default function EnhancedBlogPage() {
   const blogs = [
     {
       slug: "hr-management-trends",
       title: "HR Management Trends in 2024",
-      excerpt: "Discover the emerging trends in HR management and their transformative impact on workplace dynamics, employee engagement, and organizational success in today's rapidly evolving business landscape. From AI-driven recruitment to remote work policies, explore how modern HR practices are reshaping the future of work.",
+      excerpt: "Explore the latest trends in HR management and how they're shaping the future of work.",
       date: "Jan 15, 2024",
       category: "HR Management",
       image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80"
@@ -11,7 +17,7 @@ export default function EnhancedBlogPage() {
     {
       slug: "digital-transformation",
       title: "Digital Transformation Success Stories",
-      excerpt: "Exploring real-world examples of successful digital transformation initiatives and their business impact.",
+      excerpt: "Real-world examples of successful digital transformation initiatives and their impact.",
       date: "Jan 10, 2024",
       category: "Technology",
       image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80"
@@ -25,6 +31,25 @@ export default function EnhancedBlogPage() {
       image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80"
     }
   ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 }
+    }
+  };
 
   const getCategoryGradient = (category: string) => {
     switch (category) {
@@ -92,7 +117,7 @@ export default function EnhancedBlogPage() {
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
           </div>
           
-          <div className="relative w-full lg:w-[1280px]  mx-auto px-4 py-32">
+          <div className="relative w-full lg:w-[1280px] mx-auto px-4 py-32">
             <div className="text-center opacity-0 animate-fade-in">
               <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-6 inline-block">
                 Our Blog
@@ -109,7 +134,7 @@ export default function EnhancedBlogPage() {
         </div>
 
         {/* Blog Grid */}
-        <div className="w-full lg:w-[1280px] mx-auto px-4 py-24 bg-white">
+        <div className="w-full lg:w-[1280px] mx-auto px-4 py-24">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs.map((blog, index) => (
               <div
@@ -118,7 +143,7 @@ export default function EnhancedBlogPage() {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-[#F7F9FE] to-[#F7F9FE] rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
-                <a href={`/blogs/${blog.slug}`} className="block">
+                <Link href={`/blogs/${blog.slug}`} className="block">
                   <div className="relative rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300 overflow-hidden h-full">
                     <div className="relative h-56 overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-t from-[#111240]/50 to-transparent z-10"></div>
@@ -131,32 +156,24 @@ export default function EnhancedBlogPage() {
                         {blog.category}
                       </div>
                     </div>
-                    
-                    <div className="p-6">
-                      <div className="flex items-center text-sm text-[#111240]/60 mb-3">
-                        <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                          <line x1="16" y1="2" x2="16" y2="6"></line>
-                          <line x1="8" y1="2" x2="8" y2="6"></line>
-                          <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                        {blog.date}
+                    <div className="p-8">
+                      <div className="flex items-center text-[#111240]/60 mb-4">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        <span className="text-sm">{blog.date}</span>
                       </div>
-                      <h2 className="text-xl font-bold mb-3 text-[#111240] group-hover:text-[#111240]/90 transition-colors">
+                      <h3 className="text-xl font-semibold text-[#111240] mb-4 group-hover:text-[#111240]/90 transition-colors duration-300">
                         {blog.title}
-                      </h2>
-                      <p className="text-[#111240]/60 mb-4 line-clamp-3">{blog.excerpt}</p>
-                      
-                      <div className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] font-medium group/link">
-                        Read More 
-                        <svg className="ml-2 w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <line x1="5" y1="12" x2="19" y2="12"></line>
-                          <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
+                      </h3>
+                      <p className="text-[#111240]/60 mb-6 line-clamp-2">
+                        {blog.excerpt}
+                      </p>
+                      <div className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] group/link">
+                        <span className="mr-2">Read More</span>
+                        <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
                       </div>
                     </div>
                   </div>
-                </a>
+                </Link>
               </div>
             ))}
           </div>

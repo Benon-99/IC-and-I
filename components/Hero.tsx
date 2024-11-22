@@ -33,7 +33,7 @@ const slides = [
     accent: "from-[#002060] to-[#B5C6F4]",
     buttons: {
       primary: { text: "Get a Consultation", href: "/contact" },
-      secondary: { text: "Our Services", href: "/services" }
+      secondary: { text: "What We Offer", href: "/services" }
     }
   },
   {

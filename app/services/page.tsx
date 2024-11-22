@@ -111,7 +111,7 @@ export default function ServicesPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-6 inline-block"
             >
-              Our Services
+              What We Offer
             </motion.span>
             <h1 className="text-6xl font-bold bg-gradient-to-r from-[#3785CC] via-[#4A9BE4] to-[#5B8AF0] bg-clip-text text-transparent mb-6">
               Comprehensive Business Solutions
