@@ -24,7 +24,7 @@ export default function ICTSolutionsPage() {
     {
       icon: Shield,
       title: "Information Security",
-      description: "Safeguarding data with comprehensive security solutions to protect sensitive information from evolving cyber threats.",
+      description: "Advanced cybersecurity solutions protecting your data through threat detection, encryption, and continuous monitoring against evolving cyber threats.",
       link: "/services/ict-solutions/information-security",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
     },
@@ -124,7 +124,7 @@ export default function ICTSolutionsPage() {
 
           <motion.div 
             variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {services.map((service) => (
               <motion.div
@@ -133,20 +133,21 @@ export default function ICTSolutionsPage() {
                 className="group relative"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
-                <div className="relative p-8 rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300 shadow-sm">
-                  <div className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
-                    <service.icon className="w-8 h-8 text-white" />
+                <Link href={service.link}>
+                  <div className="relative rounded-2xl bg-white backdrop-blur-sm border border-gray-100 overflow-hidden transition-all duration-300 group-hover:bg-gray-50 shadow-sm">
+                    <div className="p-8">
+                      <div className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
+                        <service.icon className="w-8 h-8 text-white" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
+                      <p className="text-[#111240]/60 mb-6">{service.description}</p>
+                      <div className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] group/link">
+                        <span className="mr-2">Learn More</span>
+                        <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
-                  <p className="text-[#111240]/60 mb-6">{service.description}</p>
-                  <Link
-                    href={service.link}
-                    className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] group/link"
-                  >
-                    <span className="mr-2">Learn More</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
-                  </Link>
-                </div>
+                </Link>
               </motion.div>
             ))}
           </motion.div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { MapPin, Phone, Mail, Building2, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import { MapPin, Phone, Mail, Building2, Facebook, Twitter, Linkedin, Instagram, PhoneCall, Printer } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ContactInfo() {
@@ -16,8 +16,17 @@ export default function ContactInfo() {
     },
     {
       icon: Phone,
-      title: "Phone Numbers",
-      details: ["+963 44 20 567", "+963 44 30 567"]
+      title: "Phone and Fax Numbers",
+      details: [
+        {
+          label: "Phone:",
+          text: "+963 44 20 567"
+        },
+        {
+          label: "Fax:",
+          text: "+963 44 30 567"
+        }
+      ]
     },
     {
       icon: Mail,
@@ -87,8 +96,20 @@ export default function ContactInfo() {
                 </div>
                 <div>
                   <h3 className="text-[#111240] font-semibold mb-2">{item.title}</h3>
-                  {item.details.map((detail, idx) => (
-                    <p key={idx} className="text-[#111240]/70">{detail}</p>
+                  {item.details.map((detail, detailIndex) => (
+                    <div
+                      key={detailIndex}
+                      className="flex items-center space-x-2 text-[#111240]/70"
+                    >
+                      {typeof detail === 'string' ? (
+                        <span>{detail}</span>
+                      ) : (
+                        <div className="flex items-center space-x-2">
+                          <span className="font-semibold text-[#111240]">{detail.label}</span>
+                          <span>{detail.text}</span>
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>

@@ -39,7 +39,7 @@ export default function AboutPage() {
     { 
       icon: Heart, 
       title: "Core Values", 
-      text: "Transparency, respect, and innovation",
+      text: "Transparency, respect, innovation, and unwavering commitment to excellence",
       gradient: "from-[#4A9BE4] to-[#B5C6F4]"
     }
   ];
