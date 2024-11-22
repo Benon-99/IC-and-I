@@ -20,7 +20,7 @@ export default function EnhancedBlogPage() {
       excerpt: "In today's digital era, cybersecurity is essential for protecting business assets...",
       image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80",
       gradient: "from-[#4A9BE4] to-[#8590EA]",
-      slug: "role-of-cybersecurity-in-modern-business"
+      slug: "the-role-of-cybersecurity-in-modern-business"
     },
     {
       title: "How Digital Transformation is Shaping the Future of Business in Syria",
@@ -28,7 +28,7 @@ export default function EnhancedBlogPage() {
       excerpt: "As the business landscape evolves, digital transformation becomes increasingly important...",
       image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
       gradient: "from-[#8590EA] to-[#B5C6F4]",
-      slug: "digital-transformation-shaping-future-business-syria"
+      slug: "how-digital-transformation-is-shaping-the-future-of-business-in-syria"
     }
   ];
 
