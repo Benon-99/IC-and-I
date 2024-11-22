@@ -113,9 +113,10 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 50vh;
   background-color: transparent;
   padding: 2rem;
+  margin-bottom: 60px;
 `;
 
 const FormWrapper = styled.form`
