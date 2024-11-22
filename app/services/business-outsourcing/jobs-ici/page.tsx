@@ -84,7 +84,6 @@ export default function JobsIciPage() {
           </motion.span>
           
           <h2 className="text-4xl font-bold bg-gradient-to-r from-[#00B4D8] to-[#4A9BE4] bg-clip-text text-transparent mb-8">
-
             Building Careers in Syria
           </h2>
           
@@ -96,6 +95,8 @@ export default function JobsIciPage() {
             with their qualifications and career goals.
           </p>
         </motion.div>
+
+        <div className="w-full h-[1px] bg-gradient-to-r from-[#00B4D8] to-[#4A9BE4] my-8 opacity-50" />
 
         <motion.div
           variants={containerVariants}
@@ -120,7 +121,6 @@ export default function JobsIciPage() {
             <motion.p
               variants={itemVariants}
               className="text-xl text-[#111240]/70 max-w-2xl mx-auto"
-
             >
               Jobs.ici is more than just a job board—it's a comprehensive career-building tool designed 
               to empower Syrian professionals to achieve their career aspirations.

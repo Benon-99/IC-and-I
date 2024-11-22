@@ -94,6 +94,8 @@ export default function SolutionsIntegrationPage() {
           </p>
         </motion.div>
 
+        <div className="w-full h-[2px] bg-gradient-to-r from-[#3785CC] to-[#4A9BE4] my-12 opacity-50" />
+
         <motion.div
           variants={containerVariants}
           initial="hidden"

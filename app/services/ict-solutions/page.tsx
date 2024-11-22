@@ -91,6 +91,8 @@ export default function ICTSolutionsPage() {
           </p>
         </motion.div>
 
+        <div className="w-full h-[1px] bg-gradient-to-r from-[#3785CC] to-[#4A9BE4] my-8 opacity-50" />
+
         <motion.div
           variants={containerVariants}
           initial="hidden"
