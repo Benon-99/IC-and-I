@@ -74,13 +74,13 @@ export default function BlogPreview() {
           </motion.span>
           <motion.h2
             variants={itemVariants}
-            className="text-5xl font-bold mb-6 bg-gradient-to-r from-[#111240] to-[#111240]/80 bg-clip-text text-transparent"
+            className="text-5xl font-bold mb-6 bg-gradient-to-r from-[#111240] to-[#111240]/80 bg-clip-text text-transparent leading-normal"
           >
             Latest Insights
           </motion.h2>
           <motion.p
             variants={itemVariants}
-            className="text-xl text-[#111240]/70 max-w-2xl mx-auto"
+            className="text-xl text-[#111240]/70 max-w-2xl mx-auto leading-relaxed"
           >
             Stay updated with the latest trends and insights in technology and business
           </motion.p>
@@ -110,16 +110,16 @@ export default function BlogPreview() {
                   <div className="p-8">
                     <div className="flex items-center text-[#111240]/60 mb-4">
                       <Calendar className="w-4 h-4 mr-2" />
-                      <span className="text-sm">{blog.date}</span>
+                      <span className="text-sm leading-normal">{blog.date}</span>
                     </div>
-                    <h3 className="text-xl font-semibold text-[#111240] mb-4 group-hover:text-[#111240]/90 transition-colors duration-300">
+                    <h3 className="text-xl font-semibold text-[#111240] mb-4 group-hover:text-[#111240]/90 transition-colors duration-300 leading-normal">
                       {blog.title}
                     </h3>
-                    <p className="text-[#111240]/60 mb-6 line-clamp-2">
+                    <p className="text-[#111240]/60 mb-6 line-clamp-2 leading-relaxed">
                       {blog.excerpt}
                     </p>
                     <div className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] group/link">
-                      <span className="mr-2">Read More</span>
+                      <span className="mr-2 leading-normal">Read More</span>
                       <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
                     </div>
                   </div>

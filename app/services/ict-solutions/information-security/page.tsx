@@ -9,42 +9,42 @@ export default function InformationSecurityPage() {
     {
       icon: Shield,
       title: "Traffic Management Solutions",
-      description: "DPI, DLP, and IDS tools to monitor and control network traffic for protection and efficiency.",
+      description: "Advanced traffic monitoring and control systems implementing DPI, DLP, and IDS tools for enhanced network security and performance.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
 
     },
     {
       icon: Search,
       title: "Security Consultations",
-      description: "Expert consultations to assess security posture and develop defense strategies.",
+      description: "Comprehensive security assessments and strategic consulting to identify vulnerabilities and implement robust defense mechanisms.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
 
     },
     {
       icon: Laptop,
       title: "Endpoint Security Solutions",
-      description: "Protection for all devices against malware, ransomware, and various threats.",
+      description: "Advanced protection systems for all devices, safeguarding against malware, ransomware, and emerging cyber threats with real-time monitoring and response.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
 
     },
     {
       icon: Server,
       title: "IT Security Infrastructure",
-      description: "Robust security architecture implementing advanced firewalls and encryption systems designed to protect critical assets and ensure data integrity.",
+      description: "Comprehensive security architecture with advanced firewalls, encryption systems, and multi-layer protection protocols to safeguard critical assets and sensitive data.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
 
     },
     {
       icon: FileCheck,
       title: "Compliance and Risk Management",
-      description: "Strategic guidance to ensure compliance with industry standards and regulations while optimizing operational efficiency.",
+      description: "Expert guidance on industry compliance standards while implementing effective risk management strategies for optimal security.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
 
     },
     {
       icon: Zap,
       title: "Incident Response",
-      description: "Rapid security incident management with thorough analysis and preventive measures to minimize impact, ensure business continuity, and prevent future occurrences.",
+      description: "Swift security incident management with thorough analysis, immediate containment strategies, and preventive measures to ensure business continuity and strengthen defenses.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
 
     }

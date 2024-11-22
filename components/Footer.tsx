@@ -28,9 +28,13 @@ const Footer = () => {
   };
 
   const contactInfo = [
-    { Icon: Building2, text: '90/3 Adawi Enshaat, Damascus, Syria.' },
+    { Icon: MapPin, text: '90/3 Adawi Enshaat, Damascus, Syria.' },
     { Icon: MapPin, text: '21/2051 Baladieh, Jaramana, Syria' },
-    { Icon: Phone, text: '+963 44 20 567' },
+    { 
+      Icon: Phone, 
+      text: ['Phone: +963 44 20 567', 'Fax: +963 44 30 567'],
+      multiline: true 
+    },
     { Icon: Mail, text: 'gd@ici-sy.com' },
   ];
 
@@ -150,7 +154,15 @@ const Footer = () => {
                   <div className="p-2 rounded-lg bg-[#3785CC]/10 border border-[#3785CC]/20">
                     <item.Icon className="w-5 h-5 text-white/80" />
                   </div>
-                  <span className="text-white/80">{item.text}</span>
+                  <div>
+                    {Array.isArray(item.text) ? (
+                      item.text.map((line, i) => (
+                        <p key={i} className="text-white/80">{line}</p>
+                      ))
+                    ) : (
+                      <span className="text-white/80">{item.text}</span>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>

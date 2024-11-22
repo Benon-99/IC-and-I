@@ -9,37 +9,37 @@ export default function SoftwareDevelopmentPage() {
     {
       icon: Globe,
       title: "Custom Web Applications",
-      description: "Build powerful web solutions that streamline your business processes and deliver exceptional user experiences across platforms.",
+      description: "Build powerful and scalable web solutions that streamline business processes and deliver exceptional user experiences across all platforms.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: Smartphone,
       title: "Mobile Applications",
-      description: "Create innovative mobile experiences that enhance customer engagement and streamline employee workflows across iOS and Android.",
+      description: "Develop innovative mobile experiences with native and cross-platform solutions that enhance user engagement and streamline business operations.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
       icon: Code,
       title: "High-Level Programming",
-      description: "Leverage our expertise in .NET and Java technologies to develop secure, scalable, and maintainable enterprise applications.",
+      description: "Leverage advanced expertise in .NET and Java technologies to develop secure, scalable, and maintainable enterprise-grade applications.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
     },
     {
       icon: Database,
       title: "Large-Scale Applications",
-      description: "Design and implement robust architectures that efficiently handle high-volume data processing and complex transactions.",
+      description: "Design and implement robust enterprise architectures that efficiently handle high-volume data processing and complex business transactions.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: Link2,
       title: "Integration Services",
-      description: "Connect and optimize your business systems through custom API development and seamless third-party integrations.",
+      description: "Connect and optimize your business systems through custom API development, middleware solutions, and seamless third-party integrations.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
       icon: Layout,
       title: "User-Centric Design",
-      description: "Create beautiful, intuitive interfaces through comprehensive user research and iterative design processes for maximum engagement.",
+      description: "Create beautiful, intuitive interfaces through comprehensive user research, iterative design processes, and modern UX best practices.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
     }
   ];
@@ -128,7 +128,7 @@ export default function SoftwareDevelopmentPage() {
 
           <motion.div 
             variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {services.map((service, index) => (
               <motion.div
