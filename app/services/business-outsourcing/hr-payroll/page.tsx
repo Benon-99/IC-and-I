@@ -9,31 +9,31 @@ export default function HRPayrollPage() {
     {
       icon: Calculator,
       title: "Payroll Processing",
-      description: "Streamline your payroll operations with automated calculations, tax processing, and timely payment distribution.",
+      description: "Streamline your payroll operations with comprehensive automated calculations, tax processing, and efficient payment distribution systems.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: BarChart,
       title: "Performance Monitoring",
-      description: "Track and analyze key metrics to measure success and align team performance with strategic business goals and opportunities.",
+      description: "Track and analyze comprehensive performance metrics to measure team success and align organizational goals with strategic opportunities.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
       icon: MessageSquare,
       title: "Feedback and Coaching",
-      description: "Foster professional growth through structured feedback sessions and personalized development strategies for continuous improvement.",
+      description: "Foster professional growth through structured feedback sessions and personalized development strategies for long-term career advancement.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
     },
     {
       icon: Heart,
       title: "Employee Engagement",
-      description: "Build a positive workplace culture with targeted strategies to boost team satisfaction and retention.",
+      description: "Build and maintain a positive workplace culture through targeted strategies designed to enhance team satisfaction and long-term retention.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: ArrowUpDown,
       title: "Two-Way Communication",
-      description: "Enable transparent dialogue between team members and leadership through dedicated channels.",
+      description: "Enable transparent and effective dialogue between team members and leadership through dedicated communication channels and protocols.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     }
   ];
@@ -64,7 +64,7 @@ export default function HRPayrollPage() {
         description="Optimizing Payroll and Driving Employee Performance."
       />
 
-      <div className="container mx-auto px-4 py-24">
+      <div className="w-full lg:w-[1280px]  mx-auto px-4 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -124,7 +124,7 @@ export default function HRPayrollPage() {
 
           <motion.div 
             variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {services.map((service, index) => (
               <motion.div

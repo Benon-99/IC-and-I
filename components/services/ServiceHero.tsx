@@ -10,7 +10,6 @@ interface ServiceHeroProps {
 export default function ServiceHero({ title, description }: ServiceHeroProps) {
   return (
     <div className="relative overflow-hidden bg-[#111240]">
-      {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
@@ -31,11 +30,11 @@ export default function ServiceHero({ title, description }: ServiceHeroProps) {
             What We Offer
           </motion.span>
           
-          <h1 className="text-6xl font-bold bg-gradient-to-r from-[#3785CC] via-[#4A9BE4] to-[#5B8AF0] bg-clip-text text-transparent mb-6">
+          <h1 className="text-6xl font-bold bg-gradient-to-r from-[#3785CC] via-[#4A9BE4] to-[#5B8AF0] bg-clip-text text-transparent mb-6 leading-normal">
             {title}
           </h1>
           
-          <p className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed pt-4">
             {description}
           </p>
         </motion.div>

@@ -13,28 +13,28 @@ export default function ServicesPage() {
         {
           icon: Server,
           title: "Data Center Infrastructure",
-          description: "End-to-end data center infrastructure solutions for your growing technology needs.",
+          description: "Advanced data center solutions optimized for your growing business needs.",
           gradient: "from-[#3785CC] to-[#4A9BE4]",
           link: "/services/ict-solutions/data-center"
         },
         {
           icon: Network,
           title: "Solutions Integration",
-          description: "Technology solutions designed to optimize operations and fuel growth.",
+          description: "Strategic technology solutions to enhance operations and drive business growth.",
           gradient: "from-[#4A9BE4] to-[#5B8AF0]",
           link: "/services/ict-solutions/solutions-integration"
         },
         {
           icon: Shield,
           title: "Information Security",
-          description: "Comprehensive security solutions to protect sensitive information.",
+          description: "Advanced security solutions engineered to safeguard your critical business information assets.",
           gradient: "from-[#5B8AF0] to-[#8590EA]",
           link: "/services/ict-solutions/information-security"
         },
         {
           icon: Code,
           title: "Software Development",
-          description: "Custom web and mobile applications for digital transformation.",
+          description: "Custom web and mobile application development solutions for complete digital transformation.",
           gradient: "from-[#8590EA] to-[#B5C6F4]",
           link: "/services/ict-solutions/software-development"
         }
@@ -54,7 +54,7 @@ export default function ServicesPage() {
         {
           icon: Users,
           title: "HR & Recruitment",
-          description: "End-to-end HR and recruitment solutions.",
+          description: "Professional HR solutions and talent acquisition for your business growth.",
           gradient: "from-[#4A9BE4] to-[#B5C6F4]",
           link: "/services/business-outsourcing/hr-recruitment"
         },
@@ -98,7 +98,7 @@ export default function ServicesPage() {
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
         </div>
         
-        <div className="relative container mx-auto px-4 py-32">
+        <div className="relative w-full lg:w-[1280px]  mx-auto px-4 py-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -123,7 +123,7 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-24">
+      <div className="w-full lg:w-[1280px]  mx-auto px-4 py-24">
         {Object.entries(services).map(([key, section]) => (
           <motion.div 
             key={key} 

@@ -58,7 +58,7 @@ export default function BlogPreview() {
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#3785CC]/5 via-[#5B8AF0]/5 to-[#8590EA]/5 animate-gradient"></div>
       </div>
 
-      <div className="w-[1280px] mx-auto px-4 relative">
+      <div className="w-full lg:w-[1280px] mx-auto px-4 relative">
         <motion.div
           initial="hidden"
           whileInView="visible"

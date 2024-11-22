@@ -70,7 +70,7 @@ export default function SoftwareDevelopmentPage() {
         description="Creating Innovative Software Solutions for Business Success."
       />
 
-      <div className="container mx-auto px-4 py-24">
+      <div className="w-full lg:w-[1280px]  mx-auto px-4 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

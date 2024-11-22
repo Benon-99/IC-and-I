@@ -76,12 +76,12 @@ export default function InformationSecurityPage() {
         description="Protecting Your Digital Assets in an Evolving Threat Landscape."
       />
 
-      <div className="container mx-auto px-4 py-24">
+      <div className="w-full lg:w-[1280px]  mx-auto px-4 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto mb-24"
+          className="max-w-4xl mx-auto mb-24 flex flex-col items-center text-justify"
         >
           <motion.span
             initial={{ opacity: 0, y: 20 }}
@@ -96,7 +96,7 @@ export default function InformationSecurityPage() {
             Advanced Security Solutions
           </h2>
           
-          <p className="text-lg text-[#111240]/70 leading-relaxed">
+          <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
             In an era where cyber threats are increasingly sophisticated, IC&I is dedicated to 
             providing comprehensive information security services that protect your organization's 
             digital assets. We offer a wide range of security solutions designed to safeguard your 
@@ -135,7 +135,7 @@ export default function InformationSecurityPage() {
 
           <motion.div 
             variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {services.map((service, index) => (
               <motion.div

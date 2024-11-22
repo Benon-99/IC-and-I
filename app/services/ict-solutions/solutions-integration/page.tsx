@@ -9,32 +9,32 @@ export default function SolutionsIntegrationPage() {
     {
       icon: Network,
       title: "BSCS System Expertise",
-      description: "Comprehensive implementation and optimization of Business Support and Control Systems (BSCS) to enhance utility operations and customer service.",
+      description: "Comprehensive implementation and optimization of Business Support and Control Systems (BSCS) for enhanced operational efficiency and customer service delivery.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
 
     },
     {
       icon: CreditCard,
       title: "E-Payment Integration",
-      description: "Pioneering electronic payment solutions connecting Syrian Telecom Company with SEP platform, enabling secure and streamlined digital transactions.",
+      description: "Advanced electronic payment solutions integrating Syrian Telecom Company with SEP platform for secure, efficient, and streamlined digital transactions.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     },
     {
       icon: Users,
       title: "Customer Care & Billing Systems",
-      description: "Expert development and management of CCBS for Syrian Telecom Company, ensuring efficient customer service and billing operations since 2013.",
+      description: "Comprehensive development and management of CCBS for Syrian Telecom Company, delivering efficient customer service and billing operations since 2013.",
       gradient: "from-[#8590EA] to-[#B5C6F4]"
     },
     {
       icon: Settings,
       title: "System Integration Services",
-      description: "Seamless integration of complex technology components, ensuring optimal performance and communication between diverse systems.",
+      description: "Advanced integration of complex technology components and platforms, ensuring optimal performance and seamless communication between diverse systems.",
       gradient: "from-[#00B4D8] to-[#4A9BE4]"
     },
     {
       icon: Hammer,
       title: "Ongoing Support",
-      description: "Dedicated maintenance and support services ensuring continuous system optimization, performance monitoring, and swift resolution of challenges to maximize operational efficiency.",
+      description: "Comprehensive maintenance and technical support services ensuring continuous system optimization, performance monitoring, and efficient issue resolution.",
       gradient: "from-[#4A9BE4] to-[#8590EA]"
     }
   ];
@@ -65,7 +65,7 @@ export default function SolutionsIntegrationPage() {
         description="Delivering Tailored Technology Solutions for Complex Business Challenges."
       />
 
-      <div className="container mx-auto px-4 py-24">
+      <div className="w-full lg:w-[1280px]  mx-auto px-4 py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
