@@ -1,9 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import * as Yup from "yup";
+import { FaCheck } from "react-icons/fa";
 
 // Define form data type
 interface FormData {
@@ -14,6 +15,8 @@ interface FormData {
 }
 
 const ContactForm: React.FC = () => {
+  const [sent, setSent] = useState(false);
+
   const validationSchema = Yup.object({
     name: Yup.string()
       .min(2, "Name must be at least 2 characters")
@@ -32,7 +35,7 @@ const ContactForm: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
     reset,
   } = useForm<FormData>({
     resolver: yupResolver(validationSchema),
@@ -44,12 +47,21 @@ const ContactForm: React.FC = () => {
       // Send data to backend
       await axios.post("http://localhost:3001/api/send-email", data);
       // alert("Email sent successfully!");
+      if (isSubmitSuccessful) {
+        setSent(true);
+      }
       reset();
     } catch (error) {
       console.error("Error sending email:", error);
       alert("Failed to send the email. Please try again.");
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSent(false);
+    }, 3000);
+  }, [sent]);
 
   return (
     <Container>
@@ -58,7 +70,15 @@ const ContactForm: React.FC = () => {
         <Description>
           We would love to hear from you! Fill out the form below.
         </Description>
-
+        {sent && (
+          <p className="flex justify-center mb-3 mx-auto text-green-500">
+            {" "}
+            Message Sending Successful{" "}
+          </p>
+        )}
+        {sent && (
+          <FaCheck className="flex justify-center mb-3 mx-auto text-green-600" />
+        )}
         <InputWrapper>
           <Input
             type="text"
