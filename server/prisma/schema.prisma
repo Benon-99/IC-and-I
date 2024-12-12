@@ -15,12 +15,14 @@ datasource db {
 }
 
 model Submission {
-  id         Int      @id @default(autoincrement()) // Auto-increment primary key
-  name       String   // Name of the submitter
-  email      String   // Email of the submitter
-  message    String   // Message content
-  created_at DateTime @default(now()) // Auto-filled timestamp for creation
+  id         Int      @id @default(autoincrement())
+  email      String
+  name       String
+  subject    String?@default("")
+  message    String
+  created_at DateTime @default(now())
 }
+
 
 model BlogPost {
   id        String   @id @default(cuid())
