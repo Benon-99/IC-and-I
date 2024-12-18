@@ -1,14 +1,38 @@
 import express from "express";
 import nodemailer from "nodemailer";
 import cors from "cors";
-
-import createSubmission from "./repositories/messageRepo.js";
 import helmet from "helmet";
 import dotenv from "dotenv";
+import messageRoutes from "./routes/messages.js";
+import prisma from './lib/prisma.js';
+import createSubmission from "./repositories/messageRepo.js";
 
 dotenv.config();
 
 const app = express();
+
+// Test database connection
+async function testDbConnection() {
+  try {
+    console.log('[Server] Testing database connection...');
+    await prisma.$connect();
+    console.log('[Server] Successfully connected to database');
+    
+    // Test query to verify connection
+    const testQuery = await prisma.$queryRaw`SELECT 1`;
+    console.log('[Server] Database query test successful:', testQuery);
+  } catch (error) {
+    console.error('[Server] Failed to connect to database:', {
+      name: error.name,
+      message: error.message,
+      code: error.code,
+      stack: error.stack
+    });
+    process.exit(1);
+  }
+}
+
+testDbConnection();
 
 app.use(helmet());
 // Enable CORS
@@ -20,62 +44,32 @@ app.use(
 
 app.use(express.json()); // Middleware to parse JSON requests
 
-// Email sending function
-const sendEmail = async (name, email, subject, message) => {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com", // Gmail SMTP server
-    port: 465, // Secure port for SMTP
-    secure: true, // Use SSL
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-
-  const mailOptions = {
-    from: `"${name}" <${process.env.EMAIL_USER}>`, // Client's email is now allowed as the sender
-    to: process.env.EMAIL_USER, // Your email address
-    replyTo: email, // Ensures replies go to the client's email
-    subject: `${name}: ${subject}`, // Professional subject line
-    text: `You have received a new contact request from your website:\n\n
-  Name: ${name}
-  Email: ${email}
-  Subject: ${subject}\n
-  Message : ${message}\n\n
-  This message was sent via your website.`,
-  };
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Email sent:", info.response);
-    return info.response;
-  } catch (error) {
-    console.error("Error sending email:", error);
-    throw error;
-  }
-};
-
-// API route to send email
-app.post("/api/send-email", async (req, res) => {
-  const { name, email, subject, message } = req.body;
-
-  if (!name || !email || !subject || !message) {
-    return res.status(400).json({ message: "All fields are required." });
-  }
-
-  try {
-    await createSubmission({ email, name, message });
-    const response = await sendEmail(name, email, subject, message);
-    res.status(200).json({ message: "Email sent successfully!", response });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Failed to send email", error: error.message });
-  }
-});
+// Mount message routes
+app.use('/message', messageRoutes);
 
 // Start the server
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`[Server] Running on port ${PORT}`);
+  console.log('[Server] Environment:', process.env.NODE_ENV);
+  console.log('[Server] Database URL:', process.env.DATABASE_URL ? 'Set' : 'Not set');
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[Server] Unhandled Rejection:', {
+    reason: reason instanceof Error ? {
+      name: reason.name,
+      message: reason.message,
+      stack: reason.stack
+    } : reason,
+    promise
+  });
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('[Server] Uncaught Exception:', {
+    name: error.name,
+    message: error.message,
+    stack: error.stack
+  });
 });

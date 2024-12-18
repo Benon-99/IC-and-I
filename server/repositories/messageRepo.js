@@ -17,4 +17,12 @@ const createSubmission = async ({ email, name, message }) => {
   }
 };
 
-export default createSubmission; // Default export
+export async function getMessages() {
+  return prisma.submission.findMany({
+    orderBy: {
+      created_at: 'desc',
+    },
+  });
+}
+
+export default createSubmission;
