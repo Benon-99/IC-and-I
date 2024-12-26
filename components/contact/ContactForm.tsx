@@ -1,9 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import * as Yup from "yup";
+import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
 // Define form data type
 interface FormData {
@@ -14,6 +18,10 @@ interface FormData {
 }
 
 const ContactForm: React.FC = () => {
+  const router = useRouter();
+  const [isSending, setIsSending] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
   const validationSchema = Yup.object({
     name: Yup.string()
       .min(2, "Name must be at least 2 characters")
@@ -32,28 +40,53 @@ const ContactForm: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm<FormData>({
     resolver: yupResolver(validationSchema),
   });
 
   // Form submission handler
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (formData: FormData) => {
+    setIsSending(true);
     try {
-      // Send data to backend
-      await axios.post("http://localhost:3001/api/send-email", data);
-      // alert("Email sent successfully!");
-      reset();
+      const response = await axios.post("http://localhost:8000/api/email/send-email", formData);
+      
+      if (response.status === 200) {
+        setShowSuccess(true);
+        reset();
+        // Hide success message after 3 seconds
+        setTimeout(() => {
+          setShowSuccess(false);
+        }, 3000);
+      } else {
+        throw new Error(response.data?.message || "Failed to send message");
+      }
     } catch (error) {
-      console.error("Error sending email:", error);
-      alert("Failed to send the email. Please try again.");
+      console.error('Error sending message:', error);
+    } finally {
+      setIsSending(false);
     }
   };
 
   return (
     <Container>
-      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+      <AnimatePresence>
+        {showSuccess && (
+          <SuccessNotification
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+          >
+            <CheckCircle2 size={20} />
+            Message sent successfully
+          </SuccessNotification>
+        )}
+      </AnimatePresence>
+      <FormWrapper onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit(onSubmit)(e);
+      }}>
         <Title>Contact Us</Title>
         <Description>
           We would love to hear from you! Fill out the form below.
@@ -66,7 +99,9 @@ const ContactForm: React.FC = () => {
             {...register("name")}
             isError={!!errors.name}
           />
-          {errors.name && <Error>{errors.name.message}</Error>}
+          {errors.name && (
+            <ErrorMessage>{errors.name?.message}</ErrorMessage>
+          )}
         </InputWrapper>
 
         <InputWrapper>
@@ -76,7 +111,9 @@ const ContactForm: React.FC = () => {
             {...register("email")}
             isError={!!errors.email}
           />
-          {errors.email && <Error>{errors.email.message}</Error>}
+          {errors.email && (
+            <ErrorMessage>{errors.email?.message}</ErrorMessage>
+          )}
         </InputWrapper>
 
         <InputWrapper>
@@ -86,7 +123,9 @@ const ContactForm: React.FC = () => {
             {...register("subject")}
             isError={!!errors.subject}
           />
-          {errors.subject && <Error>{errors.subject.message}</Error>}
+          {errors.subject && (
+            <ErrorMessage>{errors.subject?.message}</ErrorMessage>
+          )}
         </InputWrapper>
 
         <InputWrapper>
@@ -95,12 +134,14 @@ const ContactForm: React.FC = () => {
             {...register("message")}
             isError={!!errors.message}
           />
-          {errors.message && <Error>{errors.message.message}</Error>}
+          {errors.message && (
+            <ErrorMessage>{errors.message?.message}</ErrorMessage>
+          )}
         </InputWrapper>
 
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Sending..." : "Send Message"}
-        </Button>
+        <SubmitButton type="submit" disabled={isSending}>
+          {isSending ? 'Sending...' : 'Send Message'}
+        </SubmitButton>
       </FormWrapper>
     </Container>
   );
@@ -176,13 +217,13 @@ const Textarea = styled.textarea<{ isError?: boolean }>`
   }
 `;
 
-const Error = styled.div`
+const ErrorMessage = styled.div`
   color: #ff4d4f;
   font-size: 0.875rem;
   margin-top: 0.25rem;
 `;
 
-const Button = styled.button`
+const SubmitButton = styled.button`
   width: 100%; /* Full width */
   padding: 1rem 2rem; /* Padding similar to */
   font-size: 1rem; /* Font size */
@@ -212,4 +253,19 @@ const Button = styled.button`
     cursor: not-allowed; /* Disabled cursor */
     box-shadow: none; /* Remove hover shadow when disabled */
   }
+`;
+
+const SuccessNotification = styled(motion.div)`
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #22c55e;
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  z-index: 1000;
 `;

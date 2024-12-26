@@ -4,131 +4,119 @@ import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Calendar, Tag, ArrowLeft, Share2 } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import Footer from '@/components/Footer';
 
-const blogPosts = {
-  '5-key-strategies-for-effective-hr-management-in-2024': {
-    title: "5 Key Strategies for Effective HR Management in 2024",
-    date: "20-Aug-2024",
-    category: "HR Management",
-    author: "IC&I Team",
-    image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80",
-    content: `
-      As businesses face new challenges in 2024, effective HR management becomes crucial for maintaining productivity and employee satisfaction. Here are five key strategies that organizations should consider implementing:
+interface Author {
+  id: number;
+  name: string;
+}
 
-      **1. Embrace Digital HR Solutions**
-      
-      In today's fast-paced business environment, digital HR solutions are no longer optional but essential. Implementing comprehensive HR management systems can streamline processes, improve data accuracy, and enhance decision-making capabilities.
-      
-      Key benefits include:
-      - Automated payroll processing
-      - Digital employee records
-      - Performance tracking systems
-      - Integrated recruitment platforms
-      
-      **2. Focus on Employee Well-being**
-      
-      The importance of employee well-being has never been more apparent. Organizations should:
-      - Implement flexible work arrangements
-      - Provide mental health support
-      - Offer comprehensive wellness programs
-      - Create a supportive work environment
-      
-      **3. Develop Strong Learning & Development Programs**
-      
-      Continuous learning is crucial for both employee growth and organizational success. Consider:
-      - Personalized learning paths
-      - Skill-based training programs
-      - Leadership development initiatives
-      - Cross-functional training opportunities
-      
-      **4. Enhance Performance Management**
-      
-      Modern performance management should be:
-      - Continuous and feedback-driven
-      - Focused on development rather than just evaluation
-      - Aligned with organizational goals
-      - Supported by data and analytics
-      
-      **5. Prioritize Diversity, Equity, and Inclusion**
-      
-      A strong DEI strategy is essential for:
-      - Attracting top talent
-      - Fostering innovation
-      - Building a positive workplace culture
-      - Improving business outcomes
-      
-      **Looking Ahead**
-      
-      As we progress through 2024, HR managers must stay agile and responsive to changing workplace dynamics. By implementing these strategies, organizations can build a more resilient and effective workforce while maintaining high levels of employee engagement and satisfaction.
-    `
-  },
-  'the-role-of-cybersecurity-in-modern-business': {
-    title: "The Role of Cybersecurity in Modern Business",
-    date: "20-Aug-2024",
-    category: "HR Management",
-    author: "IC&I Team",
-    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&amp;fit=crop&amp;q=80",
-    content: `
-      In today’s digital era, cybersecurity is essential for every business, no matter its size or industry. With cyber threats becoming more frequent and sophisticated, companies must implement strong security measures to protect their assets, data, and reputation. A robust cybersecurity framework ensures trust and credibility with clients and stakeholders.
+interface Category {
+  id: number;
+  name: string;
+}
 
-**Here are Essential Components for Building a Robust Cybersecurity Strategy:**
-
-__Incident Response Plans:__ Prepare for breaches with a clear action plan to minimize damage, restore operations quickly, and prevent future incidents.
-
-**Understanding Cyber Threats:** Malware, ransomware, phishing, and insider threats are on the rise, posing significant risks to businesses.
-
-**Strong Security Protocols:** Implement firewalls, encryption, and multi-factor authentication to secure systems and sensitive data.
-
-**Employee Training:** Educating staff on best practices reduces human error, which is often exploited in cyberattacks.
-
-**Endpoint Security:** Protect mobile and remote devices with antivirus software, VPNs, and mobile device management.
-
-**Cybersecurity in Digital Transformation:**
-
-As businesses embrace digital tools, cybersecurity must be a top priority. By proactively addressing threats, companies can protect their data, reputation, and future success. In today’s world, cybersecurity is no longer optional—it’s critical to thriving in the digital landscape.
-    `
-  },
-  'how-digital-transformation-is-shaping-the-future-of-business-in-syria': {
-    title: "How Digital Transformation is Shaping The Future of Business in Syria",
-    date: "20-Aug-2024",
-    category: "HR Management",
-    author: "IC&I Team",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
-    content: `
-      As the business landscape evolves, digital transformation is becoming a key enabler of growth and innovation in Syria. Companies are rapidly embracing new technologies to streamline processes, enhance customer engagement, and improve overall efficiency. With advancements like cloud computing, artificial intelligence, and big data, businesses have more opportunities than ever to modernize and remain competitive.
-
-In this blog, We will discuss:
-
-**The Rise of Cloud Services:** How cloud-based infrastructure is reducing costs, improving scalability, and enabling remote collaboration.
-
-**Automation and Efficiency:** How automating routine tasks is freeing up human resources for more value-added activities.
-
-**Artificial Intelligence (AI):** AI-powered solutions are enhancing customer service and decision-making across industries.
-
-**Data-Driven Decisions:** How businesses are leveraging big data analytics to understand market trends and consumer behavior.
-
-**Overcoming Challenges:** Key barriers to digital adoption, including infrastructure issues and regulatory concerns, and strategies to overcome them.
-
-As digital transformation continues to shape the future, businesses in Syria need to remain agile and open to integrating technology into their operations. The companies that succeed will be those that can harness digital tools to create smarter, faster, and more customer-centric business models.
-    `
-  },
-};
+interface BlogPost {
+  id: number;
+  title: string;
+  content: string;
+  date: string;
+  image: string;
+  published: boolean;
+  slug: string;
+  author: Author;
+  category: Category;
+}
 
 export default function BlogPost() {
   const { slug } = useParams();
-  const post = blogPosts[slug as keyof typeof blogPosts];
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!post) {
+  useEffect(() => {
+    if (slug) {
+      fetchBlogPost();
+    }
+  }, [slug]);
+
+  const fetchBlogPost = async () => {
+    try {
+      const decodedSlug = decodeURIComponent(slug as string);
+      console.log('Fetching post with slug:', decodedSlug);
+      
+      const response = await fetch(`http://localhost:8000/api/blog/slug/${decodedSlug}`);
+      console.log('Response status:', response.status);
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch blog post');
+      }
+      
+      const data = await response.json();
+      console.log('Response data:', data);
+      
+      if (data.status === 'success' && data.post) {
+        setPost(data.post);
+      } else {
+        throw new Error('Invalid response format');
+      }
+    } catch (error) {
+      console.error('Error fetching blog post:', error);
+      setError(error instanceof Error ? error.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Post Not Found</h1>
-          <Link 
-            href="/blogs" 
-            className="text-primary hover:text-secondary transition-colors"
-          >
-            Return to Blogs
-          </Link>
+      <div className="min-h-screen bg-white">
+        <div className="relative overflow-hidden bg-[#111240]">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
+          </div>
+          
+          <div className="relative container mx-auto px-4 py-32">
+            <div className="max-w-4xl mx-auto animate-pulse">
+              <div className="h-4 bg-white/10 w-24 rounded mb-6" />
+              <div className="h-12 bg-white/10 w-3/4 rounded mb-6" />
+              <div className="flex gap-4">
+                <div className="h-8 bg-white/10 w-32 rounded" />
+                <div className="h-8 bg-white/10 w-32 rounded" />
+                <div className="h-8 bg-white/10 w-32 rounded" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !post) {
+    return (
+      <div className="min-h-screen bg-white">
+        <div className="relative overflow-hidden bg-[#111240]">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
+          </div>
+          
+          <div className="relative container mx-auto px-4 py-32">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-4xl font-bold text-white mb-6">Post Not Found</h1>
+              {error && <p className="text-white/80 mb-6">{error}</p>}
+              <Link 
+                href="/blogs"
+                className="inline-flex items-center text-white/80 hover:text-white transition-colors group bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" />
+                Back to Blogs
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -165,14 +153,18 @@ export default function BlogPost() {
             <div className="flex flex-wrap items-center gap-6 text-white/80">
               <div className="flex items-center bg-white/5 backdrop-blur-sm px-3 py-1.5 rounded-full">
                 <Calendar className="w-4 h-4 mr-2" />
-                {post.date}
+                {new Date(post.date).toLocaleDateString('en-GB', {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric'
+                })}
               </div>
               <div className="flex items-center bg-white/5 backdrop-blur-sm px-3 py-1.5 rounded-full">
                 <Tag className="w-4 h-4 mr-2" />
-                {post.category}
+                {post.category.name}
               </div>
               <div className="flex items-center bg-white/5 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                By {post.author}
+                By {post.author.name}
               </div>
               <button 
                 className="flex items-center hover:text-white transition-colors bg-white/5 hover:bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full"
@@ -212,7 +204,7 @@ export default function BlogPost() {
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
           <motion.div 
-            className="relative bg-white rounded-xl shadow-xl p-8 overflow-hidden"
+            className="relative bg-white rounded-xl shadow-xl p-8 overflow-hidden mb-16"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
@@ -224,12 +216,12 @@ export default function BlogPost() {
               {/* Introduction with gradient border */}
               <div className="border-l-4 border-gradient-to-b from-[#3785CC] to-[#4A9BE4] pl-6 mb-12">
                 <p className="text-[#111240]/80 leading-relaxed text-xl font-medium tracking-wide">
-                  {post.content.split('\n')[1]}
+                  {post.content.split('\n')[0]}
                 </p>
               </div>
 
               {/* Main content */}
-              {post.content.split('\n').slice(2).map((paragraph, index) => {
+              {post.content.split('\n').slice(1).map((paragraph, index) => {
                 if (paragraph.trim().startsWith('**') && paragraph.trim().endsWith('**')) {
                   const title = paragraph.trim().replace(/^\*\*|\*\*$/g, '').trim();
                   const number = title.match(/^\d+/)?.[0];
@@ -277,6 +269,7 @@ export default function BlogPost() {
           </motion.div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

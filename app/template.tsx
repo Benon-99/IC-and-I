@@ -12,13 +12,14 @@ export default function Template({
 }) {
   const pathname = usePathname();
   const isAdminPage = pathname?.startsWith('/admin');
+  const isBlogPostPage = pathname?.startsWith('/blogs/') && pathname !== '/blogs';
 
   return (
     <QueryProvider>
       <div className="flex flex-col min-h-screen bg-gray-50">
         {!isAdminPage && <Navbar />}
         <main className="flex-grow">{children}</main>
-        {!isAdminPage && <Footer />}
+        {!isAdminPage && !isBlogPostPage && <Footer />}
       </div>
     </QueryProvider>
   );

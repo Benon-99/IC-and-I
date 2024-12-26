@@ -3,55 +3,98 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, Calendar } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import Footer from '@/components/Footer';
+
+interface Author {
+  id: number;
+  name: string;
+}
+
+interface Category {
+  id: number;
+  name: string;
+}
+
+interface BlogPost {
+  id: number;
+  title: string;
+  content: string;
+  date: string;
+  image: string;
+  published: boolean;
+  slug: string;
+  author: Author;
+  category: Category;
+}
 
 export default function EnhancedBlogPage() {
-  const blogs = [
-    {
-      title: "5 Key Strategies for Effective HR Management in 2024",
-      date: "20-Aug-2024",
-      excerpt: "As businesses face new challenges in 2024, effective HR management becomes crucial...",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
-      gradient: "from-[#3785CC] to-[#4A9BE4]",
-      slug: "5-key-strategies-for-effective-hr-management-in-2024"
-    },
-    {
-      title: "The Role of Cybersecurity in Modern Business",
-      date: "20-Aug-2024",
-      excerpt: "In today's digital era, cybersecurity is essential for protecting business assets...",
-      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80",
-      gradient: "from-[#4A9BE4] to-[#8590EA]",
-      slug: "the-role-of-cybersecurity-in-modern-business"
-    },
-    {
-      title: "How Digital Transformation is Shaping the Future of Business in Syria",
-      date: "20-Aug-2024",
-      excerpt: "As the business landscape evolves, digital transformation becomes increasingly important...",
-      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
-      gradient: "from-[#8590EA] to-[#B5C6F4]",
-      slug: "how-digital-transformation-is-shaping-the-future-of-business-in-syria"
-    }
-  ];
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  const fetchBlogs = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/blog');
+      if (!response.ok) {
+        throw new Error('Failed to fetch blogs');
       }
+      const data = await response.json();
+      if (data.status === 'success') {
+        setBlogs(data.posts.filter((post: BlogPost) => post.published));
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching blogs:', error);
+      setLoading(false);
     }
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5
-      }
-    }
+  const getExcerpt = (content: string) => {
+    // Remove markdown syntax and get first 150 characters
+    const plainText = content.replace(/[#*`_\[\]]/g, '');
+    return plainText.substring(0, 150).trim() + '...';
   };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+  };
+
+  const getGradient = (index: number) => {
+    const gradients = [
+      "from-[#3785CC] to-[#4A9BE4]",
+      "from-[#4A9BE4] to-[#8590EA]",
+      "from-[#8590EA] to-[#B5C6F4]"
+    ];
+    return gradients[index % gradients.length];
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <div className="relative overflow-hidden bg-[#111240]">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
+          </div>
+          
+          <div className="relative w-full lg:w-[1280px] mx-auto px-4 py-32">
+            <div className="animate-pulse space-y-8">
+              <div className="h-8 bg-white/10 rounded w-3/4 mx-auto" />
+              <div className="h-4 bg-white/10 rounded w-1/2 mx-auto" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -135,22 +178,23 @@ export default function EnhancedBlogPage() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              variants={containerVariants}
               className="grid grid-cols-1 md:grid-cols-3 gap-8"
             >
               {blogs.map((blog, index) => (
                 <motion.div
-                  key={blog.slug}
-                  variants={itemVariants}
+                  key={blog.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
                   className="group relative"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
                   <Link href={`/blogs/${blog.slug}`}>
                     <div className="relative rounded-2xl bg-white backdrop-blur-sm border border-gray-100 overflow-hidden transition-all duration-300 group-hover:bg-gray-50 shadow-sm">
                       <div className="relative h-64 overflow-hidden">
-                        <div className={`absolute inset-0 bg-gradient-to-r ${blog.gradient} opacity-80`}></div>
+                        <div className={`absolute inset-0 bg-gradient-to-r ${getGradient(index)} opacity-80`}></div>
                         <img 
-                          src={blog.image} 
+                          src={blog.image || `https://source.unsplash.com/random/800x600?${index}`}
                           alt={blog.title}
                           className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                         />
@@ -158,13 +202,13 @@ export default function EnhancedBlogPage() {
                       <div className="p-8">
                         <div className="flex items-center text-[#111240]/60 mb-4">
                           <Calendar className="w-4 h-4 mr-2" />
-                          <span className="text-sm">{blog.date}</span>
+                          <span className="text-sm">{formatDate(blog.date)}</span>
                         </div>
                         <h3 className="text-xl font-semibold text-[#111240] mb-4 group-hover:text-[#111240]/90 transition-colors duration-300">
                           {blog.title}
                         </h3>
                         <p className="text-[#111240]/60 mb-6 line-clamp-2">
-                          {blog.excerpt}
+                          {getExcerpt(blog.content)}
                         </p>
                         <div className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] group/link">
                           <span className="mr-2">Read More</span>
@@ -178,6 +222,7 @@ export default function EnhancedBlogPage() {
             </motion.div>
           </div>
         </section>
+        <Footer />
       </div>
     </div>
   );

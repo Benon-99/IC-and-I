@@ -1,9 +1,19 @@
-'use client';
-
 import Link from 'next/link';
-import { Bell, Settings, LogOut, User } from 'lucide-react';
+import { User, LogOut } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/hooks/useAuth';
 
 export default function AdminHeader() {
+  const router = useRouter();
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    const success = await logout();
+    if (success) {
+      router.push('/admin/login');
+    }
+  };
+
   return (
     <header className="bg-[#0a0b2e] text-white border-b border-gray-800">
       <div className="max-w-[2000px] mx-auto">
@@ -49,32 +59,21 @@ export default function AdminHeader() {
               </Link>
             </nav>
 
-            {/* Action items */}
-            <div className="flex items-center gap-4">
-              <button className="p-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-full transition-colors">
-                <Bell className="w-5 h-5" />
-              </button>
-              <Link 
-                href="/admin/settings"
-                className="p-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-full transition-colors"
-              >
-                <Settings className="w-5 h-5" />
-              </Link>
-              <div className="h-6 w-px bg-gray-700"></div>
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
-                    <User className="w-5 h-5" />
-                  </div>
-                  <span className="hidden md:inline text-sm font-medium">Admin</span>
+            {/* Profile and Logout */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
+                  <User className="w-5 h-5" />
                 </div>
-                <Link 
-                  href="/admin/logout"
-                  className="p-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-full transition-colors"
-                >
-                  <LogOut className="w-5 h-5" />
-                </Link>
+                <span className="hidden md:inline text-sm font-medium">Admin</span>
               </div>
+              <button 
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
+              >
+                <LogOut className="w-5 h-5" />
+                <span className="hidden md:inline">Logout</span>
+              </button>
             </div>
           </div>
         </div>

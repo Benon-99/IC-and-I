@@ -1,75 +1,74 @@
-import express from "express";
-import nodemailer from "nodemailer";
-import cors from "cors";
-import helmet from "helmet";
-import dotenv from "dotenv";
-import messageRoutes from "./routes/messages.js";
-import prisma from './lib/prisma.js';
-import createSubmission from "./repositories/messageRepo.js";
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
+import prisma from './prisma/client.js';
+import blogRouter from './routes/blog.js';
+import messageRouter from './routes/message.js';
+import authRouter from './routes/auth.js';
+import emailRouter from './routes/email.js';
+import adminRouter from './routes/admin.js'; // added adminRouter import
 
-dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 8000;
 
-// Test database connection
+// Middleware
+app.use(express.json({ limit: '50mb' }));
+app.use(cookieParser());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
+app.use(helmet());
+
+// Request logging middleware
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.originalUrl}`);
+    next();
+});
+
+// Routes
+app.use('/api/messages', messageRouter);
+app.use('/api/blog', blogRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/email', emailRouter);
+app.use('/api/admin', adminRouter); // added admin routes
+
+// Database connection test
 async function testDbConnection() {
-  try {
-    console.log('[Server] Testing database connection...');
-    await prisma.$connect();
-    console.log('[Server] Successfully connected to database');
-    
-    // Test query to verify connection
-    const testQuery = await prisma.$queryRaw`SELECT 1`;
-    console.log('[Server] Database query test successful:', testQuery);
-  } catch (error) {
-    console.error('[Server] Failed to connect to database:', {
-      name: error.name,
-      message: error.message,
-      code: error.code,
-      stack: error.stack
-    });
-    process.exit(1);
-  }
+    try {
+        await prisma.$connect();
+        await prisma.$queryRaw`SELECT 1`;
+        console.log("Database connection is Ready");
+    } catch (error) {
+        console.error("Database connection failed:", error);
+        process.exit(1);
+    }
 }
 
 testDbConnection();
 
-app.use(helmet());
-// Enable CORS
-app.use(
-  cors({
-    origin: "*",
-  })
-);
-
-app.use(express.json()); // Middleware to parse JSON requests
-
-// Mount message routes
-app.use('/message', messageRoutes);
-
-// Start the server
-const PORT = process.env.PORT || 3001;
+// Start server
 app.listen(PORT, () => {
-  console.log(`[Server] Running on port ${PORT}`);
-  console.log('[Server] Environment:', process.env.NODE_ENV);
-  console.log('[Server] Database URL:', process.env.DATABASE_URL ? 'Set' : 'Not set');
+    console.log(`Server is Listening on Port ${PORT}`);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('[Server] Unhandled Rejection:', {
-    reason: reason instanceof Error ? {
-      name: reason.name,
-      message: reason.message,
-      stack: reason.stack
-    } : reason,
-    promise
-  });
+// Catch All Route for 404 Errors
+app.use((req, res) => {
+    console.error('404 Error: Route not found -', req.originalUrl);
+    res.status(404).json({ 
+        status: "fail", 
+        message: `Route not found: ${req.method} ${req.originalUrl}` 
+    });
 });
 
-process.on('uncaughtException', (error) => {
-  console.error('[Server] Uncaught Exception:', {
-    name: error.name,
-    message: error.message,
-    stack: error.stack
-  });
+// Global error handler
+app.use((error, req, res, next) => {
+    console.error('Error:', error);
+    res.status(500).json({ 
+        status: "fail", 
+        message: error.message || "Internal server error",
+        path: req.originalUrl
+    });
 });
