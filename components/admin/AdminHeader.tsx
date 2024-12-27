@@ -1,16 +1,27 @@
 import Link from 'next/link';
 import { User, LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/hooks/useAuth';
 
 export default function AdminHeader() {
   const router = useRouter();
-  const { logout } = useAuth();
 
   const handleLogout = async () => {
-    const success = await logout();
-    if (success) {
-      router.push('/admin/login');
+    try {
+      const res = await fetch('http://localhost:8000/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await res.json();
+
+      if (data.status === 'success') {
+        window.location.href = '/admin/login';
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
     }
   };
 

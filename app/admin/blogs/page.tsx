@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Pencil, Trash2, Plus, Search, Filter, Clock, Eye, Image as ImageIcon } from 'lucide-react';
+import { Pencil, Trash2, Plus, Search, Filter, Clock, Eye, Image as ImageIcon, AlertCircle, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Category {
@@ -30,6 +30,11 @@ interface Blog {
   updated_at: string;
 }
 
+interface Alert {
+  type: 'success' | 'error' | 'info';
+  message: string;
+}
+
 export default function BlogsPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -37,11 +42,27 @@ export default function BlogsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'published' | 'draft'>('all');
   const [categoryFilter, setCategoryFilter] = useState<number | 'all'>('all');
+  const [alert, setAlert] = useState<Alert | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean; blogId: number | null }>({
+    show: false,
+    blogId: null
+  });
 
   useEffect(() => {
     fetchBlogs();
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    if (alert) {
+      const timer = setTimeout(() => setAlert(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [alert]);
+
+  const showAlert = (type: Alert['type'], message: string) => {
+    setAlert({ type, message });
+  };
 
   const fetchBlogs = async () => {
     try {
@@ -53,6 +74,7 @@ export default function BlogsPage() {
       setBlogs(data.posts || []);
     } catch (error) {
       console.error('Error fetching blogs:', error);
+      showAlert('error', 'Failed to fetch blogs');
     } finally {
       setIsLoading(false);
     }
@@ -68,21 +90,30 @@ export default function BlogsPage() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this blog post?')) return;
+  const initiateDelete = (id: number) => {
+    setDeleteConfirm({ show: true, blogId: id });
+  };
+
+  const handleDelete = async () => {
+    if (!deleteConfirm.blogId) return;
     
     try {
-      const response = await fetch(`http://localhost:8000/api/blog/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/blog/post/${deleteConfirm.blogId}`, {
         method: 'DELETE',
+        credentials: 'include'
       });
       
       if (response.ok) {
-        setBlogs(blogs.filter(blog => blog.id !== id));
+        setBlogs(blogs.filter(blog => blog.id !== deleteConfirm.blogId));
+        showAlert('success', 'Blog post deleted successfully');
       } else {
         throw new Error('Failed to delete blog post');
       }
     } catch (error) {
       console.error('Error deleting blog:', error);
+      showAlert('error', 'Failed to delete blog post');
+    } finally {
+      setDeleteConfirm({ show: false, blogId: null });
     }
   };
 
@@ -126,6 +157,61 @@ export default function BlogsPage() {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-7xl mx-auto"
       >
+        {/* Delete Confirmation Modal */}
+        {deleteConfirm.show && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-[#1a1f4b] rounded-xl p-6 max-w-md w-full mx-4 shadow-xl"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <AlertTriangle className="h-6 w-6 text-yellow-500" />
+                <h3 className="text-xl font-semibold text-white">Delete Blog Post?</h3>
+              </div>
+              <p className="text-gray-300 mb-6">
+                This action cannot be undone. The blog post will be permanently removed from the system.
+              </p>
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setDeleteConfirm({ show: false, blogId: null })}
+                  className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+                >
+                  Delete Post
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
+        {/* Alert Component */}
+        <AnimatePresence mode="wait">
+          {alert && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg flex items-center space-x-2 z-50 ${
+                alert.type === 'success' ? 'bg-green-500' :
+                alert.type === 'error' ? 'bg-red-500' :
+                'bg-blue-500'
+              }`}
+            >
+              {alert.type === 'success' && <CheckCircle className="w-5 h-5 text-white" />}
+              {alert.type === 'error' && <XCircle className="w-5 h-5 text-white" />}
+              {alert.type === 'info' && <AlertCircle className="w-5 h-5 text-white" />}
+              <p className="text-white font-medium">{alert.message}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
@@ -270,7 +356,7 @@ export default function BlogsPage() {
                           <Pencil className="w-4 h-4" />
                         </Link>
                         <button
-                          onClick={() => handleDelete(blog.id)}
+                          onClick={() => initiateDelete(blog.id)}
                           className="p-2 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />

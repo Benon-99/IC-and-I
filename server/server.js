@@ -7,20 +7,25 @@ import blogRouter from './routes/blog.js';
 import messageRouter from './routes/message.js';
 import authRouter from './routes/auth.js';
 import emailRouter from './routes/email.js';
-import adminRouter from './routes/admin.js'; // added adminRouter import
-
+import adminRouter from './routes/admin.js';
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-// Middleware
-app.use(express.json({ limit: '50mb' }));
+
+
+// Essential middleware in this specific order
 app.use(cookieParser());
+app.use(express.json());
 app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true
 }));
-app.use(helmet());
+
+
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -28,12 +33,21 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use((req, res, next) => {
+    console.log('Request:', {
+        method: req.method,
+        path: req.path,
+        body: req.body,
+        cookies: req.cookies
+    });
+    next();
+});
 // Routes
 app.use('/api/messages', messageRouter);
 app.use('/api/blog', blogRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/email', emailRouter);
-app.use('/api/admin', adminRouter); // added admin routes
+app.use('/api/admin', adminRouter);
 
 // Database connection test
 async function testDbConnection() {
@@ -51,7 +65,7 @@ testDbConnection();
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`Server is Listening on Port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
 
 // Catch All Route for 404 Errors

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowRight, Calendar } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Footer from '@/components/Footer';
+import Image from 'next/image';
 
 interface Author {
   id: number;
@@ -186,37 +187,37 @@ export default function EnhancedBlogPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="group relative"
+                  className="bg-white/5 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col h-[500px]"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
-                  <Link href={`/blogs/${blog.slug}`}>
-                    <div className="relative rounded-2xl bg-white backdrop-blur-sm border border-gray-100 overflow-hidden transition-all duration-300 group-hover:bg-gray-50 shadow-sm">
-                      <div className="relative h-64 overflow-hidden">
-                        <div className={`absolute inset-0 bg-gradient-to-r ${getGradient(index)} opacity-80`}></div>
-                        <img 
-                          src={blog.image || `https://source.unsplash.com/random/800x600?${index}`}
-                          alt={blog.title}
-                          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                        />
-                      </div>
-                      <div className="p-8">
-                        <div className="flex items-center text-[#111240]/60 mb-4">
-                          <Calendar className="w-4 h-4 mr-2" />
-                          <span className="text-sm">{formatDate(blog.date)}</span>
-                        </div>
-                        <h3 className="text-xl font-semibold text-[#111240] mb-4 group-hover:text-[#111240]/90 transition-colors duration-300">
-                          {blog.title}
-                        </h3>
-                        <p className="text-[#111240]/60 mb-6 line-clamp-2">
-                          {getExcerpt(blog.content)}
-                        </p>
-                        <div className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] group/link">
-                          <span className="mr-2">Read More</span>
-                          <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
-                        </div>
-                      </div>
+                  <div className="relative h-64">
+                    <Image
+                      src={blog.image || `https://source.unsplash.com/random/800x600?${index}`}
+                      alt={blog.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-6 flex flex-col flex-grow">
+                    <div className="mb-4">
+                      <h3 className="text-xl font-semibold text-[#111240] mb-2 line-clamp-2">
+                        {blog.title}
+                      </h3>
+                      <p className="text-[#111240]/60 text-sm mb-2">
+                        {formatDate(blog.date)}
+                      </p>
+                      <p className="text-[#111240]/60 line-clamp-3">
+                        {getExcerpt(blog.content)}
+                      </p>
                     </div>
-                  </Link>
+                    <div className="mt-auto">
+                      <Link
+                        href={`/blogs/${blog.slug}`}
+                        className="inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-300"
+                      >
+                        Read More
+                      </Link>
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
