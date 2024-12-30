@@ -12,16 +12,26 @@ import adminRouter from './routes/admin.js';
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-
-
 // Essential middleware in this specific order
 app.use(cookieParser());
 app.use(express.json());
+
+const allowedOrigins = process.env.NODE_ENV === 'production'
+  ? [process.env.FRONTEND_URL]  // Use environment variable in production
+  : ['http://localhost:3000'];  // Allow localhost in development
+
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: function(origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) === -1) {
+            return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'), false);
+        }
+        return callback(null, true);
+    },
     credentials: true
 }));
-
 
 app.use(helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" }
@@ -29,19 +39,24 @@ app.use(helmet({
 
 // Request logging middleware
 app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.originalUrl}`);
+    if (process.env.NODE_ENV !== 'production') {
+        console.log(`${new Date().toISOString()} - ${req.method} ${req.originalUrl}`);
+    }
     next();
 });
 
 app.use((req, res, next) => {
-    console.log('Request:', {
-        method: req.method,
-        path: req.path,
-        body: req.body,
-        cookies: req.cookies
-    });
+    if (process.env.NODE_ENV !== 'production') {
+        console.log('Request:', {
+            method: req.method,
+            path: req.path,
+            body: req.body,
+            cookies: req.cookies
+        });
+    }
     next();
 });
+
 // Routes
 app.use('/api/messages', messageRouter);
 app.use('/api/blog', blogRouter);

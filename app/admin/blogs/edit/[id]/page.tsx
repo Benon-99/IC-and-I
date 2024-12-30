@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Save, X, Image as ImageIcon, Plus, Eye, Calendar, Layout, Tag } from 'lucide-react';
 import Link from 'next/link';
@@ -60,12 +60,18 @@ export default function EditBlogPost() {
     }
   };
 
-  const fetchBlogPost = async () => {
+  const fetchBlogPost = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/blog/post/${params.id}`);
+      const response = await fetch(`http://localhost:8000/api/blog/post/${params.id}`, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        },
+      });
+      
       if (!response.ok) {
-        throw new Error('Blog post not found');
+        throw new Error('Failed to fetch blog post');
       }
+
       const data = await response.json();
       setFormData({
         ...data.post,
@@ -78,7 +84,11 @@ export default function EditBlogPost() {
       console.error('Error fetching blog post:', error);
       router.push('/admin/blogs');
     }
-  };
+  }, [params.id]);
+
+  useEffect(() => {
+    fetchBlogPost();
+  }, [fetchBlogPost]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

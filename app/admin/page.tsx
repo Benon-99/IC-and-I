@@ -123,6 +123,9 @@ export default function AdminDashboard() {
                         })}</span>
                     </div>
                 </div>
+                <p className="text-sm text-gray-500">
+                  You don&apos;t have any notifications yet. We&apos;ll let you know when something arrives.
+                </p>
             </div>
         </div>
     );

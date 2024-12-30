@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, Calendar } from 'lucide-react';
 
 export default function BlogPreview() {
@@ -101,10 +102,12 @@ export default function BlogPreview() {
                 <div className="relative rounded-2xl bg-white backdrop-blur-sm border border-gray-100 overflow-hidden transition-all duration-300 group-hover:bg-gray-50 shadow-sm">
                   <div className="relative h-64 overflow-hidden">
                     <div className={`absolute inset-0 bg-gradient-to-r ${blog.gradient} opacity-80`}></div>
-                    <img 
+                    <Image 
                       src={blog.image} 
                       alt={blog.title}
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                      width={800}
+                      height={400}
+                      className="w-full h-48 object-cover rounded-t-lg"
                     />
                   </div>
                   <div className="p-8">

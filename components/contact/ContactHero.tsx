@@ -26,13 +26,12 @@ export default function ContactHero() {
             Contact Us
           </motion.span>
           
-          <h1 className="text-6xl font-bold bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent mb-6 leading-normal">
-            Get in Touch
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            Let&apos;s Connect and Create Something Amazing Together
           </h1>
           
-          <p className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
-            We're here to help! Whether you have questions, need support, or want to learn more about what we offer, 
-            don't hesitate to reach out.
+          <p className="mt-6 text-lg leading-8 text-gray-600">
+            We&apos;re here to help you achieve your business goals. Get in touch with us today.
           </p>
         </motion.div>
       </div>

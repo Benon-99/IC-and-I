@@ -173,7 +173,7 @@ export default function AboutPage() {
                   </p>
                   <p>
                     With a presence across all Syrian governorates and main offices in Damascus, Aleppo, 
-                    Homs, Lattakia, and Dara'a, we are strategically positioned to offer top-tier 
+                    Homs, Lattakia, and Dara&apos;a, we are strategically positioned to offer top-tier 
                     services wherever they are needed.
                   </p>
                 </div>
@@ -196,7 +196,7 @@ export default function AboutPage() {
                     Our Vision
                   </h3>
                   <p className="text-[#111240]/70">
-                    We strive to strengthen IC&I's market presence by consistently delivering 
+                    We strive to strengthen IC&I&apos;s market presence by consistently delivering 
                     exceptional performance, superior service, and driving innovation to support 
                     long-term growth.
                   </p>
