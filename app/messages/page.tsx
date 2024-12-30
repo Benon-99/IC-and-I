@@ -8,8 +8,8 @@ interface MessageData {
   name: string;
   email: string;
   message: string;
-  created_at: string;
   subject: string;
+  created_at: string | number | Date;
 }
 
 // Fetch function
@@ -58,99 +58,28 @@ const MessagesTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {messages?.map(
-            (message: {
-              id:
-                | boolean
-                | React.ReactElement<
-                    any,
-                    string | React.JSXElementConstructor<any>
-                  >
-                | Iterable<React.ReactNode>
-                | Promise<React.AwaitedReactNode>
-                | React.Key
-                | null
-                | undefined;
-              name:
-                | string
-                | number
-                | bigint
-                | boolean
-                | React.ReactElement<
-                    any,
-                    string | React.JSXElementConstructor<any>
-                  >
-                | Iterable<React.ReactNode>
-                | React.ReactPortal
-                | Promise<React.AwaitedReactNode>
-                | null
-                | undefined;
-              email:
-                | string
-                | number
-                | bigint
-                | boolean
-                | React.ReactElement<
-                    any,
-                    string | React.JSXElementConstructor<any>
-                  >
-                | Iterable<React.ReactNode>
-                | React.ReactPortal
-                | Promise<React.AwaitedReactNode>
-                | null
-                | undefined;
-              subject:
-                | string
-                | number
-                | bigint
-                | boolean
-                | React.ReactElement<
-                    any,
-                    string | React.JSXElementConstructor<any>
-                  >
-                | Iterable<React.ReactNode>
-                | React.ReactPortal
-                | Promise<React.AwaitedReactNode>
-                | null
-                | undefined;
-              message:
-                | string
-                | number
-                | bigint
-                | boolean
-                | React.ReactElement<
-                    any,
-                    string | React.JSXElementConstructor<any>
-                  >
-                | Iterable<React.ReactNode>
-                | React.ReactPortal
-                | Promise<React.AwaitedReactNode>
-                | null
-                | undefined;
-              created_at: string | number | Date;
-            }) => (
-              <tr key={message.id} className="odd:bg-white even:bg-gray-50">
-                <td className="px-4 py-2 border border-gray-300 text-center">
-                  {message.id}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {message.name}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {message.email}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {message.subject}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {message.message}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {new Date(message.created_at).toLocaleString()}
-                </td>
-              </tr>
-            )
-          )}
+          {messages?.map((message: MessageData) => (
+            <tr key={message.id} className="odd:bg-white even:bg-gray-50">
+              <td className="px-4 py-2 border border-gray-300 text-center">
+                {message.id}
+              </td>
+              <td className="px-4 py-2 border border-gray-300">
+                {message.name}
+              </td>
+              <td className="px-4 py-2 border border-gray-300">
+                {message.email}
+              </td>
+              <td className="px-4 py-2 border border-gray-300">
+                {message.subject}
+              </td>
+              <td className="px-4 py-2 border border-gray-300">
+                {message.message}
+              </td>
+              <td className="px-4 py-2 border border-gray-300">
+                {new Date(message.created_at).toLocaleString()}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

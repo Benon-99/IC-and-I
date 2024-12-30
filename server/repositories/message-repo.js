@@ -7,6 +7,7 @@ export const messageRepository = {
                 data: {
                     name: messageDTO.name,
                     email: messageDTO.email,
+                    subject: messageDTO.subject,
                     message: messageDTO.message,
                 }
             });

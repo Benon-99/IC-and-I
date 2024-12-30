@@ -97,7 +97,7 @@ const ContactForm: React.FC = () => {
             type="text"
             placeholder="Your Name"
             {...register("name")}
-            isError={!!errors.name}
+            $isError={!!errors.name}
           />
           {errors.name && (
             <ErrorMessage>{errors.name?.message}</ErrorMessage>
@@ -109,7 +109,7 @@ const ContactForm: React.FC = () => {
             type="email"
             placeholder="Your Email"
             {...register("email")}
-            isError={!!errors.email}
+            $isError={!!errors.email}
           />
           {errors.email && (
             <ErrorMessage>{errors.email?.message}</ErrorMessage>
@@ -121,7 +121,7 @@ const ContactForm: React.FC = () => {
             type="text"
             placeholder="Subject"
             {...register("subject")}
-            isError={!!errors.subject}
+            $isError={!!errors.subject}
           />
           {errors.subject && (
             <ErrorMessage>{errors.subject?.message}</ErrorMessage>
@@ -132,7 +132,7 @@ const ContactForm: React.FC = () => {
           <Textarea
             placeholder="Your Message"
             {...register("message")}
-            isError={!!errors.message}
+            $isError={!!errors.message}
           />
           {errors.message && (
             <ErrorMessage>{errors.message?.message}</ErrorMessage>
@@ -188,32 +188,32 @@ const InputWrapper = styled.div`
   margin-bottom: 1.5rem;
 `;
 
-const Input = styled.input<{ isError?: boolean }>`
+const Input = styled.input<{ $isError?: boolean }>`
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid ${({ isError }) => (isError ? "#ff4d4f" : "#cccccc")};
+  border: 1px solid ${({ $isError }) => ($isError ? "#ff4d4f" : "#cccccc")};
   border-radius: 6px;
   font-size: 1rem;
   outline: none;
-  background: ${({ isError }) => (isError ? "#ffeef0" : "#ffffff")};
+  background: ${({ $isError }) => ($isError ? "#ffeef0" : "#ffffff")};
 
   &:focus {
-    border-color: ${({ isError }) => (isError ? "#ff4d4f" : "#9c3aaf")};
+    border-color: ${({ $isError }) => ($isError ? "#ff4d4f" : "#9c3aaf")};
   }
 `;
 
-const Textarea = styled.textarea<{ isError?: boolean }>`
+const Textarea = styled.textarea<{ $isError?: boolean }>`
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid ${({ isError }) => (isError ? "#ff4d4f" : "#cccccc")};
+  border: 1px solid ${({ $isError }) => ($isError ? "#ff4d4f" : "#cccccc")};
   border-radius: 6px;
   font-size: 1rem;
   outline: none;
   min-height: 100px;
-  background: ${({ isError }) => (isError ? "#ffeef0" : "#ffffff")};
+  background: ${({ $isError }) => ($isError ? "#ffeef0" : "#ffffff")};
 
   &:focus {
-    border-color: ${({ isError }) => (isError ? "#ff4d4f" : "#9c3aaf")};
+    border-color: ${({ $isError }) => ($isError ? "#ff4d4f" : "#9c3aaf")};
   }
 `;
 
