@@ -7,9 +7,9 @@ import MessageListItem from "./MessageListItem";
 
 export default function MessageList() {
   const [searchQuery, setSearchQuery] = useState("");
-  const { messages, isLoading, error } = useMessages();
+  const { messages, loading, error } = useMessages();
 
-  if (isLoading) {
+  if (loading) {
     return <div className="text-center py-8">Loading...</div>;
   }
 

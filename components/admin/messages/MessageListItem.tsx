@@ -3,10 +3,10 @@
 import { Mail, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
-import { Submission } from "@prisma/client";
+import { Message } from "@/types/message";
 
 interface MessageListItemProps {
-  message: Submission;
+  message: Message;
 }
 
 export default function MessageListItem({ message }: MessageListItemProps) {
