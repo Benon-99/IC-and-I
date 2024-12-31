@@ -13,6 +13,7 @@ const navigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { name: 'Blog Posts', href: '/admin/blogs', icon: FileText },
   { name: 'Messages', href: '/admin/messages', icon: MessageSquare },
+  {name : "Home" , href : '/admin/home' , icon : Settings }
 ];
 
 export default function AdminSidebar() {
