@@ -2,10 +2,30 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { Globe, Target, Compass, Shield, Users, Heart, ArrowRight, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 
+
+const ICONS: Record<string, LucideIcon> = {
+  Globe: Globe,
+  Target: Target,
+  Compass: Compass,
+  Shield: Shield,
+  Users: Users,
+  Heart: Heart,
+  ArrowRight: ArrowRight,
+};
 interface AboutContent {
+  features: {
+    icon: string;
+    title: string;
+    text: string;
+    color: string;
+  }[],
+  stats: {
+    number: string;
+    label: string;
+  }[],
   title: string;
   subtitle: string;
   content: string[];
@@ -13,21 +33,47 @@ interface AboutContent {
 }
 
 export default function About() {
+
   const {data: aboutUsContent, isError, isLoading, error} = useQuery<AboutContent>({
     queryKey: ["about"],
     queryFn: async () => {
       const connect = await fetch("http://localhost:8000/about");
       const data = await connect.json();
+      console.log(data.about[0].aboutUs)
       return data.about[0].aboutUs;
     }
   });
 
   if (isLoading) {
-    return <div>Loading</div>;
+    if (isLoading) {
+      return (
+        <div className="flex items-center justify-center h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+          <div className="flex flex-col items-center">
+            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <p className="mt-4 text-white text-lg font-medium">Loading content, please wait...</p>
+          </div>
+        </div>
+      );
+    }
   }
 
   if (isError || !aboutUsContent) {
-    return <div>{error + ""}</div>;
+    return (
+      <div className="flex items-center justify-center h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+        <div className="text-center space-y-4">
+          <h2 className="text-2xl font-bold text-red-500">Oops! Something went wrong</h2>
+          <p className="text-gray-300">
+            We were unable to load the content. Please try again later or contact support.
+          </p>
+          <button
+            onClick={() => location.reload()}
+            className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-300"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -61,7 +107,7 @@ export default function About() {
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
-          {/* Left Column - Image */}
+          {/* Left Column - Image and Stats */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -76,9 +122,30 @@ export default function About() {
                 className="relative rounded-2xl w-full aspect-[4/3] object-cover transform group-hover:scale-[1.02] transition-transform duration-500"
               />
             </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              {
+              // @ts-ignore
+            aboutUsContent && aboutUsContent.stats && JSON.parse(aboutUsContent.stats).map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="p-6 rounded-xl bg-transparent backdrop-blur-sm border border-[#B5C6F4] transition-colors duration-300"
+                >
+                  <div className="text-3xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text mb-2 text-[#111240]">
+                    {stat.number}
+                  </div>
+                  <div className="text-[#111240] text-sm">
+                    {stat.label}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
 
-          {/* Right Column - Content */}
+          {/* Right Column - Content and Features */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -89,6 +156,34 @@ export default function About() {
               {aboutUsContent.content.map((paragraph, index) => (
                 <p key={index}>{paragraph}</p>
               ))}
+            </div>
+
+            <div className="space-y-6">
+
+            {
+            // @ts-ignore
+            aboutUsContent && aboutUsContent.features && JSON.parse(aboutUsContent.features).map((feature, index) => {
+              const IconComponent = ICONS[feature.icon] || null;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="group p-6 rounded-xl bg-white/10 backdrop-blur-sm border border-[#B5C6F4] hover:bg-[#B5C6F4] transition-all duration-300"
+                >
+                  <div className="flex items-start space-x-4">
+                  <div className={`p-3 rounded-lg bg-gradient-to-r ${feature.color} group-hover:scale-110 transition-transform duration-300`}>
+                    {IconComponent && <IconComponent className="w-6 h-6 text-white" />}
+                  </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-[#111240] mb-2">{feature.title}</h3>
+                      <p className="text-[#111240]">{feature.text}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
             </div>
 
             <Link 

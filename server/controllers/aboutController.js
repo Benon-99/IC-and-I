@@ -30,11 +30,13 @@ export const getAbout = async (req, res) => {
             about[0].aboutUs = {};
         }
 
-        // Ensure stats exists and is an array
-        if (!Array.isArray(about[0].aboutUs.stats)) {
-            about[0].aboutUs.stats = about[0].aboutUs.stats ? [about[0].aboutUs.stats] : [];
-        }
+        
 
+        if (about[0]?.stats) {
+            about[0].stats = Array.isArray(about[0].stats) 
+                ? about[0].stats 
+                : [about[0].stats];
+        }
         console.log('Processed Data:', about[0]);
 
         res.json({ about });
@@ -48,6 +50,8 @@ export const updateAbout = async (req, res) => {
     try {
         const { id } = req.query;
         const photo = req.file ? req.file.path : null;
+        console.log("aewqerqeqr  : ",req.body.features);
+        
         const { img, content: contentString, features: featuresString, stats: statsString, ...rest } = req.body;
 
         console.log('Received stats:', statsString);
@@ -62,27 +66,6 @@ export const updateAbout = async (req, res) => {
             content = contentString ? [contentString] : [];
         }
 
-        // Parse the features array from the JSON string
-        let features;
-        try {
-            features = featuresString ? JSON.parse(featuresString) : [];
-            features = Array.isArray(features) ? features : [features];
-        } catch (error) {
-            console.error('Error parsing features:', error);
-            features = featuresString ? [featuresString] : [];
-        }
-
-        // Parse the stats array from the JSON string
-        let stats;
-        try {
-            stats = statsString ? JSON.parse(statsString) : [];
-            // Ensure stats is an array
-            stats = Array.isArray(stats) ? stats : [stats];
-            console.log('Parsed stats:', stats);
-        } catch (error) {
-            console.error('Error parsing stats:', error);
-            stats = [];
-        }
 
         const aboutData = await prisma.home.findFirst({
             where: { id: parseInt(id) }
@@ -95,10 +78,10 @@ export const updateAbout = async (req, res) => {
                 aboutUs: {
                     ...rest,
                     content,
-                    stats,
+                    features:featuresString,
+                    stats  :statsString,
                     img: photo ? `http://localhost:8000/${photo.split('\\')[1]}` : (img || aboutData?.aboutUs?.img)
                 },
-                features
             }
         });
 
