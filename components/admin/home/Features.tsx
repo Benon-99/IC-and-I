@@ -10,6 +10,13 @@ interface Feature {
   description: string;
   icon: string;
   gradient: string;
+  link: string;
+}
+
+interface Advantages {
+  title: string;
+  subtitle: string;
+  features: Feature[];
 }
 
 interface AlertState {
@@ -18,22 +25,26 @@ interface AlertState {
 }
 
 export default function Features() {
-  const [features, setFeatures] = useState<Feature[]>([]);
+  const [advantages, setAdvantages] = useState<Advantages>({
+    title: '',
+    subtitle: '',
+    features: []
+  });
   const [alert, setAlert] = useState<AlertState | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   const { data: homeData, isError, isLoading } = useQuery({
-    queryKey: ["features"],
+    queryKey: ["home"],
     queryFn: async () => {
       const response = await fetch("http://localhost:8000/home");
       const data = await response.json();
-      return data;
+      return data.about[0].advantages || {};
     },
   });
 
   useEffect(() => {
-    if (homeData?.about?.[0]) {
-      setFeatures(homeData.about[0].features);
+    if (homeData) {
+      setAdvantages(homeData);
     }
   }, [homeData]);
 
@@ -45,41 +56,46 @@ export default function Features() {
   }, [alert]);
 
   const updateFeatureDescription = (index: number, description: string) => {
-    setFeatures(prev => {
-      const newFeatures = [...prev];
+    setAdvantages(prev => {
+      const newFeatures = [...prev.features];
       newFeatures[index] = { ...newFeatures[index], description };
-      return newFeatures;
+      return { ...prev, features: newFeatures };
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSaving(true);
+  const updateField = (field: keyof Advantages, value: string) => {
+    setAdvantages(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
 
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+  
     try {
       const response = await fetch("http://localhost:8000/home/features/update?id=1", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ features }),
+        body: JSON.stringify({
+          title: advantages.title,
+          subtitle: advantages.subtitle,
+          features: advantages.features,
+        }),
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to update features");
-      }
-
+  
+      if (!response.ok) throw new Error('Failed to update features');
       setAlert({ type: 'success', message: 'Features updated successfully!' });
-    } catch (error) {
-      console.error("Error updating features:", error);
+    } catch (error: unknown) {
       setAlert({ 
         type: 'error', 
-        message: `Error updating features: ${error instanceof Error ? error.message : 'Unknown error'}` 
+        message: error instanceof Error ? error.message : 'An unknown error occurred' 
       });
-    } finally {
-      setIsSaving(false);
     }
   };
+  
 
   if (isLoading) {
     return (
@@ -128,7 +144,7 @@ export default function Features() {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-white">Features Section</h2>
-          <p className="text-gray-400 mt-1">Edit feature descriptions</p>
+          <p className="text-gray-400 mt-1">Edit feature content</p>
         </div>
         <button
           onClick={handleSubmit}
@@ -149,7 +165,32 @@ export default function Features() {
       </div>
 
       <div className="grid gap-6">
-        {features.map((feature, index) => (
+        <div className="p-6 bg-[#1a1f4b] rounded-xl shadow-lg">
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-300 mb-1">
+              Title
+            </label>
+            <input
+              value={advantages.title}
+              onChange={(e) => updateField('title', e.target.value)}
+              className="w-full px-4 py-2 bg-[#2e3267] border border-gray-700 rounded-lg text-white"
+              placeholder="Section title..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">
+              Subtitle
+            </label>
+            <input
+              value={advantages.subtitle}
+              onChange={(e) => updateField('subtitle', e.target.value)}
+              className="w-full px-4 py-2 bg-[#2e3267] border border-gray-700 rounded-lg text-white"
+              placeholder="Section subtitle..."
+            />
+          </div>
+        </div>
+
+        {advantages.features.map((feature, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 20 }}

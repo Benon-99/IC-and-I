@@ -1,16 +1,9 @@
 "use client";
 
+import { motion } from 'framer-motion';
 import { Shield, Clock, Users, TrendingUp } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-
-interface Feature {
-  title: string;
-  description: string;
-  icon: string;
-  gradient: string;
-  link: string;
-}
+import { useQuery } from '@tanstack/react-query';
 
 const iconMap = {
   Shield: Shield,
@@ -20,16 +13,35 @@ const iconMap = {
 };
 
 export default function Features() {
-  const { data: featuresData, isError, isLoading } = useQuery({
-    queryKey: ["features"],
+  const { data: homeData, isError, isLoading } = useQuery({
+    queryKey: ["home"],
     queryFn: async () => {
       const response = await fetch("http://localhost:8000/home");
       const data = await response.json();
-      console.log('API Response:', data); // Add this line
-      return data.about[0].features || []; // Adjust this as necessary
+      return data.about[0].advantages || {};
     },
   });
-  
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
 
   if (isLoading) {
     return (
@@ -39,19 +51,10 @@ export default function Features() {
     );
   }
 
-  if (isError) {
+  if (isError || !homeData.features || homeData.features.length === 0) {
     return (
       <div className="text-center py-12">
-        <h3 className="text-xl font-semibold text-red-500 mb-2">Error Loading Features</h3>
-        <p className="text-gray-400">Failed to load features. Please try again later.</p>
-      </div>
-    );
-  }
-
-  if (!featuresData || featuresData.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <h3 className="text-xl font-semibold text-gray-500 mb-2">No Features Available</h3>
+        <h3 className="text-xl font-semibold text-gray-500 mb-2">No Advantages Available</h3>
       </div>
     );
   }
@@ -64,46 +67,64 @@ export default function Features() {
       </div>
 
       <div className="w-full lg:w-[1280px] mx-auto px-4 relative">
-        <div className="text-center mb-16">
-          <span
-            className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#111240]/5 text-[#111240] backdrop-blur-sm mb-4 inline-block"
-          >
-            Our Advantages
-          </span>
-          <h2
-            className="text-5xl font-bold mb-6 bg-gradient-to-r from-[#111240] to-[#111240]/80 bg-clip-text text-transparent"
-          >
-            Why Choose IC&I?
-          </h2>
-          <p
-            className="text-xl text-[#111240]/70 max-w-2xl mx-auto"
-          >
-            Experience excellence in every aspect of our service delivery
-          </p>
-        </div>
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }} // Trigger when 20% of the element is in view
+        variants={containerVariants}
+        className="text-center mb-16"
+      >
+        <motion.span
+          variants={itemVariants}
+          className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#111240]/5 text-[#111240] backdrop-blur-sm mb-4 inline-block"
+        >
+          Our Advantages
+        </motion.span>
+        <motion.h2
+          variants={itemVariants}
+          className="text-5xl font-bold mb-6 bg-gradient-to-r from-[#111240] to-[#111240]/80 bg-clip-text text-transparent"
+        >
+          {homeData.title}
+        </motion.h2>
+        <motion.p
+          variants={itemVariants}
+          className="text-xl text-[#111240]/70 max-w-2xl mx-auto"
+        >
+          {homeData.subtitle}
+        </motion.p>
+      </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {featuresData.map((feature: Feature, index: number) => {
+
+        <motion.div
+          variants={containerVariants}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+        >
+          {homeData.features.map((feature: any, index: number) => {
             const IconComponent = iconMap[feature.icon as keyof typeof iconMap];
-            
             return (
-              <Link href={feature.link || "#"} key={index}>
-                <div
-                  className="group relative overflow-hidden rounded-2xl p-8 transition-all hover:shadow-lg"
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-r ${feature.gradient} opacity-10 group-hover:opacity-15 transition-opacity`} />
-                  <div className="relative z-10">
-                    <div className="mb-4 inline-block rounded-lg bg-white/10 p-3">
-                      {IconComponent && <IconComponent className="h-6 w-6 text-white" />}
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                className="group relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-[#3785CC]/5 to-[#5B8AF0]/5 rounded-2xl transform rotate-2 scale-[1.02] opacity-50 group-hover:rotate-1 transition-transform duration-300"></div>
+                <Link href={feature.link || "#"}>
+                  <div className="relative p-8 rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300 text-center group-hover:transform group-hover:scale-[1.02] shadow-sm">
+                    <div
+                      className={`p-4 rounded-xl bg-gradient-to-r ${feature.gradient} mx-auto w-16 h-16 flex items-center justify-center mb-6 transform group-hover:scale-110 transition-transform duration-300`}
+                    >
+                      {IconComponent && <IconComponent className="w-8 h-8 text-white" />}
                     </div>
-                    <h3 className="mb-2 text-xl font-bold text-white">{feature.title}</h3>
-                    <p className="text-gray-300">{feature.description}</p>
+                    <h3 className="text-xl font-bold mb-4 text-[#111240]">
+                      {feature.title}
+                    </h3>
+                    <p className="text-[#111240]/60 mb-6">{feature.description}</p>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

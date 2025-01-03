@@ -49,46 +49,26 @@ export const getAbout = async (req, res) => {
 export const updateAbout = async (req, res) => {
     try {
         const { id } = req.query;
-        const photo = req.file ? req.file.path : null;
-        console.log("aewqerqeqr  : ",req.body.features);
-        
-        const { img, content: contentString, features: featuresString, stats: statsString, ...rest } = req.body;
+        const { title, description } = req.body;
+        const image = req.file?.filename;
 
-        console.log('Received stats:', statsString);
+        const updateData = {
+            title,
+            description,
+            ...(image && { image })
+        };
 
-        // Parse the content array from the JSON string
-        let content;
-        try {
-            content = contentString ? JSON.parse(contentString) : [];
-            content = Array.isArray(content) ? content : [content];
-        } catch (error) {
-            console.error('Error parsing content:', error);
-            content = contentString ? [contentString] : [];
-        }
-
-
-        const aboutData = await prisma.home.findFirst({
-            where: { id: parseInt(id) }
-        });
-
-        // Handle the update with either uploaded file or image URL
-        const about = await prisma.home.update({
+        const updatedAbout = await prisma.home.update({
             where: { id: parseInt(id) },
-            data: {
-                aboutUs: {
-                    ...rest,
-                    content,
-                    features:featuresString,
-                    stats  :statsString,
-                    img: photo ? `http://localhost:8000/${photo.split('\\')[1]}` : (img || aboutData?.aboutUs?.img)
-                },
-            }
+            data: updateData
         });
 
-        console.log('Updated about:', about);
-        res.json({ about });
+        res.json({ 
+            message: 'About section updated successfully', 
+            data: updatedAbout 
+        });
     } catch (error) {
-        console.error('Error updating about:', error);
+        console.error('Error updating about section:', error);
         res.status(500).json({ error: 'Failed to update about section' });
     }
 };

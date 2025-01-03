@@ -1,4 +1,4 @@
-// prisma/seed.js
+/*// prisma/seed.js
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
@@ -76,6 +76,62 @@ async function main() {
       features: features,
     },
   });
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });*/
+
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
+async function main() {
+  await prisma.home.update({
+    where: { id: 1 }, // Update the record with the appropriate `id`
+    data: {
+      advantages: {
+        title: "Why Choose Us?",
+        subtitle: "Discover our unique advantages",
+        features: [
+          {
+            title: "Trustworthy",
+            description: "Over 25 years of expertise in delivering innovative and high-quality business solutions",
+            icon: "Shield",
+            gradient: "from-[#3785CC] to-[#4A9BE4]",
+            link: "/about#expertise",
+          },
+          {
+            title: "24/7 Support",
+            description: "Comprehensive round-the-clock technical support and professional assistance for all your business needs",
+            icon: "Clock",
+            gradient: "from-[#4A9BE4] to-[#5B8AF0]",
+            link: "/services#support",
+          },
+          {
+            title: "Expert Team",
+            description: "Dedicated team of professionals with extensive industry knowledge and experience",
+            icon: "Users",
+            gradient: "from-[#5B8AF0] to-[#8590EA]",
+            link: "/about#team",
+          },
+          {
+            title: "Scalable Solutions",
+            description: "Flexible and adaptable solutions designed to grow seamlessly with your business",
+            icon: "TrendingUp",
+            gradient: "from-[#8590EA] to-[#B5C6F4]",
+            link: "/services#solutions",
+          },
+        ],
+      },
+    },
+  });
+
+  console.log("Advantages updated successfully");
 }
 
 main()
