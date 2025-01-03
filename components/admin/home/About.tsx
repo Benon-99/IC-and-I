@@ -50,7 +50,7 @@ export default function About() {
         {
             queryKey: ["about"],
             queryFn: async () => {
-            const response = await fetch("http://localhost:8000/about");
+            const response = await fetch("http://localhost:8000/home");
             const data = await response.json();
             return data;
         },
@@ -191,7 +191,7 @@ export default function About() {
         formDataToSend.append("features", JSON.stringify(formData.features));
         formDataToSend.append("stats", JSON.stringify(formData.stats));
         console.log(formDataToSend);
-        const response = await fetch("http://localhost:8000/about/update?id=1", {
+        const response = await fetch("http://localhost:8000/home/about/update?id=1", {
             method: "POST",
             body: formDataToSend,
         });

@@ -39,7 +39,7 @@ export const getAbout = async (req, res) => {
         }
         console.log('Processed Data:', about[0]);
 
-        res.json({ about });
+        res.json({ about});
     } catch (error) {
         console.error('Error getting about:', error);
         res.status(500).json({ error: 'Failed to get about section' });

@@ -4,8 +4,9 @@ import { useState } from 'react';
 import About from "@/components/admin/home/About";
 import Services from "@/components/admin/home/Services";
 import Blogs from "@/components/admin/home/blogs";
+import Features from "@/components/admin/home/Features";
 import { motion } from 'framer-motion';
-import { Info, Settings, BookOpen } from 'lucide-react';
+import { Info, Settings, BookOpen, Layout } from 'lucide-react';
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState('about');
@@ -22,6 +23,12 @@ export default function HomePage() {
       label: 'Services', 
       component: <Services />,
       icon: <Settings className="w-5 h-5" />
+    },
+    { 
+      id: 'features', 
+      label: 'Features', 
+      component: <Features />,
+      icon: <Layout className="w-5 h-5" />
     },
     { 
       id: 'blogs', 

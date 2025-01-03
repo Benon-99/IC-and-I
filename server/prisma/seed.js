@@ -1,5 +1,5 @@
 // prisma/seed.js
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const aboutUsContent = {
@@ -42,10 +42,38 @@ const aboutUsContent = {
   ]
 };
 
+const features = [
+  {
+    title: 'Trustworthy',
+    description: 'Over 25 years of expertise in delivering innovative and high-quality business solutions',
+    icon: "Shield",
+    gradient: "from-[#3785CC] to-[#4A9BE4]"
+  },
+  {
+    title: '24/7 Support',
+    description: 'Comprehensive round-the-clock technical support and professional assistance for all your business needs',
+    icon: "Clock",
+    gradient: "from-[#4A9BE4] to-[#5B8AF0]",
+  },
+  {
+    title: 'Expert Team',
+    description: 'Dedicated team of professionals with extensive industry knowledge and experience',
+    icon: "Users",
+    gradient: "from-[#5B8AF0] to-[#8590EA]",
+  },
+  {
+    title: 'Scalable Solutions',
+    description: 'Flexible and adaptable solutions designed to grow seamlessly with your business',
+    icon: "TrendingUp",
+    gradient: "from-[#8590EA] to-[#B5C6F4]",
+  }
+];
+
 async function main() {
   await prisma.home.create({
     data: {
-      aboutUs: aboutUsContent
+      aboutUs: aboutUsContent,
+      features: features,
     },
   });
 }

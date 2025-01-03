@@ -37,7 +37,7 @@ export default function About() {
   const {data: aboutUsContent, isError, isLoading, error} = useQuery<AboutContent>({
     queryKey: ["about"],
     queryFn: async () => {
-      const connect = await fetch("http://localhost:8000/about");
+      const connect = await fetch("http://localhost:8000/home");
       const data = await connect.json();
       console.log(data.about[0].aboutUs)
       return data.about[0].aboutUs;

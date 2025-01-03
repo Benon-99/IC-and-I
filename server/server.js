@@ -64,7 +64,7 @@ app.use('/api/blog', blogRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/email', emailRouter);
 app.use('/api/admin', adminRouter);
-app.use('/about', homeRouter);
+app.use('/home', homeRouter);
 app.use(express.static('uploads'));
 
 // Database connection test

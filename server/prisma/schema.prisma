@@ -61,6 +61,8 @@ enum Role {
 }
 
 model Home {
-  id      Int    @id @default(autoincrement())
-  aboutUs Json
+  id       Int    @id @default(autoincrement())
+  aboutUs  Json
+  features Json
 }
+
