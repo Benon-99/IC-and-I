@@ -1,20 +1,20 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
-import {
-  Server,
-  Network,
-  Shield,
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import { 
+  Server, 
+  Network, 
+  Shield, 
   Code,
   Users,
   UserPlus,
   ClipboardList,
   Calculator,
   ArrowRight,
-  Loader2,
-} from "lucide-react";
+  Loader2
+} from 'lucide-react';
 
 // Define available icons
 const ICONS: Record<string, any> = {
@@ -30,23 +30,26 @@ const ICONS: Record<string, any> = {
 
 export default function Services() {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["services"],
+    queryKey: ['services'],
     queryFn: async () => {
-      const response = await fetch("http://localhost:8000/home");
+      console.log('Fetching services data...');
+      const response = await fetch('http://localhost:8000/home');
       const json = await response.json();
+      console.log('Raw API response:', json);
+      console.log('Services data structure:', json.about[0]?.services);
+      console.log('Categories:', json.about[0]?.services?.categories);
       return json.about[0]?.services || {};
     },
   });
 
-  // Framer motion variants for animation
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-      },
-    },
+        staggerChildren: 0.1
+      }
+    }
   };
 
   const itemVariants = {
@@ -55,12 +58,12 @@ export default function Services() {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5,
-      },
-    },
+        duration: 0.5
+      }
+    }
   };
 
-  // Handle loading or error states
+  // Handle loading state
   if (isLoading) {
     return (
       <div className="min-h-[600px] bg-[#111240] flex items-center justify-center">
@@ -72,6 +75,7 @@ export default function Services() {
     );
   }
 
+  // Handle error state
   if (isError || !data?.categories?.length) {
     return (
       <div className="min-h-[600px] bg-[#111240] flex items-center justify-center">
@@ -80,7 +84,6 @@ export default function Services() {
     );
   }
 
-  // Render the services dynamically
   return (
     <section className="py-24 bg-[#111240] relative overflow-hidden">
       {/* Animated Background */}
@@ -97,12 +100,12 @@ export default function Services() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={containerVariants}
-            className={`mb-20 ${idx !== 0 ? "mt-32" : ""}`}
+            className={`mb-20 ${idx !== 0 ? 'mt-32' : ''}`}
           >
             <div className="text-center mb-16">
               {idx === 0 && (
                 <motion.span
-                  variants={itemVariants}
+                  variants={itemVariants} 
                   className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-4 inline-block"
                 >
                   What We Offer
@@ -110,26 +113,22 @@ export default function Services() {
               )}
               <motion.h2
                 variants={itemVariants}
-                className={`text-5xl font-bold mb-6 bg-gradient-to-r ${
-                  category.gradient || "from-blue-500 to-teal-500"
-                } bg-clip-text text-transparent`}
+                className={`text-5xl font-bold mb-6 bg-gradient-to-r ${category.test || 'from-blue-500 to-teal-500'} bg-clip-text text-transparent`}
               >
-                {category.category}
+                {category.title}
               </motion.h2>
               <motion.p
                 variants={itemVariants}
                 className="text-xl text-white/80 max-w-3xl mx-auto"
               >
-                {category.description}
+                {category.subtitle}
               </motion.p>
             </div>
 
-            <motion.div
+            <motion.div 
               variants={containerVariants}
               className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ${
-                category.category === "Business Outsourcing"
-                  ? "w-[1280]! mx-auto justify-between"
-                  : "lg:grid-cols-4"
+                category.title === "Business Outsourcing" ? "w-[1280]! mx-auto justify-between" : "lg:grid-cols-4"
               }`}
             >
               {category.services.map((service: any, index: number) => {
@@ -139,28 +138,18 @@ export default function Services() {
                     key={service.title}
                     variants={itemVariants}
                     className={`group relative ${
-                      category.category === "Business Outsourcing" && index === 0
-                        ? "md:col-span-2 lg:col-span-1"
-                        : ""
+                      category.category === "Business Outsourcing" && index === 0 ? "md:col-span-2 lg:col-span-1" : ""
                     }`}
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-[#3785CC]/5 to-[#5B8AF0]/5 rounded-2xl transform -rotate-2 scale-[1.02] opacity-50 group-hover:-rotate-1 transition-transform duration-300"></div>
                     <div className="relative p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors duration-300">
-                      <div
-                        className={`p-3 rounded-xl bg-gradient-to-r ${
-                          service.gradient || "from-blue-500 to-teal-500"
-                        } transform group-hover:scale-110 transition-transform duration-300 mb-6`}
-                      >
+                      <div className={`p-3 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6`}>
                         <IconComponent className="w-6 h-6 text-white" />
                       </div>
-                      <h3 className="text-xl font-semibold text-white mb-4">
-                        {service.title}
-                      </h3>
+                      <h3 className="text-xl font-semibold text-white mb-4">{service.title}</h3>
                       <p className="text-white/60 mb-6">{service.description}</p>
                       <Link
-                        href={`/services#${service.title
-                          .toLowerCase()
-                          .replace(/ /g, "-")}`}
+                        href={`/services#${service.title.toLowerCase().replace(/ /g, '-')}`}
                         className="inline-flex items-center text-white/80 hover:text-white group/link"
                       >
                         <span className="mr-2">Learn More</span>
@@ -168,7 +157,7 @@ export default function Services() {
                       </Link>
                     </div>
                   </motion.div>
-                );
+                )
               })}
             </motion.div>
           </motion.div>
