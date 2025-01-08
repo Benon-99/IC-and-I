@@ -1,28 +1,21 @@
-import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Template from './template';
-import QueryProvider from '@/components/QueryProvider';
+import QueryProvider from '@/components/providers/QueryProvider';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+
 const inter = Inter({ subsets: ['latin'] });
 
-export const metadata: Metadata = {
-  title: 'IC&I - Information Consultancies & Installations',
-  description: 'Leading provider of ICT solutions, specializing in comprehensive consultancy, installation, commissioning, and outsourcing services.',
-}; 
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  console.log("Rendering RootLayout");
   return (
     <html lang="en" className={inter.className}>
-      <head>
-        <link rel="icon" href="/ici-favicon.png" type="image/png" />
-      </head>
       <body>
         <QueryProvider>
-          <Template>{children}</Template>
+          <div className="flex flex-col min-h-screen bg-gray-50">
+            <Navbar />
+            <main className="flex-grow">{children}</main>
+          </div>
         </QueryProvider>
       </body>
     </html>

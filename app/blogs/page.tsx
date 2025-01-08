@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, Calendar } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import Footer from '@/components/Footer';
 import Image from 'next/image';
 
 interface Author {
@@ -223,7 +222,6 @@ export default function EnhancedBlogPage() {
             </motion.div>
           </div>
         </section>
-        <Footer />
       </div>
     </div>
   );

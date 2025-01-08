@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { Calendar, Tag, ArrowLeft, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import Footer from '@/components/Footer';
 
 interface Author {
   id: number;
@@ -269,7 +268,6 @@ export default function BlogPost() {
           </motion.div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -11,8 +12,11 @@ export default function BlogPostLayout({
   children: React.ReactNode;
 }) {
   return (
+    <>
     <div className="min-h-screen bg-gradient-to-br from-[#0f1035] to-[#2e3267]">
       {children}
     </div>
+    <Footer />
+    </>
   );
 }
