@@ -9,6 +9,8 @@ import authRouter from './routes/auth.js';
 import emailRouter from './routes/email.js';
 import adminRouter from './routes/admin.js';
 import homeRouter from './routes/home.js';
+import categoriesRouter from './routes/categories.js';
+import servicesRouter from './routes/services.js'
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -65,6 +67,8 @@ app.use('/api/auth', authRouter);
 app.use('/api/email', emailRouter);
 app.use('/api/admin', adminRouter);
 app.use('/home', homeRouter);
+app.use('/categories', categoriesRouter);
+app.use('/services',servicesRouter);
 app.use(express.static('uploads'));
 
 // Database connection test

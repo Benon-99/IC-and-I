@@ -162,7 +162,7 @@ export default function Services() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-900">
+      <div className="flex items-center justify-center h-screen bg-[#13123A]">
         <div className="flex flex-col items-center">
           <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
           <p className="mt-4 text-gray-200 text-lg font-medium">Loading services, please wait...</p>
@@ -173,7 +173,7 @@ export default function Services() {
 
   if (isError || !servicesData) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-900">
+      <div className="flex items-center justify-center h-screen bg-[#13123A]">
         <div className="text-center space-y-4">
           <h2 className="text-2xl font-bold text-red-500">Oops! Something went wrong</h2>
           <p className="text-gray-300">
@@ -219,7 +219,7 @@ export default function Services() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: categoryIndex * 0.1 }}
-            className="bg-gray-800 rounded-xl shadow-lg p-6 space-y-6 border border-gray-700 relative group"
+            className="bg-[#1E1D4C] rounded-xl shadow-lg p-6 space-y-6 border border-[#2E2D5C] relative group"
           >
             <button
               type="button"
@@ -237,14 +237,14 @@ export default function Services() {
                 type="text"
                 value={category.title}
                 onChange={(e) => updateCategoryField(categoryIndex, 'title', e.target.value)}
-                className="w-full text-2xl font-bold bg-transparent border-b border-gray-600 focus:border-blue-500 outline-none px-2 py-1 text-white"
+                className="w-full text-2xl font-bold bg-transparent border-b border-[#2E2D5C] focus:border-blue-500 outline-none px-2 py-1 text-white"
                 placeholder="Category Title"
               />
               <input
                 type="text"
                 value={category.subtitle}
                 onChange={(e) => updateCategoryField(categoryIndex, 'subtitle', e.target.value)}
-                className="w-full text-gray-300 bg-transparent border-b border-gray-600 focus:border-blue-500 outline-none px-2 py-1"
+                className="w-full text-gray-300 bg-transparent border-b border-[#2E2D5C] focus:border-blue-500 outline-none px-2 py-1"
                 placeholder="Category Subtitle"
               />
             </div>
@@ -256,7 +256,7 @@ export default function Services() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: serviceIndex * 0.05 }}
-                  className="p-6 rounded-lg bg-gray-700/50 shadow-lg backdrop-blur-sm border border-gray-600 relative group"
+                  className="p-6 rounded-lg bg-[#1E1D4C]/50 shadow-lg backdrop-blur-sm border border-[#2E2D5C] relative group"
                 >
                   <button
                     type="button"
@@ -278,13 +278,13 @@ export default function Services() {
                         newServices[serviceIndex] = { ...service, title: e.target.value };
                         updateCategoryField(categoryIndex, 'services', JSON.stringify(newServices));
                       }}
-                      className="w-full text-xl font-semibold bg-transparent border-b border-gray-500 focus:border-blue-400 outline-none px-2 py-1 text-white placeholder-gray-400"
+                      className="w-full text-xl font-semibold bg-transparent border-b border-[#2E2D5C] focus:border-blue-400 outline-none px-2 py-1 text-white placeholder-gray-400"
                       placeholder="Service Title"
                     />
                     <textarea
                       value={service.description}
                       onChange={(e) => updateServiceDescription(categoryIndex, serviceIndex, e.target.value)}
-                      className="w-full h-32 text-white bg-transparent border border-gray-500 rounded-lg focus:border-blue-400 outline-none p-2 placeholder-gray-400 resize-none"
+                      className="w-full h-32 text-white bg-transparent border border-[#2E2D5C] rounded-lg focus:border-blue-400 outline-none p-2 placeholder-gray-400 resize-none"
                       placeholder="Service Description"
                     />
                   </div>
@@ -295,7 +295,7 @@ export default function Services() {
                 onClick={() => addNewService(categoryIndex)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="h-full min-h-[200px] p-6 rounded-lg border-2 border-dashed border-gray-600 flex items-center justify-center text-gray-400 hover:text-gray-200 hover:border-gray-500 transition-colors"
+                className="h-full min-h-[200px] p-6 rounded-lg border-2 border-dashed border-[#2E2D5C] flex items-center justify-center text-gray-400 hover:text-gray-200 hover:border-[#3E3D6C] transition-colors"
               >
                 <div className="flex items-center space-x-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -313,7 +313,7 @@ export default function Services() {
           onClick={addNewCategory}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full py-3 px-6 text-gray-400 font-medium rounded-lg border-2 border-dashed border-gray-600 hover:text-gray-200 hover:border-gray-500 transition-colors"
+          className="w-full py-3 px-6 text-gray-400 font-medium rounded-lg border-2 border-dashed border-[#2E2D5C] hover:text-gray-200 hover:border-[#3E3D6C] transition-colors"
         >
           <div className="flex items-center justify-center space-x-2">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

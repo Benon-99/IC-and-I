@@ -6,14 +6,17 @@ import {
   LayoutDashboard, 
   FileText, 
   MessageSquare,
-  Settings 
+  Settings, 
+  Home,
+  BookAudio
 } from 'lucide-react';
 
 const navigation = [
+  {name : "Home" , href : '/admin/home' , icon : Home },
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { name: 'Blog Posts', href: '/admin/blogs', icon: FileText },
   { name: 'Messages', href: '/admin/messages', icon: MessageSquare },
-  {name : "Home" , href : '/admin/home' , icon : Settings }
+  { name: 'Services', href: '/admin/services', icon: BookAudio },
 ];
 
 export default function AdminSidebar() {

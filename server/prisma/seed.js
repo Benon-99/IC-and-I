@@ -3,74 +3,151 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // Update the `services` field for the existing `Home` record
-  await prisma.home.update({
-    where: { id: 1 }, // Adjust the `id` to match the record you want to update
+  // Seed `job-ici` data
+  await prisma.services.create({
     data: {
+      name: 'job-ici',
+      title: 'Jobs.ici – Recruiting',
+      subtitle: 'Empowering Ambitious Professionals to Find Their Perfect Job.',
+      description:
+        'IC&I is dedicated to fostering a thriving job market in Syria through our specialized platform, Jobs.ici. This initiative is designed to connect ambitious and competent professionals with the right job opportunities, helping to build careers and drive economic growth. Our platform\'s intelligent matching algorithms actively work to pair job seekers with opportunities that align with their qualifications and career goals.',
+      subContent:
+        `Jobs.ici is more than just a job board—it's a comprehensive career-building tool designed to empower Syrian professionals to achieve their career aspirations.`,
       services: {
-        categories: [
+        create: [
           {
-            title: "Business Outsourcing",
-            subtitle: "Let us manage the complexity of HR recruitment, contracting and payroll services.",
-            gradient: "from-purple-500 via-pink-500 to-rose-500",
-            services: [
-              {
-                title: "Jobs.ici – Recruiting",
-                description: "Connect with top industry talents for permanent positions, contract roles, and specialized recruitment solutions.",
-                gradient: "from-[#3785CC] to-[#3E9DE5]",
-                icon: "UserPlus"
-              },
-              {
-                title: "HR & Recruitment Management",
-                description: "Comprehensive HR and recruitment solutions to optimize your hiring process and talent management strategies.",
-                gradient: "from-[#3E9DE5] to-[#7B8EEC]",
-                icon: "Users"
-              },
-              {
-                title: "HR Payroll & Performance",
-                description: "Streamline your payroll processing and performance management systems to enhance compliance and productivity.",
-                gradient: "from-[#7B8EEC] to-[#B5C6F4]",
-                icon: "ClipboardList"
-              }
-            ]
+            icon: 'Search',
+            title: 'Extensive Job Listings',
+            description:
+              'Browse through curated job opportunities matched to your experience level and preferences.',
+            gradient: 'from-[#00B4D8] to-[#4A9BE4]',
           },
           {
-            title: "ICT Solutions",
-            subtitle: "Our ICT solutions focus on optimizing business operations and driving process efficiency.",
-            gradient: "from-blue-500 via-cyan-500 to-teal-500",
-            services: [
-              {
-                title: "Data Center Infrastructure",
-                description: "Comprehensive data center infrastructure solutions to design, build, and manage your evolving technology requirements.",
-                gradient: "from-[#3785CC] to-[#4A9BE4]",
-                icon: "Server"
-              },
-              {
-                title: "Solutions Integration",
-                description: "Advanced technology integration solutions to optimize business operations, reduce costs, and drive sustainable enterprise growth.",
-                gradient: "from-[#4A9BE4] to-[#5B8AF0]",
-                icon: "Network"
-              },
-              {
-                title: "Information Security",
-                description: "Advanced security solutions and monitoring systems to protect your critical data and infrastructure from sophisticated cyber threats and vulnerabilities.",
-                gradient: "from-[#5B8AF0] to-[#8590EA]",
-                icon: "Shield"
-              },
-              {
-                title: "Software Development",
-                description: "Innovative web and mobile application development solutions designed to accelerate your digital transformation journey and enhance business efficiency.",
-                gradient: "from-[#8590EA] to-[#B5C6F4]",
-                icon: "Code"
-              }
-            ]
-          }
-        ]
-      }
+            icon: 'Upload',
+            title: 'Resume Submission',
+            description:
+              'Upload your resume securely to connect with potential employers and opportunities.',
+            gradient: 'from-[#4A9BE4] to-[#8590EA]',
+          },
+          {
+            icon: 'Bell',
+            title: 'Personalized Job Alerts',
+            description:
+              'Get notified about relevant job openings that match your career interests and skills.',
+            gradient: 'from-[#8590EA] to-[#B5C6F4]',
+          },
+          {
+            icon: 'Activity',
+            title: 'Application Tracking',
+            description:
+              'Monitor your job application progress with real-time updates and status tracking.',
+            gradient: 'from-[#00B4D8] to-[#4A9BE4]',
+          },
+          {
+            icon: 'BookOpen',
+            title: 'Career Resources',
+            description:
+              'Access comprehensive tools and resources to enhance your job search and career development.',
+            gradient: 'from-[#4A9BE4] to-[#8590EA]',
+          },
+        ],
+      },
+      categoryID: 1, // Assuming the category with ID 1 already exists in the Categories table
+    },
+  });
+
+  // Seed home page data
+  await prisma.home.create({
+    data: {
+      aboutUs: {
+        title: "About IC&I",
+        subtitle: "Your Partner in Business Growth",
+        content: [
+          "IC&I is a leading business solutions provider dedicated to empowering organizations through innovative services and strategic partnerships.",
+          "With years of experience in the industry, we specialize in delivering comprehensive solutions that drive business success and foster sustainable growth."
+        ],
+        image: "/images/about-us.jpg"
+      },
+      advantages: [
+        {
+          title: "Expert Team",
+          description: "Our team of seasoned professionals brings years of industry expertise to every project.",
+          icon: "Users"
+        },
+        {
+          title: "Innovative Solutions",
+          description: "We leverage cutting-edge technology and methodologies to deliver optimal results.",
+          icon: "Lightbulb"
+        },
+        {
+          title: "Client-Focused",
+          description: "Your success is our priority - we work closely with you to achieve your goals.",
+          icon: "Target"
+        }
+      ],
+      services: [
+        {
+          title: "Business Outsourcing",
+          description: "Comprehensive outsourcing solutions to optimize your operations",
+          icon: "Building",
+          link: "/services/business-outsourcing"
+        },
+        {
+          title: "Job Recruitment",
+          description: "Professional recruitment services to find top talent",
+          icon: "Users",
+          link: "/services/job-ici"
+        },
+        {
+          title: "Consulting Services",
+          description: "Expert guidance for your business challenges",
+          icon: "LineChart",
+          link: "/services/consulting"
+        }
+      ]
     }
   });
 
-  console.log("Services field updated successfully!");
+  // Seed business-outsourcing category
+  await prisma.categories.create({
+    data: {
+      category: 'business-outsourcing',
+      title: 'Business Outsourcing',
+      mainDescription: 'Transform your business operations with our comprehensive outsourcing solutions. We help companies optimize their processes, reduce costs, and focus on core business activities.',
+      
+      overviewTitle: 'Market Leading HR Solutions',
+      overviewContent: 'Our business outsourcing services are designed to help organizations streamline their operations and achieve greater efficiency. We provide end-to-end solutions that cover everything from HR management to administrative tasks, allowing you to focus on your core business objectives.',
+      
+      offeringsTitle: 'Business Outsourcing Solutions',
+      offeringsContent: 'Discover our range of specialized business outsourcing services designed to enhance your operational efficiency and reduce overhead costs.',
+      
+      services: [
+        {
+          icon: 'Users',
+          title: 'HR Management',
+          description: 'Comprehensive HR services including recruitment, payroll, and employee relations management.',
+          link: '/services/hr-management',
+          gradient: 'from-[#00B4D8] to-[#4A9BE4]'
+        },
+        {
+          icon: 'ClipboardList',
+          title: 'Administrative Support',
+          description: 'Professional administrative services to handle your day-to-day operations efficiently.',
+          link: '/services/administrative-support',
+          gradient: 'from-[#4A9BE4] to-[#8590EA]'
+        },
+        {
+          icon: 'UserPlus',
+          title: 'Talent Acquisition',
+          description: 'Strategic recruitment services to help you find and retain top talent for your organization.',
+          link: '/services/talent-acquisition',
+          gradient: 'from-[#8590EA] to-[#B5C6F4]'
+        }
+      ]
+    }
+  });
+
+  console.log('Seed data for home page, `job-ici` and `business-outsourcing` added.');
 }
 
 main()
