@@ -11,8 +11,8 @@ interface Service {
 }
 
 interface Category {
-  title: string;
-  subtitle: string;
+  description: string ;
+  category: string;
   services: Service[];
 }
 
@@ -28,12 +28,12 @@ interface AlertState {
 export default function Services() {
   const [servicesData, setServicesData] = useState<ServicesData>({
     categories: [{
-      title: '',
-      subtitle: '',
       services: [{
         title: '',
         description: ''
-      }]
+      }],
+      description: '',
+      category: ''
     }]
   });
   const [alert, setAlert] = useState<AlertState | null>(null);
@@ -95,8 +95,8 @@ export default function Services() {
   const addNewCategory = () => {
     setServicesData(prev => ({
       categories: [...prev.categories, {
-        title: '',
-        subtitle: '',
+        category: '',
+        description: '',
         services: [{
           title: '',
           description: ''
@@ -235,15 +235,15 @@ export default function Services() {
             <div className="space-y-4">
               <input
                 type="text"
-                value={category.title}
-                onChange={(e) => updateCategoryField(categoryIndex, 'title', e.target.value)}
+                value={category.category}
+                onChange={(e) => updateCategoryField(categoryIndex, 'category', e.target.value)}
                 className="w-full text-2xl font-bold bg-transparent border-b border-[#2E2D5C] focus:border-blue-500 outline-none px-2 py-1 text-white"
                 placeholder="Category Title"
               />
               <input
                 type="text"
-                value={category.subtitle}
-                onChange={(e) => updateCategoryField(categoryIndex, 'subtitle', e.target.value)}
+                value={category.description}
+                onChange={(e) => updateCategoryField(categoryIndex, 'description', e.target.value)}
                 className="w-full text-gray-300 bg-transparent border-b border-[#2E2D5C] focus:border-blue-500 outline-none px-2 py-1"
                 placeholder="Category Subtitle"
               />

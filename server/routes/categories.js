@@ -23,8 +23,8 @@ router.get('/category/:category', getCategoryController);
 router.get('/id/:id', getCategoryByIdController);
 
 // Protected routes
-router.post('/', authenticateToken, createCategoryController);
-router.put('/category/:id', authenticateToken, updateCategoryController);
-router.delete('/category/:id', authenticateToken, deleteCategoryController);
+router.post('/', createCategoryController);
+router.put('/category/:id', updateCategoryController);
+router.delete('/category/:id' ,deleteCategoryController);
 
 export default router;
