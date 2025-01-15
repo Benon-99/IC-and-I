@@ -132,187 +132,84 @@ async function main() {
     where: { slug: "5-key-strategies-for-effective-hr-management-in-2024" },
     data: {
       title: "5 Key Strategies for Effective HR Management in 2024",
-      content: `As businesses face new challenges in 2024, effective HR management becomes crucial for maintaining productivity and employee satisfaction. Here are five key strategies that organizations should consider implementing:
+      content: `
+  **1. Embrace Digital HR Solutions**
+  - Implement comprehensive HR management systems.
+  - Automate payroll processing, performance tracking, and recruitment platforms.
+  - Ensure better decision-making with integrated tools.
   
-  ### 1. Embrace Digital HR Solutions
+  **2. Focus on Employee Well-being**
+  - Adopt flexible work arrangements.
+  - Provide mental health support and wellness programs.
+  - Foster a supportive work environment.
   
-  In today's fast-paced business environment, digital HR solutions are no longer optional but essential. Implementing comprehensive HR management systems can streamline processes, improve data accuracy, and enhance decision-making capabilities.
+  **3. Develop Strong Learning & Development Programs**
+  - Personalize learning paths and training initiatives.
+  - Offer leadership development and cross-functional training.
   
-  Key benefits include:
-  - Automated payroll processing
-  - Digital employee records
-  - Performance tracking systems
-  - Integrated recruitment platforms
+  **4. Enhance Performance Management**
+  - Create a feedback-driven, development-focused approach.
+  - Align performance management with organizational goals.
   
-  ### 2. Focus on Employee Well-being
+  **5. Prioritize Diversity, Equity, and Inclusion**
+  - Build DEI strategies to attract talent and foster innovation.
   
-  The importance of employee well-being has never been more apparent. Organizations should:
-  - Implement flexible work arrangements
-  - Provide mental health support
-  - Offer comprehensive wellness programs
-  - Create a supportive work environment
-  
-  ### 3. Develop Strong Learning & Development Programs
-  
-  Continuous learning is crucial for both employee growth and organizational success. Consider:
-  - Personalized learning paths
-  - Skill-based training programs
-  - Leadership development initiatives
-  - Cross-functional training opportunities
-  
-  ### 4. Enhance Performance Management
-  
-  Modern performance management should be:
-  - Continuous and feedback-driven
-  - Focused on development rather than just evaluation
-  - Aligned with organizational goals
-  - Supported by data and analytics
-  
-  ### 5. Prioritize Diversity, Equity, and Inclusion
-  
-  A strong DEI strategy is essential for:
-  - Attracting top talent
-  - Fostering innovation
-  - Building a positive workplace culture
-  - Improving business outcomes
-  
-  ### Looking Ahead
-  
-  As we progress through 2024, HR managers must stay agile and responsive to changing workplace dynamics. By implementing these strategies, organizations can build a more resilient and effective workforce while maintaining high levels of employee engagement and satisfaction.`,
+  Looking ahead, HR managers must adapt to changing dynamics to build resilient and engaged workforces.`,
       image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80",
       published: true,
     },
   });
   
+  
   await prisma.post.update({
     where: { slug: "the-role-of-cybersecurity-in-modern-business" },
     data: {
       title: "The Role of Cybersecurity in Modern Business",
-      content: `In today's digital era, cybersecurity is essential for protecting business assets and maintaining customer trust in an increasingly connected world. This article explores the critical aspects of modern cybersecurity and its impact on business operations.
+      content: `
+  **1. The Growing Importance of Cybersecurity**
+  - Increase in cyberattacks and sophisticated threats.
+  - Rising costs of data breaches and regulatory requirements.
   
-  ### The Growing Importance of Cybersecurity
+  **2. Essential Security Measures**
+  - **Network Security**: Firewalls, monitoring, and audits.
+  - **Data Protection**: Encryption and access controls.
+  - **Employee Training**: Phishing prevention and incident response.
   
-  As businesses become more digitized, the need for robust cybersecurity measures has increased exponentially. Key factors driving this include:
-  - Increasing frequency of cyber attacks
-  - Growing sophistication of threats
-  - Rising costs of data breaches
-  - Stricter regulatory requirements
+  **3. Impact on Business Operations**
+  - Improve customer trust and compliance.
+  - Enhance operational efficiency and risk management.
   
-  ### Essential Security Measures
-  
-  Modern businesses need to implement several key security measures:
-  
-  #### 1. Network Security
-  - Firewalls and intrusion detection systems
-  - Regular security audits
-  - Network monitoring and analytics
-  - VPN implementation
-  
-  #### 2. Data Protection
-  - Encryption protocols
-  - Access control systems
-  - Regular backups
-  - Data classification
-  
-  #### 3. Employee Training
-  - Security awareness programs
-  - Phishing prevention training
-  - Password management
-  - Incident response procedures
-  
-  ### Impact on Business Operations
-  
-  Effective cybersecurity measures affect various aspects of business:
-  - Customer trust and loyalty
-  - Operational efficiency
-  - Regulatory compliance
-  - Risk management
-  
-  ### Future Trends
-  
-  Looking ahead, businesses should prepare for:
-  - AI-powered security solutions
-  - Zero-trust architecture
-  - Cloud security challenges
-  - IoT security considerations
-  
-  ### Conclusion
-  
-  Cybersecurity is no longer just an IT concern but a fundamental business requirement. Organizations must prioritize security measures to protect their assets and maintain competitive advantage in the digital age.`,
+  Looking ahead, businesses must prepare for AI-powered solutions, zero-trust architecture, and IoT security considerations.`,
       image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80",
       published: true,
     },
   });
   
+  
   await prisma.post.update({
     where: { slug: "how-digital-transformation-is-shaping-the-future-of-business-in-syria" },
     data: {
       title: "How Digital Transformation is Shaping the Future of Business in Syria",
-      content: `As the business landscape evolves, digital transformation becomes increasingly important for companies looking to stay competitive and innovative in Syria. This article explores the current state of digital transformation and its impact on Syrian businesses.
+      content: `
+  **1. The Digital Revolution in Syria**
+  - Adoption of modern technologies and operational efficiency.
+  - Changing customer expectations and new business models.
   
-  ### The Digital Revolution in Syria
+  **2. Key Areas of Transformation**
+  - **E-Commerce**: Growth of online platforms and digital payments.
+  - **Process Automation**: Workflow digitization and cloud computing.
+  - **Customer Experience**: Personalized services and omnichannel presence.
   
-  Digital transformation is reshaping how businesses operate in Syria:
-  - Adoption of modern technologies
-  - Changing customer expectations
-  - New business models
-  - Enhanced operational efficiency
+  **3. Challenges and Opportunities**
+  - **Challenges**: Infrastructure gaps and investment needs.
+  - **Opportunities**: Market expansion and innovation potential.
   
-  ### Key Areas of Transformation
-  
-  #### 1. E-Commerce and Digital Payments
-  - Growth of online marketplaces
-  - Mobile payment solutions
-  - Digital banking services
-  - E-commerce platforms
-  
-  #### 2. Business Process Automation
-  - Workflow automation
-  - Document digitization
-  - Cloud computing adoption
-  - Digital communication tools
-  
-  #### 3. Customer Experience
-  - Omnichannel presence
-  - Personalized services
-  - Digital customer support
-  - Data-driven insights
-  
-  ### Challenges and Opportunities
-  
-  The transformation journey presents both challenges and opportunities:
-  
-  #### Challenges:
-  - Infrastructure limitations
-  - Technical expertise gaps
-  - Investment requirements
-  - Change management
-  
-  #### Opportunities:
-  - Market expansion
-  - Operational efficiency
-  - Innovation potential
-  - Competitive advantage
-  
-  ### Success Stories
-  
-  Several Syrian businesses have successfully embraced digital transformation:
-  - Banking sector modernization
-  - Retail digital integration
-  - Manufacturing automation
-  - Service sector innovation
-  
-  ### Future Outlook
-  
-  The future of digital transformation in Syria looks promising:
-  - Continued technology adoption
-  - Growing digital ecosystem
-  - Increased innovation
-  - Economic growth opportunities`,
+  Looking ahead, digital transformation in Syria offers immense economic growth opportunities.`,
       image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
       published: true,
     },
   });
+  
   
   console.log("Blog posts updated successfully.");
   
