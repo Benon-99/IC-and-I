@@ -126,7 +126,7 @@ export default function About() {
             <div className="grid grid-cols-2 gap-4">
               {
               // @ts-ignore
-            aboutUsContent && aboutUsContent.stats && JSON.parse(aboutUsContent.stats).map((stat, index) => (
+            aboutUsContent && aboutUsContent.stats && aboutUsContent.stats.map((stat, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
@@ -162,7 +162,7 @@ export default function About() {
 
             {
             // @ts-ignore
-            aboutUsContent && aboutUsContent.features && JSON.parse(aboutUsContent.features).map((feature, index) => {
+            aboutUsContent && aboutUsContent.features && aboutUsContent.features.map((feature, index) => {
               const IconComponent = ICONS[feature.icon] || null;
               return (
                 <motion.div

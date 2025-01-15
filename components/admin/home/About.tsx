@@ -61,28 +61,28 @@ export default function About() {
         if (aboutData?.about?.[0]) {
             const { aboutUs } = aboutData.about[0];
             setFormData({
-            title: aboutUs.title || '',
-            subtitle: aboutUs.subtitle || '',
-            content: Array.isArray(aboutUs.content) 
-                ? aboutUs.content 
-                : aboutUs.content 
-                ? [aboutUs.content] 
-                : [''],
-            img: aboutUs.img || '',
-            features: typeof aboutUs.features === 'string' 
-                ? JSON.parse(aboutUs.features) 
-                : Array.isArray(aboutUs.features)
-                ? aboutUs.features
-                : [{ title: '', text: '' }],
-            stats: typeof aboutUs.stats === 'string' 
-                ? JSON.parse(aboutUs.stats) 
-                : Array.isArray(aboutUs.stats)
-                ? aboutUs.stats
-                : [{ number: '', label: '' }]
-        });
-        if (aboutUs.img) {
-            setImagePreview(aboutUs.img);
-        }
+                title: aboutUs.title || '',
+                subtitle: aboutUs.subtitle || '',
+                content: Array.isArray(aboutUs.content) 
+                    ? aboutUs.content 
+                    : aboutUs.content 
+                    ? [aboutUs.content] 
+                    : [''],
+                img: aboutUs.img || '',
+                features: Array.isArray(aboutUs.features)
+                    ? aboutUs.features
+                    : typeof aboutUs.features === 'string'
+                    ? JSON.parse(aboutUs.features)
+                    : [{ title: '', text: '' }],
+                stats: Array.isArray(aboutUs.stats)
+                    ? aboutUs.stats
+                    : typeof aboutUs.stats === 'string'
+                    ? JSON.parse(aboutUs.stats)
+                    : [{ number: '', label: '' }]
+            });
+            if (aboutUs.img) {
+                setImagePreview(aboutUs.img);
+            }
         }
     }, [aboutData]);
     
@@ -174,49 +174,63 @@ export default function About() {
     };
     
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsSaving(true);
+      e.preventDefault();
+      setIsSaving(true);
     
-        try {
-            const formDataToSend = new FormData();
-            formDataToSend.append("title", formData.title);
-            formDataToSend.append("subtitle", formData.subtitle);
-            formDataToSend.append("content", JSON.stringify(formData.content));
+      try {
+        const formDataToSend = new FormData();
+        
+        // Ensure arrays are properly stringified
+        const aboutUsData = {
+            title: formData.title,
+            subtitle: formData.subtitle,
+            content: formData.content,
+            features: formData.features,
+            stats: formData.stats,
+            img: formData.img || ''
+        };
+        
+        formDataToSend.append("aboutUs", JSON.stringify(aboutUsData));
     
+        // Handle image file if present
         if (fileInputRef.current?.files?.[0]) {
-            formDataToSend.append("photo", fileInputRef.current.files[0]);
-        } else if (formData.img) {
-            formDataToSend.append("img", formData.img);
+          formDataToSend.append("photo", fileInputRef.current.files[0]);
         }
-        formDataToSend.append("features", JSON.stringify(formData.features));
-        formDataToSend.append("stats", JSON.stringify(formData.stats));
-        console.log(formDataToSend);
+    
+        console.log("AboutUs data:", aboutUsData);
+        console.log("FormData being sent:", Object.fromEntries(formDataToSend.entries()));
+    
         const response = await fetch("http://localhost:8000/home/about/update?id=1", {
-            method: "POST",
-            body: formDataToSend,
+          method: "POST",
+          body: formDataToSend,
+          credentials: 'include',
         });
     
         if (!response.ok) {
-            throw new Error("Failed to update about content");
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to update about content');
         }
     
-        let responseData;
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.indexOf("application/json") !== -1) {
-            responseData = await response.json();
-        } else {
-            const text = await response.text();
-            responseData = { message: text };
-        }
+        const responseData = await response.json();
+        console.log("Content updated successfully:", responseData);
     
-        console.log('Content updated successfully');
-        setAlert({ type: 'success', message: 'About section updated successfully!' });
-        } catch (error) {
-            console.error("Error updating content:", error);
-            setAlert({ type: 'error', message: `Error updating about section: ${error instanceof Error ? error.message : 'Unknown error'}` });
-        } finally {
-            setIsSaving(false);
-        }
+        setAlert({ 
+          type: "success", 
+          message: "About section updated successfully!" 
+        });
+      } catch (error) {
+        const errorMessage = error instanceof Error 
+          ? error.message 
+          : 'Unknown error occurred while updating content.';
+        
+        console.error("Error updating content:", errorMessage);
+        setAlert({
+          type: "error",
+          message: `Error updating about section: ${errorMessage}`
+        });
+      } finally {
+        setIsSaving(false);
+      }
     };
     
     const showAlert = (type: AlertState['type'], message: string) => {
