@@ -3,8 +3,9 @@ import prisma from '../prisma/client.js';
 export const updateServices = async (req, res) => {
     try {
         const { id } = req.query;
-        const { categories } = req.body;
-
+        const  {categories} = req.body;
+        console.log(categories[0].services);
+        
         if (!categories || !Array.isArray(categories)) {
             return res.status(400).json({ error: 'Invalid services data. It must be an array of categories.' });
         }
@@ -20,7 +21,7 @@ export const updateServices = async (req, res) => {
         const updatedHome = await prisma.home.update({
             where: { id: home.id },
             data: { 
-                services: { categories } 
+                services: categories 
             },
         });
 

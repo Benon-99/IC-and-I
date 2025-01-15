@@ -37,8 +37,8 @@ export default function Services() {
       const json = await response.json();
       console.log('Raw API response:', json);
       console.log('Services data structure:', json.about[0]?.services);
-      console.log('Categories:', json.about[0]?.services?.categories);
-      return json.about[0]?.services || {};
+      console.log('Categories:', json.about[0]?.services);
+      return json.about[0]?.services;
     },
   });
 
@@ -76,7 +76,7 @@ export default function Services() {
   }
 
   // Handle error state
-  if (isError || !data?.categories?.length) {
+  if (isError || !data?.length) {
     return (
       <div className="min-h-[600px] bg-[#111240] flex items-center justify-center">
         <p className="text-white/80">No Services Available</p>
@@ -93,7 +93,7 @@ export default function Services() {
       </div>
 
       <div className="w-full lg:w-[1280px] mx-auto px-4 relative">
-        {data.categories.map((category: any, idx: number) => (
+        {data.map((category: any, idx: number) => (
           <motion.div
             key={category.category}
             initial="hidden"
@@ -113,15 +113,15 @@ export default function Services() {
               )}
               <motion.h2
                 variants={itemVariants}
-                className={`text-5xl font-bold mb-6 bg-gradient-to-r ${category.test || 'from-blue-500 to-teal-500'} bg-clip-text text-transparent`}
+                className={`text-5xl font-bold mb-6 bg-gradient-to-r from-blue-500 to-teal-500 bg-clip-text text-transparent`}
               >
-                {category.title}
+                {category.category}
               </motion.h2>
               <motion.p
                 variants={itemVariants}
                 className="text-xl text-white/80 max-w-3xl mx-auto"
               >
-                {category.subtitle}
+                {category.description}
               </motion.p>
             </div>
 

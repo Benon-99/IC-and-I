@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect, Key } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { AlertCircle, CheckCircle } from 'lucide-react';
 
@@ -11,7 +11,7 @@ interface Service {
 }
 
 interface Category {
-  description: string ;
+  description: string;
   category: string;
   services: Service[];
 }
@@ -26,43 +26,20 @@ interface AlertState {
 }
 
 export default function Services() {
-  const [servicesData, setServicesData] = useState<ServicesData>({
-    categories: [{
-      services: [{
-        title: '',
-        description: ''
-      }],
-      description: '',
-      category: ''
-    }]
-  });
+
   const [alert, setAlert] = useState<AlertState | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-
-  const { data: homeData, isError, isLoading } = useQuery({
+const queryClient = useQueryClient();
+  const { data: homeData, isError, isLoading , refetch:refreshHome } = useQuery({
     queryKey: ["home"],
     queryFn: async () => {
       const response = await fetch("http://localhost:8000/home");
       const data = await response.json();
       console.log('Services Data:', data.about[0].services);
-      return data.about[0].services || {
-        categories: [{
-          title: '',
-          subtitle: '',
-          services: [{
-            title: '',
-            description: ''
-          }]
-        }]
-      };
+      return data.about[0].services 
     },
   });
-
-  useEffect(() => {
-    if (homeData) {
-      setServicesData(homeData);
-    }
-  }, [homeData]);
+console.log(homeData);
 
   useEffect(() => {
     if (alert) {
@@ -72,66 +49,81 @@ export default function Services() {
   }, [alert]);
 
   const updateServiceDescription = (categoryIndex: number, serviceIndex: number, description: string) => {
-    setServicesData(prev => {
-      const newCategories = [...prev.categories];
-      const newServices = [...newCategories[categoryIndex].services];
-      newServices[serviceIndex] = { ...newServices[serviceIndex], description };
-      newCategories[categoryIndex] = { ...newCategories[categoryIndex], services: newServices };
-      return { ...prev, categories: newCategories };
-    });
+    const newCategories = [...homeData];
+    const newServices = [...newCategories[categoryIndex].services];
+    newServices[serviceIndex] = { ...newServices[serviceIndex], description };
+    newCategories[categoryIndex] = { ...newCategories[categoryIndex], services: newServices };
+    return newCategories;
   };
 
   const updateCategoryField = (categoryIndex: number, field: keyof Category, value: string | Service[]) => {
-    setServicesData(prev => {
-      const newCategories = [...prev.categories];
-      newCategories[categoryIndex] = { 
-        ...newCategories[categoryIndex], 
-        [field]: field === 'services' ? JSON.parse(value as string) : value 
-      };
-      return { ...prev, categories: newCategories };
-    });
+    const newCategories = [...homeData];
+    newCategories[categoryIndex] = { 
+      ...newCategories[categoryIndex], 
+      [field]: field === 'services' ? JSON.parse(value as string) : value 
+    };
+    return newCategories;
   };
 
   const addNewCategory = () => {
-    setServicesData(prev => ({
-      categories: [...prev.categories, {
-        category: '',
-        description: '',
-        services: [{
-          title: '',
-          description: ''
-        }]
+    const newCategories = [...homeData];
+    newCategories.push({
+      category: '',
+      description: '',
+      services: [{
+        title: '',
+        description: ''
       }]
-    }));
+    });
+    return newCategories;
   };
 
   const addNewService = (categoryIndex: number) => {
-    setServicesData(prev => {
-      const newCategories = [...prev.categories];
-      newCategories[categoryIndex].services.push({
-        title: '',
-        description: ''
-      });
-      return { ...prev, categories: newCategories };
+    const newCategories = [...homeData];
+    newCategories[categoryIndex].services.push({
+      title: '',
+      description: ''
     });
+    return newCategories;
   };
 
   const removeCategory = (categoryIndex: number) => {
-    setServicesData(prev => ({
-      categories: prev.categories.filter((_, index) => index !== categoryIndex)
-    }));
+    const newCategories = [...homeData];
+    newCategories.splice(categoryIndex, 1);
+    return newCategories;
   };
 
-  const removeService = (categoryIndex: number, serviceIndex: number) => {
-    setServicesData(prev => {
-      const newCategories = [...prev.categories];
-      newCategories[categoryIndex] = {
-        ...newCategories[categoryIndex],
-        services: newCategories[categoryIndex].services.filter((_, index) => index !== serviceIndex)
-      };
-      return { ...prev, categories: newCategories };
-    });
-  };
+  const removeService = async (categoryIndex: number, serviceIndex: number) => {
+    // Make a copy of the current data
+    const newCategories = [...homeData];
+
+    // Remove the service from the category
+    newCategories[categoryIndex].services.splice(serviceIndex, 1);
+
+    // Update the backend
+    try {
+        const response = await fetch("http://localhost:8000/home/services/update?id=1", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify( {categories: newCategories}),
+        });
+
+        if (!response.ok) throw new Error('Failed to update services');
+
+        // Show success alert
+        setAlert({ type: 'success', message: 'Services updated successfully!' });
+        refreshHome()
+    } catch (error: unknown) {
+        // Handle errors
+        setAlert({
+            type: 'error',
+            message: error instanceof Error ? error.message : 'An unknown error occurred'
+        });
+    }
+};
+
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -143,13 +135,12 @@ export default function Services() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          categories: servicesData.categories
-        }),
+        body: JSON.stringify({categories: homeData}),
       });
 
       if (!response.ok) throw new Error('Failed to update services');
       setAlert({ type: 'success', message: 'Services updated successfully!' });
+      refreshHome()
     } catch (error: unknown) {
       setAlert({ 
         type: 'error', 
@@ -171,7 +162,7 @@ export default function Services() {
     );
   }
 
-  if (isError || !servicesData) {
+  if (isError || !homeData) {
     return (
       <div className="flex items-center justify-center h-screen bg-[#13123A]">
         <div className="text-center space-y-4">
@@ -213,7 +204,7 @@ export default function Services() {
           </motion.div>
         )}
 
-        {servicesData.categories.map((category, categoryIndex) => (
+        {homeData && homeData.map((category: any, categoryIndex: any ) => (
           <motion.div
             key={categoryIndex}
             initial={{ opacity: 0, y: 20 }}
@@ -235,14 +226,15 @@ export default function Services() {
             <div className="space-y-4">
               <input
                 type="text"
-                value={category.category}
+                
                 onChange={(e) => updateCategoryField(categoryIndex, 'category', e.target.value)}
                 className="w-full text-2xl font-bold bg-transparent border-b border-[#2E2D5C] focus:border-blue-500 outline-none px-2 py-1 text-white"
                 placeholder="Category Title"
+              defaultValue={category.category}
               />
               <input
                 type="text"
-                value={category.description}
+                defaultValue={category.description}
                 onChange={(e) => updateCategoryField(categoryIndex, 'description', e.target.value)}
                 className="w-full text-gray-300 bg-transparent border-b border-[#2E2D5C] focus:border-blue-500 outline-none px-2 py-1"
                 placeholder="Category Subtitle"
@@ -250,7 +242,7 @@ export default function Services() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.isArray(category.services) && category.services.map((service, serviceIndex) => (
+              {Array.isArray(category.services) && category.services.map((service: any, serviceIndex: any) => (
                 <motion.div
                   key={serviceIndex}
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -260,7 +252,12 @@ export default function Services() {
                 >
                   <button
                     type="button"
-                    onClick={() => removeService(categoryIndex, serviceIndex)}
+                    onClick={() => {
+                      console.log("Removing service... " ,service.title );
+                      
+                      removeService(categoryIndex, serviceIndex)
+                      queryClient.invalidateQueries({ queryKey: ["home"] });
+                    }}
                     className="absolute top-2 right-2 p-1.5 rounded-lg bg-red-500/10 text-red-400 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500/20"
                     title="Remove Service"
                   >
@@ -272,24 +269,27 @@ export default function Services() {
                   <div className="space-y-4">
                     <input
                       type="text"
-                      value={service.title}
+                      defaultValue={service.title}
                       onChange={(e) => {
-                        const newServices = [...category.services];
-                        newServices[serviceIndex] = { ...service, title: e.target.value };
+                        const newServices = updateServiceDescription(categoryIndex, serviceIndex, e.target.value);
                         updateCategoryField(categoryIndex, 'services', JSON.stringify(newServices));
                       }}
                       className="w-full text-xl font-semibold bg-transparent border-b border-[#2E2D5C] focus:border-blue-400 outline-none px-2 py-1 text-white placeholder-gray-400"
                       placeholder="Service Title"
                     />
                     <textarea
-                      value={service.description}
-                      onChange={(e) => updateServiceDescription(categoryIndex, serviceIndex, e.target.value)}
+                      defaultValue={service.description}
+                      onChange={(e) => {
+                        const newServices = updateServiceDescription(categoryIndex, serviceIndex, e.target.value);
+                        updateCategoryField(categoryIndex, 'services', JSON.stringify(newServices));
+                      }}
                       className="w-full h-32 text-white bg-transparent border border-[#2E2D5C] rounded-lg focus:border-blue-400 outline-none p-2 placeholder-gray-400 resize-none"
                       placeholder="Service Description"
                     />
                   </div>
                 </motion.div>
               ))}
+
               <motion.button
                 type="button"
                 onClick={() => addNewService(categoryIndex)}

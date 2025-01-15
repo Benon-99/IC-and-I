@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { AlertCircle, CheckCircle } from 'lucide-react';
 
@@ -13,40 +13,25 @@ interface Feature {
   link: string;
 }
 
-interface Advantages {
-  title: string;
-  subtitle: string;
-  features: Feature[];
-}
-
 interface AlertState {
   type: 'success' | 'error';
   message: string;
 }
 
 export default function Features() {
-  const [advantages, setAdvantages] = useState<Advantages>({
-    title: '',
-    subtitle: '',
-    features: []
-  });
   const [alert, setAlert] = useState<AlertState | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const queryClient = useQueryClient();
 
-  const { data: homeData, isError, isLoading } = useQuery({
+  const { data: homeData, isError, isLoading, refetch: refreshHome } = useQuery({
     queryKey: ["home"],
     queryFn: async () => {
       const response = await fetch("http://localhost:8000/home");
       const data = await response.json();
-      return data.about[0].advantages || {};
+      console.log('Features Data:', data.about[0]?.features);
+      return data.about[0].advantages.features;
     },
   });
-
-  useEffect(() => {
-    if (homeData) {
-      setAdvantages(homeData);
-    }
-  }, [homeData]);
 
   useEffect(() => {
     if (alert) {
@@ -55,167 +40,197 @@ export default function Features() {
     }
   }, [alert]);
 
-  const updateFeatureDescription = (index: number, description: string) => {
-    setAdvantages(prev => {
-      const newFeatures = [...prev.features];
-      newFeatures[index] = { ...newFeatures[index], description };
-      return { ...prev, features: newFeatures };
-    });
+  const updateFeature = (index: number, field: keyof Feature, value: string) => {
+    if (!homeData) return;
+    const newFeatures = [...homeData];
+    newFeatures[index] = { ...newFeatures[index], [field]: value };
+    return newFeatures;
   };
 
-  const updateField = (field: keyof Advantages, value: string) => {
-    setAdvantages(prev => ({
-      ...prev,
-      [field]: value
-    }));
+  const addNewFeature = () => {
+    if (!homeData) return;
+    const newFeatures = [...homeData];
+    newFeatures.push({
+      title: '',
+      description: '',
+      icon: '',
+      gradient: 'from-blue-500 to-teal-500',
+      link: ''
+    });
+    return newFeatures;
+  };
+
+  const removeFeature = async (index: number) => {
+    if (!homeData) return;
+    
+    try {
+      const newFeatures = [...homeData];
+      newFeatures.splice(index, 1);
+
+      const response = await fetch("http://localhost:8000/home/features/update?id=1", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ features: newFeatures }),
+      });
+
+      if (!response.ok) throw new Error('Failed to update features');
+      setAlert({ type: 'success', message: 'Feature removed successfully!' });
+      refreshHome();
+    } catch (error: unknown) {
+      setAlert({
+        type: 'error',
+        message: error instanceof Error ? error.message : 'An unknown error occurred'
+      });
+    }
   };
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-  
+    setIsSaving(true);
+
     try {
       const response = await fetch("http://localhost:8000/home/features/update?id=1", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          title: advantages.title,
-          subtitle: advantages.subtitle,
-          features: advantages.features,
-        }),
+        body: JSON.stringify({ features: homeData }),
       });
-  
+
       if (!response.ok) throw new Error('Failed to update features');
       setAlert({ type: 'success', message: 'Features updated successfully!' });
+      refreshHome();
     } catch (error: unknown) {
       setAlert({ 
         type: 'error', 
         message: error instanceof Error ? error.message : 'An unknown error occurred' 
       });
+    } finally {
+      setIsSaving(false);
     }
   };
-  
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      <div className="flex items-center justify-center h-screen bg-[#13123A]">
+        <div className="flex flex-col items-center">
+          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <p className="mt-4 text-gray-200 text-lg font-medium">Loading features, please wait...</p>
+        </div>
       </div>
     );
   }
 
-  if (isError) {
+  if (isError || !homeData) {
     return (
-      <div className="text-center py-12">
-        <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-        <h3 className="text-xl font-semibold text-red-500 mb-2">Error Loading Features</h3>
-        <p className="text-gray-400">Failed to load features. Please try again later.</p>
+      <div className="flex items-center justify-center h-screen bg-[#13123A]">
+        <div className="text-center space-y-4">
+          <h2 className="text-2xl font-bold text-red-500">Oops! Something went wrong</h2>
+          <p className="text-gray-300">
+            We were unable to load the features. Please try again later or contact support.
+          </p>
+          <button
+            onClick={() => location.reload()}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300"
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {alert && (
-        <div className="fixed top-4 right-4 left-4 md:left-auto z-50 md:w-96">
+    <div className="w-full max-w-7xl mx-auto p-6">
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {alert && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className={`p-4 rounded-lg shadow-lg ${
-              alert.type === 'success' 
-                ? 'bg-green-600 text-white' 
-                : 'bg-red-600 text-white'
-            }`}
+            className={`fixed top-4 right-4 left-4 md:left-auto z-50 md:w-96 p-4 rounded-lg ${
+              alert.type === 'success' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'
+            } backdrop-blur-sm border ${
+              alert.type === 'success' ? 'border-emerald-500/20' : 'border-red-500/20'
+            } flex items-center space-x-2`}
           >
-            <div className="flex items-center gap-3">
-              {alert.type === 'success' ? (
-                <CheckCircle className="h-5 w-5 flex-shrink-0" />
-              ) : (
-                <AlertCircle className="h-5 w-5 flex-shrink-0" />
-              )}
-              <p className="text-sm font-medium">{alert.message}</p>
-            </div>
+            {alert.type === 'success' ? (
+              <CheckCircle className="w-5 h-5" />
+            ) : (
+              <AlertCircle className="w-5 h-5" />
+            )}
+            <span>{alert.message}</span>
           </motion.div>
-        </div>
-      )}
+        )}
 
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold text-white">Features Section</h2>
-          <p className="text-gray-400 mt-1">Edit feature content</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.isArray(homeData) && homeData.map((feature: Feature, index: number) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: index * 0.05 }}
+              className="p-6 rounded-lg bg-[#1E1D4C]/50 shadow-lg backdrop-blur-sm border border-[#2E2D5C] relative group"
+            >
+              <button
+                type="button"
+                onClick={() => removeFeature(index)}
+                className="absolute top-2 right-2 p-1.5 rounded-lg bg-red-500/10 text-red-400 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500/20"
+                title="Remove Feature"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  defaultValue={feature.title}
+                  onChange={(e) => updateFeature(index, 'title', e.target.value)}
+                  className="w-full text-xl font-semibold bg-transparent border-b border-[#2E2D5C] focus:border-blue-400 outline-none px-2 py-1 text-white placeholder-gray-400"
+                  placeholder="Feature Title"
+                />
+                <textarea
+                  defaultValue={feature.description}
+                  onChange={(e) => updateFeature(index, 'description', e.target.value)}
+                  className="w-full h-32 text-white bg-transparent border border-[#2E2D5C] rounded-lg focus:border-blue-400 outline-none p-2 placeholder-gray-400 resize-none"
+                  placeholder="Feature Description"
+                />
+              </div>
+            </motion.div>
+          ))}
+
+          <motion.button
+            type="button"
+            onClick={addNewFeature}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="h-full min-h-[200px] p-6 rounded-lg border-2 border-dashed border-[#2E2D5C] flex items-center justify-center text-gray-400 hover:text-gray-200 hover:border-[#3E3D6C] transition-colors"
+          >
+            <div className="flex items-center space-x-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+              </svg>
+              <span>Add New Feature</span>
+            </div>
+          </motion.button>
         </div>
-        <button
-          onClick={handleSubmit}
+
+        <motion.button
+          type="submit"
           disabled={isSaving}
-          className={`inline-flex items-center px-6 py-2 bg-blue-600 text-white rounded-lg transition-all ${
-            isSaving ? 'opacity-75 cursor-not-allowed' : 'hover:bg-blue-700'
-          }`}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className={`w-full py-3 px-6 text-white font-medium rounded-lg ${
+            isSaving ? 'bg-blue-600/50 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+          } transition-all duration-200 backdrop-blur-sm`}
         >
-          {isSaving ? (
-            <div className="flex items-center">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
-              Saving...
-            </div>
-          ) : (
-            'Save Changes'
-          )}
-        </button>
-      </div>
-
-      <div className="grid gap-6">
-        <div className="p-6 bg-[#1a1f4b] rounded-xl shadow-lg">
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-300 mb-1">
-              Title
-            </label>
-            <input
-              value={advantages.title}
-              onChange={(e) => updateField('title', e.target.value)}
-              className="w-full px-4 py-2 bg-[#2e3267] border border-gray-700 rounded-lg text-white"
-              placeholder="Section title..."
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
-              Subtitle
-            </label>
-            <input
-              value={advantages.subtitle}
-              onChange={(e) => updateField('subtitle', e.target.value)}
-              className="w-full px-4 py-2 bg-[#2e3267] border border-gray-700 rounded-lg text-white"
-              placeholder="Section subtitle..."
-            />
-          </div>
-        </div>
-
-        {advantages.features.map((feature, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`p-6 bg-[#1a1f4b] rounded-xl shadow-lg border-l-4 ${feature.gradient}`}
-          >
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold text-white">{feature.title}</h3>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
-                Description
-              </label>
-              <textarea
-                value={feature.description}
-                onChange={(e) => updateFeatureDescription(index, e.target.value)}
-                rows={3}
-                className="w-full px-4 py-2 bg-[#2e3267] border border-gray-700 rounded-lg text-white"
-                placeholder="Feature description..."
-              />
-            </div>
-          </motion.div>
-        ))}
-      </div>
+          {isSaving ? 'Saving...' : 'Save Changes'}
+        </motion.button>
+      </form>
     </div>
   );
 }
