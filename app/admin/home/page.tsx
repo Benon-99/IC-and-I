@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import About from "@/components/admin/home/About";
 import Services from "@/components/admin/home/Services";
-import Blogs from "@/components/admin/home/blogs";
 import Features from "@/components/admin/home/Features";
 import { motion } from 'framer-motion';
 import { Info, Settings, BookOpen, Layout } from 'lucide-react';
@@ -29,12 +28,6 @@ export default function HomePage() {
       label: 'Features', 
       component: <Features />,
       icon: <Layout className="w-5 h-5" />
-    },
-    { 
-      id: 'blogs', 
-      label: 'Blog Posts', 
-      component: <Blogs />,
-      icon: <BookOpen className="w-5 h-5" />
     }
   ];
 

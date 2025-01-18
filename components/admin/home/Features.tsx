@@ -28,7 +28,8 @@ export default function Features() {
     queryFn: async () => {
       const response = await fetch("http://localhost:8000/home");
       const data = await response.json();
-      console.log('Features Data:', data.about[0]?.features);
+      // console.log('Features Data:', data.about[0]?.features);
+      const adv = JSON.parse(data.about[0].advantages)
       return data.about[0].advantages.features;
     },
   });

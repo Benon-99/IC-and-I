@@ -1,4 +1,4 @@
-import { log } from "console";
+
 import prisma from "../prisma/client.js"
 
 export const getAbout = async (req, res) => {
@@ -49,20 +49,21 @@ export const getAbout = async (req, res) => {
 export const updateAbout = async (req, res) => {
     try {
         const { id } = req.query;
-        const { title, description } = req.body;
+        const { aboutUs } = req.body;
+        const about = JSON.parse(aboutUs)
         const image = req.file?.filename;
-
+        // console.log("\n\n\n\n\n\n\n\nwdwdwdw : ",.title +"\n\n\n\n\n\n\n");
+        
         const updateData = {
-            title,
-            description,
+            ...about,
             ...(image && { image })
         };
 
         const updatedAbout = await prisma.home.update({
             where: { id: parseInt(id) },
-            data: updateData
+            data:{ aboutUs : updateData}
         });
-
+        // console.log("wdwdwdw",updateData);
         res.json({ 
             message: 'About section updated successfully', 
             data: updatedAbout 

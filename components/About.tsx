@@ -153,7 +153,7 @@ export default function About() {
             className="space-y-8"
           >
             <div className="space-y-6 text-lg text-[#111240] leading-relaxed">
-              {aboutUsContent.content.map((paragraph, index) => (
+              {aboutUsContent.content && aboutUsContent.content.map((paragraph, index) => (
                 <p key={index}>{paragraph}</p>
               ))}
             </div>
