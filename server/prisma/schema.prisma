@@ -86,8 +86,8 @@ model Services {
   overviewtitle   String         
   overviewcontent String   
   features        Feature[]  // Relation to Features
-  category        Categories @relation(fields: [categoryId], references: [id])
-  categoryId      Int
+  category        Categories? @relation(fields: [categoryId], references: [id])
+  categoryId      Int?
 }
 
 model Feature {

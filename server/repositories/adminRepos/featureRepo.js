@@ -1,4 +1,3 @@
-import { response } from "express";
 import prisma from "../../database.js";
 
 class FeatureRepository {
