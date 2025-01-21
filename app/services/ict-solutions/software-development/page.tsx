@@ -6,15 +6,7 @@ import ServiceHero from "@/components/services/ServiceHero";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-const fetchingSoftwareDev = async () => {
-  const response = axios("https://api.example.com/jobs");
-};
-
 export default function SoftwareDevelopmentPage() {
-  const { data, isFetching, isLoading, error } = useQuery({
-    queryKey: ["softwareDev"],
-    queryFn: fetchingSoftwareDev,
-  });
   const services = [
     {
       icon: Globe,

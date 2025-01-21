@@ -7,15 +7,7 @@ import Link from "next/link";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-const fetchingcenter = async () => {
-  const response = axios("https://api.example.com/jobs");
-};
-
 export default function DataCenterPage() {
-  const { data, isFetching, isLoading, error } = useQuery({
-    queryKey: ["dataCenter"],
-    queryFn: fetchingcenter,
-  });
   const services = [
     {
       icon: Server,

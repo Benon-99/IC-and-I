@@ -14,15 +14,10 @@ import ServiceHero from "@/components/services/ServiceHero";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-const fetchingInfoSecurity = async () => {
-  const response = axios("https://api.example.com/jobs");
-};
+
 
 export default function InformationSecurityPage() {
-  const { data, isFetching, isLoading, error } = useQuery({
-    queryKey: ["infoSecurity"],
-    queryFn: fetchingInfoSecurity,
-  });
+  
 
   const services = [
     {
