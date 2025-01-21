@@ -66,29 +66,34 @@ model Home {
   advantages  Json
   services    Json?    
 }
-model Categories { 
-  id                Int      @id @default(autoincrement())
-  category             String   @unique  // URL path segment 
-  title             String   // "Business Outsourcing"
-  mainDescription   String   // Hero section description
-
-  overviewTitle     String   // "Market Leading HR Solutions"
-  overviewContent   String   // Full overview paragraph
-
-  offeringsTitle    String   // "Business Outsourcing Solutions"
-  offeringsContent  String   // Description of offerings
-
-  services         Json     // Array of service objects with icon, title, description, link, gradient
- 
+model Categories {
+  id              Int       @id @default(autoincrement())
+  category        String    @unique  // URL path segment 
+  title           String    // "Business Outsourcing"
+  mainDescription String    // Hero section description
+  overviewTitle   String    // "Market Leading HR Solutions"
+  overviewContent String    // Full overview paragraph
+  offeringsTitle  String    // "Business Outsourcing Solutions"
+  offeringsContent String   // Description of offerings
+  services        Services[]  // Relation to Services
 }
 
 model Services {
-  id          Int    @id @default(autoincrement())
-  name        String @unique // Name of the category (e.g., "job-ici")
-  title       String         // Title of the category
-  subtitle    String         // Subtitle or tagline
-  description String         // Main description
-  subContent  String         // Additional content or details
-  services    Json
-  categoryID  Int        
+  id              Int        @id @default(autoincrement())
+  title           String     @unique  
+  description     String         
+  servicelink     String     @unique
+  overviewtitle   String         
+  overviewcontent String   
+  features        Feature[]  // Relation to Features
+  category        Categories @relation(fields: [categoryId], references: [id])
+  categoryId      Int
+}
+
+model Feature {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  service     Services? @relation(fields: [serviceId], references: [id])
+  serviceId   Int?
 }
