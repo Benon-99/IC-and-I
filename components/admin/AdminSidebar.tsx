@@ -8,7 +8,8 @@ import {
   MessageSquare,
   Settings, 
   Home,
-  BookAudio
+  BookAudio,
+  BadgeInfo,
 } from 'lucide-react';
 
 const navigation = [
@@ -17,6 +18,7 @@ const navigation = [
   { name: 'Blog Posts', href: '/admin/blogs', icon: FileText },
   { name: 'Messages', href: '/admin/messages', icon: MessageSquare },
   { name: 'Services', href: '/admin/services', icon: BookAudio },
+  { name: 'About Us', href: '/admin/about', icon: BadgeInfo },
 ];
 
 export default function AdminSidebar() {

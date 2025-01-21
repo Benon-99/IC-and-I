@@ -92,3 +92,38 @@ model Services {
   services    Json
   categoryID  Int        
 }
+
+model About {
+  id          Int      @id @default(autoincrement())
+  title       String
+  subtitle    String
+  description String[] // Array of paragraphs
+  mission     String   @db.Text
+  vision      String   @db.Text
+  img         String?  // Optional image URL or base64
+  values      aboutValue[]  // Relation to Value model
+  stats       aboutStat[]   // Relation to Stat model
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model aboutValue {
+  id        Int      @id @default(autoincrement())
+  icon      String   // Store the icon name (e.g., 'Globe', 'Target')
+  title     String
+  text      String   @db.Text
+  aboutId   Int      // Foreign key to About
+  about     About    @relation(fields: [aboutId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model aboutStat {
+  id        Int      @id @default(autoincrement())
+  number    String   // Store as string to handle formats like "15+"
+  label     String
+  aboutId   Int      // Foreign key to About
+  about     About    @relation(fields: [aboutId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

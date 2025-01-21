@@ -53,11 +53,11 @@ export default function CategoriesPage() {
     {
       id: 'ict',
       name: 'ICT Solutions',
-      title: 'ICT Solutions',
-      description: 'Comprehensive ICT solutions designed to transform and optimize your business operations.',
+      title: 'Information and Communication Technology',
+      description: 'Comprehensive ICT solutions tailored for modern business needs.',
       overview: {
-        title: 'Advanced Technology Solutions',
-        content: 'We provide cutting-edge ICT solutions that help businesses stay ahead in the digital age. Our services cover everything from infrastructure setup to advanced system integration.'
+        title: 'Enterprise Technology Solutions',
+        content: 'From infrastructure to software solutions, we provide end-to-end ICT services that drive digital transformation.'
       },
       published: true,
       created_at: '2024-01-20T10:00:00Z',
@@ -65,169 +65,224 @@ export default function CategoriesPage() {
     }
   ]);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filter, setFilter] = useState<'all' | 'published' | 'draft'>('all');
   const [alert, setAlert] = useState<Alert | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean; categoryId: string | null }>({
+    show: false,
+    categoryId: null
+  });
 
-  const filteredCategories = categories.filter(category =>
-    category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    category.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const showAlert = (type: Alert['type'], message: string) => {
+    setAlert({ type, message });
+    setTimeout(() => setAlert(null), 3000);
+  };
 
-  const handleDelete = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this category?')) {
-      try {
-        // API call would go here
-        setCategories(categories.filter(category => category.id !== id));
-        setAlert({
-          type: 'success',
-          message: 'Category deleted successfully'
-        });
-      } catch (error) {
-        setAlert({
-          type: 'error',
-          message: 'Failed to delete category'
-        });
-      }
+  const initiateDelete = (id: string) => {
+    setDeleteConfirm({ show: true, categoryId: id });
+  };
+
+  const handleDelete = () => {
+    if (deleteConfirm.categoryId) {
+      setCategories(categories.filter(category => category.id !== deleteConfirm.categoryId));
+      setDeleteConfirm({ show: false, categoryId: null });
+      showAlert('success', 'Category deleted successfully');
     }
   };
 
-  const togglePublish = async (id: string) => {
-    try {
-      // API call would go here
-      setCategories(categories.map(category =>
-        category.id === id
-          ? { ...category, published: !category.published }
-          : category
-      ));
-      setAlert({
-        type: 'success',
-        message: 'Category status updated successfully'
-      });
-    } catch (error) {
-      setAlert({
-        type: 'error',
-        message: 'Failed to update category status'
-      });
-    }
-  };
+  const filteredCategories = categories.filter(category => {
+    const matchesSearch = category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         category.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = filter === 'all' ? true :
+                         filter === 'published' ? category.published :
+                         !category.published;
+    return matchesSearch && matchesStatus;
+  });
 
   return (
-    <div className="min-h-screen bg-[#1a1f4b] text-white p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-[#0f1035] to-[#2e3267] p-8">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-7xl mx-auto"
+      >
+        {/* Alert Component */}
+        <AnimatePresence mode="wait">
+          {alert && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg flex items-center space-x-2 z-50 ${
+                alert.type === 'success' ? 'bg-green-500' :
+                alert.type === 'error' ? 'bg-red-500' :
+                'bg-blue-500'
+              }`}
+            >
+              {alert.type === 'success' && <CheckCircle className="w-5 h-5 text-white" />}
+              {alert.type === 'error' && <XCircle className="w-5 h-5 text-white" />}
+              {alert.type === 'info' && <AlertCircle className="w-5 h-5 text-white" />}
+              <p className="text-white font-medium">{alert.message}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Delete Confirmation Modal */}
+        <AnimatePresence>
+          {deleteConfirm.show && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+            >
+              <motion.div
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.95 }}
+                className="bg-[#1a1f4b] p-6 rounded-lg shadow-lg max-w-md w-full mx-4"
+              >
+                <div className="flex items-start mb-4">
+                  <AlertTriangle className="w-6 h-6 text-yellow-500 mr-3 mt-0.5" />
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2">Delete Category</h3>
+                    <p className="text-gray-400">
+                      Are you sure you want to delete this category? This action cannot be undone.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex justify-end space-x-3">
+                  <button
+                    onClick={() => setDeleteConfirm({ show: false, categoryId: null })}
+                    className="px-4 py-2 rounded-md bg-gray-600 hover:bg-gray-500 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleDelete}
+                    className="px-4 py-2 rounded-md bg-red-600 hover:bg-red-500 transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Header Section */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold">Categories</h1>
+          <h1 className="text-2xl font-bold text-white">Categories</h1>
           <Link
             href="/admin/services/categories/new"
-            className="inline-flex items-center px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors text-white"
           >
             <Plus className="w-5 h-5 mr-2" />
             New Category
           </Link>
         </div>
 
-        <div className="mb-6 relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search categories..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-[#2e3267] border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        {/* Search and Filter Section */}
+        <div className="bg-[#1a1f4b] rounded-xl p-6 mb-8 shadow-lg">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search categories..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-[#2e3267] border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setFilter('all')}
+                className={`px-4 py-2 rounded-lg transition-colors ${
+                  filter === 'all'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-[#2e3267] text-gray-400 hover:text-white'
+                }`}
+              >
+                All
+              </button>
+              <button
+                onClick={() => setFilter('published')}
+                className={`px-4 py-2 rounded-lg transition-colors ${
+                  filter === 'published'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-[#2e3267] text-gray-400 hover:text-white'
+                }`}
+              >
+                Published
+              </button>
+              <button
+                onClick={() => setFilter('draft')}
+                className={`px-4 py-2 rounded-lg transition-colors ${
+                  filter === 'draft'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-[#2e3267] text-gray-400 hover:text-white'
+                }`}
+              >
+                Draft
+              </button>
+            </div>
+          </div>
         </div>
 
-        <AnimatePresence>
-          {alert && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className={`mb-4 p-4 rounded-lg flex items-center ${
-                alert.type === 'success'
-                  ? 'bg-green-500/20 text-green-400'
-                  : alert.type === 'error'
-                  ? 'bg-red-500/20 text-red-400'
-                  : 'bg-blue-500/20 text-blue-400'
-              }`}
-            >
-              {alert.type === 'success' ? (
-                <CheckCircle className="w-5 h-5 mr-2" />
-              ) : alert.type === 'error' ? (
-                <XCircle className="w-5 h-5 mr-2" />
-              ) : (
-                <AlertCircle className="w-5 h-5 mr-2" />
-              )}
-              {alert.message}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <div className="grid gap-6">
+        {/* Categories Grid */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredCategories.map((category) => (
             <motion.div
               key={category.id}
+              layout
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              className="bg-[#2e3267] p-6 rounded-lg"
+              className="bg-[#1a1f4b] rounded-xl p-6 shadow-lg"
             >
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">{category.title}</h3>
-                  <p className="text-gray-400 mb-4">{category.description}</p>
-                  <div className="flex items-center text-sm text-gray-400">
-                    <Clock className="w-4 h-4 mr-1" />
-                    {new Date(category.updated_at).toLocaleDateString()}
-                  </div>
+                  <h2 className="text-xl font-semibold text-white mb-1">{category.name}</h2>
+                  <h3 className="text-gray-400 text-sm">{category.title}</h3>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center space-x-2">
                   <Link
-                    href={`/admin/services/categories/${category.id}`}
-                    className="p-2 text-blue-400 hover:bg-blue-500/20 rounded-lg transition-colors"
+                    href={`/admin/services/categories/new?id=${category.id}`}
+                    className="p-2 text-gray-400 hover:text-white transition-colors"
                   >
                     <Pencil className="w-5 h-5" />
                   </Link>
                   <button
-                    onClick={() => handleDelete(category.id)}
-                    className="p-2 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors"
+                    onClick={() => initiateDelete(category.id)}
+                    className="p-2 text-gray-400 hover:text-red-400 transition-colors"
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
                 </div>
               </div>
-
-              <div className="flex items-center justify-between pt-4 border-t border-gray-700">
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-sm ${
-                      category.published
-                        ? 'bg-green-500/20 text-green-400'
-                        : 'bg-yellow-500/20 text-yellow-400'
-                    }`}
-                  >
-                    {category.published ? (
-                      <CheckCircle className="w-4 h-4 mr-1" />
-                    ) : (
-                      <AlertTriangle className="w-4 h-4 mr-1" />
-                    )}
-                    {category.published ? 'Published' : 'Draft'}
-                  </span>
+              
+              <p className="text-gray-400 mb-4 line-clamp-2">{category.description}</p>
+              
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center text-gray-400">
+                  <Clock className="w-4 h-4 mr-1" />
+                  {new Date(category.updated_at).toLocaleDateString()}
                 </div>
-                <button
-                  onClick={() => togglePublish(category.id)}
-                  className={`px-4 py-2 rounded-lg text-sm ${
+                <div
+                  className={`px-2 py-1 rounded-full text-xs ${
                     category.published
-                      ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30'
-                      : 'bg-green-500/20 text-green-400 hover:bg-green-500/30'
+                      ? 'bg-green-900/50 text-green-400'
+                      : 'bg-gray-900/50 text-gray-400'
                   }`}
                 >
-                  {category.published ? 'Unpublish' : 'Publish'}
-                </button>
+                  {category.published ? 'Published' : 'Draft'}
+                </div>
               </div>
             </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

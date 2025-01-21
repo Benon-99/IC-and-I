@@ -1,5 +1,7 @@
 
 import prisma from "../prisma/client.js"
+import { AboutRepository } from "../repositories/about-repo.js";
+import { AboutDTO } from "../DTOs/aboutDTO.js";
 
 export const getAbout = async (req, res) => {
     try {
@@ -73,3 +75,56 @@ export const updateAbout = async (req, res) => {
         res.status(500).json({ error: 'Failed to update about section' });
     }
 };
+
+export const createAbout = async (req, res) => {
+    try {
+        const data = { ...req.body };
+        if (req.file) {
+            data.img = req.file.filename;
+        }
+        const aboutDto = new AboutDTO(data);
+        const about = await AboutRepository.createAbout(aboutDto);
+        res.status(200).json({ status: 'success', about });
+    } catch (error) {
+        console.error('Error creating about section:', error);
+        res.status(500).json({ status: 'fail', message: error.message });
+    }
+}
+
+export const updateAboutUs = async (req, res) => {
+    try {
+        const data = { ...req.body };
+        if (req.file) {
+            data.img = req.file.filename;
+        }
+        const aboutDto = new AboutDTO(data);
+        const about = await AboutRepository.updateAbout(aboutDto);
+        res.status(200).json({ status: 'success', about });
+    } catch (error) {
+        console.error('Error updating about section:', error);
+        res.status(500).json({ status: 'fail', message: error.message });
+    }
+}
+
+export const deleteAboutUs = async (req , res)=> {
+    try {
+        const { id } = req.body; // Should receive ID instead of full DTO
+        await AboutRepository.deleteAbout(id);
+        res.status(200).json({ status: 'success', message: 'About section deleted successfully' });
+        
+    } catch (error) {
+        console.error('Error creating about section:', error);
+        res.status(500).json({ status: 'fail', message: error.message });
+    }
+}
+
+export const getAboutUs = async (req , res)=> {
+    try {
+        const about = await AboutRepository.getAbout(1);
+        res.status(200).json({ status: 'success', about });
+        
+    } catch (error) {
+        console.error('Error creating about section:', error);
+        res.status(500).json({ status: 'fail', message: error.message });
+    }
+}
