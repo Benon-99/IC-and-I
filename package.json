@@ -9,11 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-navigation-menu": "^1.1.4",
-    "@tanstack/react-query": "^5.62.11",
+    "@tanstack/react-query": "^5.64.2",
     "@types/styled-components": "^5.1.34",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
@@ -34,6 +35,30 @@
     "tailwindcss-animate": "^1.0.7",
     "yup": "^1.4.0",
     "zustand": "^5.0.2"
+=======
+    "@formspree/react": "^2.5.1",
+    "@hookform/resolvers": "^3.9.1",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
+    "@radix-ui/react-navigation-menu": "^1.1.4",
+    "axios": "^1.7.7",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "emailjs-com": "^3.2.0",
+    "formik": "^2.4.6",
+    "framer-motion": "^11.0.3",
+    "lucide-react": "^0.330.0",
+    "mysql2": "^3.11.4",
+    "next": "14.1.0",
+    "nodemailer": "^6.9.16",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.53.2",
+    "styled-components": "^6.1.13",
+    "swiper": "^11.0.5",
+    "tailwind-merge": "^2.1.0",
+    "tailwindcss-animate": "^1.0.7",
+    "yup": "^1.4.0"
+>>>>>>> 141992f52ab3f2143b4cf2a58d7d79730fff6824
   },
   "devDependencies": {
     "@types/node": "^20.11.16",

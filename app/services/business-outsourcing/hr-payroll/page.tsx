@@ -1,41 +1,63 @@
 "use client";
 
-import { motion } from 'framer-motion';
-import { Calculator, BarChart, MessageSquare, Heart, ArrowUpDown, ArrowRight } from 'lucide-react';
-import ServiceHero from '@/components/services/ServiceHero';
+import { motion } from "framer-motion";
+import {
+  Calculator,
+  BarChart,
+  MessageSquare,
+  Heart,
+  ArrowUpDown,
+  ArrowRight,
+} from "lucide-react";
+import ServiceHero from "@/components/services/ServiceHero";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+
+const fetchingPayroll = async () => {
+  const response = axios.get("https://api.example.com/jobs");
+};
 
 export default function HRPayrollPage() {
+  const { data, isFetching, isLoading, error } = useQuery({
+    queryKey: ["payroll"],
+    queryFn: fetchingPayroll,
+  });
   const services = [
     {
       icon: Calculator,
       title: "Payroll Processing",
-      description: "Streamline your payroll operations with comprehensive automated calculations, tax processing, and efficient payment distribution systems.",
-      gradient: "from-[#00B4D8] to-[#4A9BE4]"
+      description:
+        "Streamline your payroll operations with comprehensive automated calculations, tax processing, and efficient payment distribution systems.",
+      gradient: "from-[#00B4D8] to-[#4A9BE4]",
     },
     {
       icon: BarChart,
       title: "Performance Monitoring",
-      description: "Track and analyze comprehensive performance metrics to measure team success and align organizational goals with strategic opportunities.",
-      gradient: "from-[#4A9BE4] to-[#8590EA]"
+      description:
+        "Track and analyze comprehensive performance metrics to measure team success and align organizational goals with strategic opportunities.",
+      gradient: "from-[#4A9BE4] to-[#8590EA]",
     },
     {
       icon: MessageSquare,
       title: "Feedback and Coaching",
-      description: "Foster professional growth through structured feedback sessions and personalized development strategies for long-term career advancement.",
-      gradient: "from-[#8590EA] to-[#B5C6F4]"
+      description:
+        "Foster professional growth through structured feedback sessions and personalized development strategies for long-term career advancement.",
+      gradient: "from-[#8590EA] to-[#B5C6F4]",
     },
     {
       icon: Heart,
       title: "Employee Engagement",
-      description: "Build and maintain a positive workplace culture through targeted strategies designed to enhance team satisfaction and long-term retention.",
-      gradient: "from-[#00B4D8] to-[#4A9BE4]"
+      description:
+        "Build and maintain a positive workplace culture through targeted strategies designed to enhance team satisfaction and long-term retention.",
+      gradient: "from-[#00B4D8] to-[#4A9BE4]",
     },
     {
       icon: ArrowUpDown,
       title: "Two-Way Communication",
-      description: "Enable transparent and effective dialogue between team members and leadership through dedicated communication channels and protocols.",
-      gradient: "from-[#4A9BE4] to-[#8590EA]"
-    }
+      description:
+        "Enable transparent and effective dialogue between team members and leadership through dedicated communication channels and protocols.",
+      gradient: "from-[#4A9BE4] to-[#8590EA]",
+    },
   ];
 
   const containerVariants = {
@@ -43,9 +65,9 @@ export default function HRPayrollPage() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -53,13 +75,13 @@ export default function HRPayrollPage() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 }
-    }
+      transition: { duration: 0.5 },
+    },
   };
 
   return (
     <div className="min-h-screen bg-white">
-      <ServiceHero 
+      <ServiceHero
         title="HR Payroll & Performance Management"
         description="Optimizing Payroll and Driving Employee Performance."
       />
@@ -79,17 +101,18 @@ export default function HRPayrollPage() {
           >
             Overview
           </motion.span>
-          
+
           <h2 className="text-4xl font-bold bg-gradient-to-r from-[#00B4D8] to-[#4A9BE4] bg-clip-text text-transparent mb-8">
             Streamlined Payroll Solutions
           </h2>
-          
+
           <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
-            Managing payroll and employee performance is a critical aspect of running a successful 
-            business, and IC&I is here to simplify the process. We currently manage payroll for 
-            over 700 personnel, ensuring timely and accurate payments, while also providing 
-            comprehensive performance management services that help our clients maximize the 
-            potential of their workforce.
+            Managing payroll and employee performance is a critical aspect of
+            running a successful business, and IC&I is here to simplify the
+            process. We currently manage payroll for over 700 personnel,
+            ensuring timely and accurate payments, while also providing
+            comprehensive performance management services that help our clients
+            maximize the potential of their workforce.
           </p>
         </motion.div>
 
@@ -119,12 +142,13 @@ export default function HRPayrollPage() {
               variants={itemVariants}
               className="text-xl text-[#111240]/70 max-w-2xl mx-auto"
             >
-              By outsourcing your payroll & performance management to us, you can focus on strategic 
-              business initiatives, knowing that your HR functions are in expert hands.
+              By outsourcing your payroll & performance management to us, you
+              can focus on strategic business initiatives, knowing that your HR
+              functions are in expert hands.
             </motion.p>
           </div>
 
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
@@ -136,11 +160,17 @@ export default function HRPayrollPage() {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
                 <div className="relative p-8 rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300">
-                  <div className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
+                  <div
+                    className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}
+                  >
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
-                  <p className="text-[#111240]/60 mb-6">{service.description}</p>
+                  <h3 className="text-xl font-semibold text-[#111240] mb-4">
+                    {service.title}
+                  </h3>
+                  <p className="text-[#111240]/60 mb-6">
+                    {service.description}
+                  </p>
                 </div>
               </motion.div>
             ))}
