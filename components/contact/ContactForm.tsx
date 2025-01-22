@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
 import styled from "styled-components";
 import * as Yup from "yup";
 import { useRouter } from 'next/navigation';
