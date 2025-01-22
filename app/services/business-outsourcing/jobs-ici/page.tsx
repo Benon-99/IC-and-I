@@ -189,7 +189,7 @@ export default function JobsIciPage() {
                     <feature.icon className="w-8 h-8 text-white" />
                   </div> */}
                     {icons && (
-                      <div className="pb-[20px] bg-gradient-to-r from-[#3785CC] to-[#4A9BE4] transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center p-4 rounded-xl">
+                      <div className="pb-[20px] bg-gradient-to-r from-[#3785CC] to-[#1387ed] transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center p-4 rounded-xl">
                         {icons[index]}{" "}
                       </div>
                     )}
