@@ -11,7 +11,6 @@ import adminRouter from './routes/admin.js';
 import homeRouter from './routes/home.js';
 import categoriesRouter from './routes/categories.js';
 import servicesRouter from './routes/services.js'
-import aboutRouter from './routes/about.js'
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -73,6 +72,7 @@ app.use('/services',servicesRouter);
 app.use('/about' , aboutRouter);
 app.use(express.static('uploads'));
 
+app.use("/admin",AdminFeatureRouter)
 // Database connection test
 async function testDbConnection() {
     try {

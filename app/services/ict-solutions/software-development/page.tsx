@@ -1,47 +1,55 @@
 "use client";
 
-import { motion } from 'framer-motion';
-import { Globe, Smartphone, Code, Database, Link2, Layout } from 'lucide-react';
-import ServiceHero from '@/components/services/ServiceHero';
+import { motion } from "framer-motion";
+import { Globe, Smartphone, Code, Database, Link2, Layout } from "lucide-react";
+import ServiceHero from "@/components/services/ServiceHero";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 export default function SoftwareDevelopmentPage() {
   const services = [
     {
       icon: Globe,
       title: "Custom Web Applications",
-      description: "Build powerful and scalable web solutions that streamline business processes and deliver exceptional user experiences across all platforms.",
-      gradient: "from-[#00B4D8] to-[#4A9BE4]"
+      description:
+        "Build powerful and scalable web solutions that streamline business processes and deliver exceptional user experiences across all platforms.",
+      gradient: "from-[#00B4D8] to-[#4A9BE4]",
     },
     {
       icon: Smartphone,
       title: "Mobile Applications",
-      description: "Develop innovative mobile experiences with native and cross-platform solutions that enhance user engagement and streamline business operations.",
-      gradient: "from-[#4A9BE4] to-[#8590EA]"
+      description:
+        "Develop innovative mobile experiences with native and cross-platform solutions that enhance user engagement and streamline business operations.",
+      gradient: "from-[#4A9BE4] to-[#8590EA]",
     },
     {
       icon: Code,
       title: "High-Level Programming",
-      description: "Leverage advanced expertise in .NET and Java technologies to develop secure, scalable, and maintainable enterprise-grade applications.",
-      gradient: "from-[#8590EA] to-[#B5C6F4]"
+      description:
+        "Leverage advanced expertise in .NET and Java technologies to develop secure, scalable, and maintainable enterprise-grade applications.",
+      gradient: "from-[#8590EA] to-[#B5C6F4]",
     },
     {
       icon: Database,
       title: "Large-Scale Applications",
-      description: "Design and implement robust enterprise architectures that efficiently handle high-volume data processing and complex business transactions.",
-      gradient: "from-[#00B4D8] to-[#4A9BE4]"
+      description:
+        "Design and implement robust enterprise architectures that efficiently handle high-volume data processing and complex business transactions.",
+      gradient: "from-[#00B4D8] to-[#4A9BE4]",
     },
     {
       icon: Link2,
       title: "Integration Services",
-      description: "Connect and optimize your business systems through custom API development, middleware solutions, and seamless third-party integrations.",
-      gradient: "from-[#4A9BE4] to-[#8590EA]"
+      description:
+        "Connect and optimize your business systems through custom API development, middleware solutions, and seamless third-party integrations.",
+      gradient: "from-[#4A9BE4] to-[#8590EA]",
     },
     {
       icon: Layout,
       title: "User-Centric Design",
-      description: "Create beautiful, intuitive interfaces through comprehensive user research, iterative design processes, and modern UX best practices.",
-      gradient: "from-[#8590EA] to-[#B5C6F4]"
-    }
+      description:
+        "Create beautiful, intuitive interfaces through comprehensive user research, iterative design processes, and modern UX best practices.",
+      gradient: "from-[#8590EA] to-[#B5C6F4]",
+    },
   ];
 
   const containerVariants = {
@@ -49,9 +57,9 @@ export default function SoftwareDevelopmentPage() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -59,13 +67,13 @@ export default function SoftwareDevelopmentPage() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 }
-    }
+      transition: { duration: 0.5 },
+    },
   };
 
   return (
     <div className="min-h-screen bg-white">
-      <ServiceHero 
+      <ServiceHero
         title="Software Development"
         description="Creating Innovative Software Solutions for Business Success."
       />
@@ -85,15 +93,17 @@ export default function SoftwareDevelopmentPage() {
           >
             Overview
           </motion.span>
-          
+
           <h2 className="text-4xl font-bold bg-gradient-to-r from-[#00B4D8] to-[#4A9BE4] bg-clip-text text-transparent mb-8">
             Enterprise Software Solutions
           </h2>
           <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
-            IC&I, in collaboration with our sister company Intelligent Data System (IDS), offers 
-            comprehensive software development services that are designed to meet the unique needs 
-            of businesses in Syria and the UAE (Dubai). Our team of experienced developers specializes 
-            in creating large-scale, high-performance applications that drive efficiency and innovation.
+            IC&I, in collaboration with our sister company Intelligent Data
+            System (IDS), offers comprehensive software development services
+            that are designed to meet the unique needs of businesses in Syria
+            and the UAE (Dubai). Our team of experienced developers specializes
+            in creating large-scale, high-performance applications that drive
+            efficiency and innovation.
           </p>
         </motion.div>
 
@@ -123,12 +133,13 @@ export default function SoftwareDevelopmentPage() {
               variants={itemVariants}
               className="text-xl text-[#111240]/70 max-w-2xl mx-auto"
             >
-              Our software development services are focused on delivering innovative, reliable, and 
-              scalable solutions that help you stay ahead in a competitive market.
+              Our software development services are focused on delivering
+              innovative, reliable, and scalable solutions that help you stay
+              ahead in a competitive market.
             </motion.p>
           </div>
 
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
@@ -140,11 +151,15 @@ export default function SoftwareDevelopmentPage() {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
                 <div className="relative p-8 rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300 shadow-sm">
-                  <div className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
+                  <div
+                    className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}
+                  >
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
 
-                  <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
+                  <h3 className="text-xl font-semibold text-[#111240] mb-4">
+                    {service.title}
+                  </h3>
                   <p className="text-[#111240]/60">{service.description}</p>
                 </div>
               </motion.div>
