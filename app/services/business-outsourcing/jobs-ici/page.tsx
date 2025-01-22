@@ -9,58 +9,77 @@ import {
   BookOpen,
   ArrowRight,
   Link,
+  ArrowLeftRight,
+  Shield,
 } from "lucide-react";
 import ServiceHero from "@/components/services/ServiceHero";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const fetchingJobs = async () => {
-  const response = axios("https://api.example.com/jobs");
+const fetchingFeatures = async () => {
+  const response = axios("http://localhost:3001/admin/features");
+  console.log((await response).data.response);
+  return (await response).data.response;
 };
+
+interface featureObj {
+  id: number;
+  title: string;
+  description: string;
+  serviceId: number;
+}
+
+const icons = [
+  <Search key="search" />,
+  <Shield key="Shield" />,
+  <ArrowLeftRight key="ArrowLeftRight" />,
+  <Activity key="activity" />,
+  <BookOpen key="book" />,
+];
 
 export default function JobsIciPage() {
   const { data, isFetching, isLoading, error } = useQuery({
-    queryKey: ["jobs"],
-    queryFn: fetchingJobs,
+    queryKey: ["features"],
+    queryFn: fetchingFeatures,
   });
 
-  const services = [
-    {
-      icon: Search,
-      title: "Extensive Job Listings",
-      description:
-        "Browse through curated job opportunities matched to your experience level and preferences.",
-      gradient: "from-[#00B4D8] to-[#4A9BE4]",
-    },
-    {
-      icon: Upload,
-      title: "Resume Submission",
-      description:
-        "Upload your resume securely to connect with potential employers and opportunities.",
-      gradient: "from-[#4A9BE4] to-[#8590EA]",
-    },
-    {
-      icon: Bell,
-      title: "Personalized Job Alerts",
-      description:
-        "Get notified about relevant job openings that match your career interests and skills.",
-      gradient: "from-[#8590EA] to-[#B5C6F4]",
-    },
-    {
-      icon: Activity,
-      title: "Application Tracking",
-      description:
-        "Monitor your job application progress with real-time updates and status tracking.",
-      gradient: "from-[#00B4D8] to-[#4A9BE4]",
-    },
-    {
-      icon: BookOpen,
-      title: "Career Resources",
-      description:
-        "Access comprehensive tools and resources to enhance your job search and career development.",
-      gradient: "from-[#4A9BE4] to-[#8590EA]",
-    },
-  ];
+  // const services = [
+  //   {
+  //     icon: Search,
+  //     title: "Extensive Job Listings",
+  //     description:
+  //       "Browse through curated job opportunities matched to your experience level and preferences.",
+  //     gradient: "from-[#00B4D8] to-[#4A9BE4]",
+  //   },
+  //   {
+  //     icon: Upload,
+  //     title: "Resume Submission",
+  //     description:
+  //       "Upload your resume securely to connect with potential employers and opportunities.",
+  //     gradient: "from-[#4A9BE4] to-[#8590EA]",
+  //   },
+  //   {
+  //     icon: Bell,
+  //     title: "Personalized Job Alerts",
+  //     description:
+  //       "Get notified about relevant job openings that match your career interests and skills.",
+  //     gradient: "from-[#8590EA] to-[#B5C6F4]",
+  //   },
+  //   {
+  //     icon: Activity,
+  //     title: "Application Tracking",
+  //     description:
+  //       "Monitor your job application progress with real-time updates and status tracking.",
+  //     gradient: "from-[#00B4D8] to-[#4A9BE4]",
+  //   },
+  //   {
+  //     icon: BookOpen,
+  //     title: "Career Resources",
+  //     description:
+  //       "Access comprehensive tools and resources to enhance your job search and career development.",
+  //     gradient: "from-[#4A9BE4] to-[#8590EA]",
+  //   },
+  // ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -155,28 +174,34 @@ export default function JobsIciPage() {
             variants={containerVariants}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {services.map((service, index) => (
-              <motion.div
-                key={service.title}
-                variants={itemVariants}
-                className="group relative"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
-                <div className="relative p-8 rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300 shadow-sm">
-                  <div
-                    className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}
+            {data &&
+              data.map((feature: featureObj, index: number) => (
+                <motion.div
+                  key={feature.id}
+                  variants={itemVariants}
+                  className="group relative"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
+                  <div className="relative p-8 rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300 shadow-sm">
+                    {/* <div
+                    className={`p-4 rounded-xl bg-gradient-to-r ${feature.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}
                   >
-                    <service.icon className="w-8 h-8 text-white" />
+                    <feature.icon className="w-8 h-8 text-white" />
+                  </div> */}
+                    {icons && (
+                      <div className="pb-[20px] bg-gradient-to-r from-[#3785CC] to-[#4A9BE4] transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center p-4 rounded-xl">
+                        {icons[index]}{" "}
+                      </div>
+                    )}
+                    <h3 className="text-xl font-semibold text-[#111240] mb-4">
+                      {feature.title}
+                    </h3>
+                    <p className="text-[#111240]/60 mb-6">
+                      {feature.description}
+                    </p>
                   </div>
-                  <h3 className="text-xl font-semibold text-[#111240] mb-4">
-                    {service.title}
-                  </h3>
-                  <p className="text-[#111240]/60 mb-6">
-                    {service.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
           </motion.div>
         </motion.div>
       </div>

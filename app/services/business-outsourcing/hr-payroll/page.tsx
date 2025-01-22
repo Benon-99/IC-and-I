@@ -13,15 +13,7 @@ import ServiceHero from "@/components/services/ServiceHero";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-const fetchingPayroll = async () => {
-  const response = axios.get("https://api.example.com/jobs");
-};
-
 export default function HRPayrollPage() {
-  const { data, isFetching, isLoading, error } = useQuery({
-    queryKey: ["payroll"],
-    queryFn: fetchingPayroll,
-  });
   const services = [
     {
       icon: Calculator,
