@@ -97,3 +97,31 @@ model Feature {
   service     Services? @relation(fields: [serviceId], references: [id])
   serviceId   Int?
 }
+model About {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(255)
+  subtitle    String    @db.VarChar(255)
+  description String[]  // Array of strings for detailed descriptions
+  mission     String    @db.Text
+  vision      String    @db.Text
+  img         String?   @db.VarChar(255) // Optional image
+  values      Value[]   // Relation to the Value model
+  stats       Stat[]    // Relation to the Stat model
+}
+
+model Value {
+  id       Int    @id @default(autoincrement())
+  icon     String @db.VarChar(100)
+  title    String @db.VarChar(255)
+  text     String @db.Text
+  about    About  @relation(fields: [aboutId], references: [id])
+  aboutId  Int
+}
+
+model Stat {
+  id       Int    @id @default(autoincrement())
+  number   String @db.VarChar(50)
+  label    String @db.VarChar(255)
+  about    About  @relation(fields: [aboutId], references: [id])
+  aboutId  Int
+}
