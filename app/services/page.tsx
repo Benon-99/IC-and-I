@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { motion } from "framer-motion";
 import {
   Server,
@@ -12,6 +13,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function ServicesPage() {
   const services = {
