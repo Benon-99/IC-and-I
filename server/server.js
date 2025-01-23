@@ -12,6 +12,7 @@ import homeRouter from "./routes/home.js";
 import categoriesRouter from "./routes/categories.js";
 import servicesRouter from "./routes/services.js";
 import AdminFeatureRouter from "./routes/adminRoutes/adminPanel.js";
+import aboutRouter from "./routes/about.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
