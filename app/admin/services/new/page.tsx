@@ -82,16 +82,24 @@ export default function NewServicePage({
     const fetchService = async () => {
       if (searchParams.id) {
         try {
-          const response = await fetch(`/api/services/${searchParams.id}`);
-          if (response.ok) {
-            const service = await response.json();
-            setFormData({
-              ...service,
-              category: categories.find(c => c.id === service.category.id) || categories[0]
-            });
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/services/id/${searchParams.id}`
+          );
+          
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Failed to fetch service');
           }
+
+          const service = await response.json();
+          
+          setFormData({
+            ...service,
+            category: categories.find(c => c.id === service.category.id) || categories[0]
+          });
         } catch (error) {
           console.error('Error fetching service:', error);
+          alert(error instanceof Error ? error.message : 'Failed to fetch service');
         }
       }
     };
@@ -109,25 +117,45 @@ export default function NewServicePage({
     setIsSubmitting(true);
 
     try {
-      const url = searchParams.id ? `/api/services/${searchParams.id}` : '/api/services';
+      const url = searchParams.id 
+        ? `${process.env.NEXT_PUBLIC_API_URL}/services/service/${searchParams.id}`
+        : `${process.env.NEXT_PUBLIC_API_URL}/services`;
+      
       const method = searchParams.id ? 'PUT' : 'POST';
+      
+      // Get the auth token from localStorage
+      const token = localStorage.getItem('authToken');
+      
+      if (!token) {
+        throw new Error('Authentication required');
+      }
 
       const response = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          category: formData.category?.id // Send only the category ID
+        }),
       });
 
-      if (response.ok) {
-        router.push('/admin/services');
-        router.refresh();
-      } else {
-        throw new Error('Failed to save service');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to save service');
       }
+
+      // Show success message
+      alert('Service saved successfully!');
+      
+      // Redirect to services list
+      router.push('/admin/services');
+      router.refresh();
     } catch (error) {
       console.error('Error saving service:', error);
+      alert(error instanceof Error ? error.message : 'Failed to save service');
     } finally {
       setIsSubmitting(false);
     }
