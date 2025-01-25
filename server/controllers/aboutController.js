@@ -1,3 +1,6 @@
+import prisma from "../prisma/client.js";
+import { AboutRepository } from "../repositories/about-repo.js";
+import { AboutDTO } from "../DTOs/aboutDTO.js";
 
 import prisma from "../prisma/client.js"
 import { AboutRepository } from "../repositories/about-repo.js";
@@ -49,17 +52,17 @@ export const getHome = async (req, res) => {
 };
 
 export const updateAbout = async (req, res) => {
-    try {
-        const { id } = req.query;
-        const { aboutUs } = req.body;
-        const about = JSON.parse(aboutUs)
-        const image = req.file?.filename;
-        // console.log("\n\n\n\n\n\n\n\nwdwdwdw : ",.title +"\n\n\n\n\n\n\n");
-        
-        const updateData = {
-            ...about,
-            ...(image && { image })
-        };
+  try {
+    const { id } = req.query;
+    const { aboutUs } = req.body;
+    const about = JSON.parse(aboutUs);
+    const image = req.file?.filename;
+    // console.log("\n\n\n\n\n\n\n\nwdwdwdw : ",.title +"\n\n\n\n\n\n\n");
+
+    const updateData = {
+      ...about,
+      ...(image && { image }),
+    };
 
         const updatedAbout = await prisma.home.update({
             where: { id: parseInt(id) },
