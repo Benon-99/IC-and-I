@@ -58,67 +58,67 @@ async function main() {
 // - Automate payroll processing, performance tracking, and recruitment platforms.
 // - Ensure better decision-making with integrated tools.
 
-// **2. Focus on Employee Well-being**
-// - Adopt flexible work arrangements.
-// - Provide mental health support and wellness programs.
-// - Foster a supportive work environment.
+  // **2. Focus on Employee Well-being**
+  // - Adopt flexible work arrangements.
+  // - Provide mental health support and wellness programs.
+  // - Foster a supportive work environment.
 
-// **3. Develop Strong Learning & Development Programs**
-// - Personalize learning paths and training initiatives.
-// - Offer leadership development and cross-functional training.
+  // **3. Develop Strong Learning & Development Programs**
+  // - Personalize learning paths and training initiatives.
+  // - Offer leadership development and cross-functional training.
 
-// **4. Enhance Performance Management**
-// - Create a feedback-driven, development-focused approach.
-// - Align performance management with organizational goals.
+  // **4. Enhance Performance Management**
+  // - Create a feedback-driven, development-focused approach.
+  // - Align performance management with organizational goals.
 
-// **5. Prioritize Diversity, Equity, and Inclusion**
-// - Build DEI strategies to attract talent and foster innovation.
+  // **5. Prioritize Diversity, Equity, and Inclusion**
+  // - Build DEI strategies to attract talent and foster innovation.
 
-// Looking ahead, HR managers must adapt to changing dynamics to build resilient and engaged workforces.`
-//     },
-//   });
+  // Looking ahead, HR managers must adapt to changing dynamics to build resilient and engaged workforces.`
+  //     },
+  //   });
 
-//   await prisma.post.update({
-//     where: { slug: "the-role-of-cybersecurity-in-modern-business" },
-//     data: {
-//       content: `
-// **1. The Growing Importance of Cybersecurity**
-// - Increase in cyberattacks and sophisticated threats.
-// - Rising costs of data breaches and regulatory requirements.
+  //   await prisma.post.update({
+  //     where: { slug: "the-role-of-cybersecurity-in-modern-business" },
+  //     data: {
+  //       content: `
+  // **1. The Growing Importance of Cybersecurity**
+  // - Increase in cyberattacks and sophisticated threats.
+  // - Rising costs of data breaches and regulatory requirements.
 
-// **2. Essential Security Measures**
-// - **Network Security**: Firewalls, monitoring, and audits.
-// - **Data Protection**: Encryption and access controls.
-// - **Employee Training**: Phishing prevention and incident response.
+  // **2. Essential Security Measures**
+  // - **Network Security**: Firewalls, monitoring, and audits.
+  // - **Data Protection**: Encryption and access controls.
+  // - **Employee Training**: Phishing prevention and incident response.
 
-// **3. Impact on Business Operations**
-// - Improve customer trust and compliance.
-// - Enhance operational efficiency and risk management.
+  // **3. Impact on Business Operations**
+  // - Improve customer trust and compliance.
+  // - Enhance operational efficiency and risk management.
 
-// Looking ahead, businesses must prepare for AI-powered solutions, zero-trust architecture, and IoT security considerations.`
-//     },
-//   });
+  // Looking ahead, businesses must prepare for AI-powered solutions, zero-trust architecture, and IoT security considerations.`
+  //     },
+  //   });
 
-//   await prisma.post.update({
-//     where: { slug: "how-digital-transformation-is-shaping-the-future-of-business-in-syria" },
-//     data: {
-//       content: `
-// **1. The Digital Revolution in Syria**
-// - Adoption of modern technologies and operational efficiency.
-// - Changing customer expectations and new business models.
+  //   await prisma.post.update({
+  //     where: { slug: "how-digital-transformation-is-shaping-the-future-of-business-in-syria" },
+  //     data: {
+  //       content: `
+  // **1. The Digital Revolution in Syria**
+  // - Adoption of modern technologies and operational efficiency.
+  // - Changing customer expectations and new business models.
 
-// **2. Key Areas of Transformation**
-// - **E-Commerce**: Growth of online platforms and digital payments.
-// - **Process Automation**: Workflow digitization and cloud computing.
-// - **Customer Experience**: Personalized services and omnichannel presence.
+  // **2. Key Areas of Transformation**
+  // - **E-Commerce**: Growth of online platforms and digital payments.
+  // - **Process Automation**: Workflow digitization and cloud computing.
+  // - **Customer Experience**: Personalized services and omnichannel presence.
 
-// **3. Challenges and Opportunities**
-// - **Challenges**: Infrastructure gaps and investment needs.
-// - **Opportunities**: Market expansion and innovation potential.
+  // **3. Challenges and Opportunities**
+  // - **Challenges**: Infrastructure gaps and investment needs.
+  // - **Opportunities**: Market expansion and innovation potential.
 
-// Looking ahead, digital transformation in Syria offers immense economic growth opportunities.`
-//     },
-//   });
+  // Looking ahead, digital transformation in Syria offers immense economic growth opportunities.`
+  //     },
+  //   });
 
   //Update home record
   // const homeRecord = await prisma.home.findUnique({ where: { id: 1 } });

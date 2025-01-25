@@ -1,3 +1,6 @@
+import prisma from "../prisma/client.js";
+import { AboutRepository } from "../repositories/about-repo.js";
+import { AboutDTO } from "../DTOs/aboutDTO.js";
 
 import prisma from "../prisma/client.js"
 import { AboutRepository } from "../repositories/about-repo.js";
@@ -22,7 +25,7 @@ export const getHome = async (req, res) => {
 
         // Ensure features is always an array
         if (home[0]?.features) {
-            home[0].features = Array.isArray(home[0].features) 
+            home[0].features = Array.isArray(about[0].features) 
                 ? home[0].features 
                 : [home[0].features];
         }
@@ -49,17 +52,17 @@ export const getHome = async (req, res) => {
 };
 
 export const updateAbout = async (req, res) => {
-    try {
-        const { id } = req.query;
-        const { aboutUs } = req.body;
-        const about = JSON.parse(aboutUs)
-        const image = req.file?.filename;
-        // console.log("\n\n\n\n\n\n\n\nwdwdwdw : ",.title +"\n\n\n\n\n\n\n");
-        
-        const updateData = {
-            ...about,
-            ...(image && { image })
-        };
+  try {
+    const { id } = req.query;
+    const { aboutUs } = req.body;
+    const about = JSON.parse(aboutUs);
+    const image = req.file?.filename;
+    // console.log("\n\n\n\n\n\n\n\nwdwdwdw : ",.title +"\n\n\n\n\n\n\n");
+
+    const updateData = {
+      ...about,
+      ...(image && { image }),
+    };
 
         const updatedAbout = await prisma.home.update({
             where: { id: parseInt(id) },
@@ -76,7 +79,7 @@ export const updateAbout = async (req, res) => {
     }
 };
 
-export const createAbout = async (req, res) => {
+export const createAboutUs = async (req, res) => {
     try {
         const data = { ...req.body };
         if (req.file) {
