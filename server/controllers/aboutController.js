@@ -3,45 +3,45 @@ import prisma from "../prisma/client.js"
 import { AboutRepository } from "../repositories/about-repo.js";
 import { AboutDTO } from "../DTOs/aboutDTO.js";
 
-export const getAbout = async (req, res) => {
+export const getHome = async (req, res) => {
     try {
-        const about = await prisma.home.findMany({
+        const home = await prisma.home.findMany({
             where: {
                 id: 1
             }
         });
 
-        console.log('Raw DB Data:', about[0]);
+        console.log('Raw DB Data:', home[0]);
 
         // Ensure content is always an array
-        if (about[0]?.aboutUs?.content) {
-            about[0].aboutUs.content = Array.isArray(about[0].aboutUs.content) 
-                ? about[0].aboutUs.content 
-                : [about[0].aboutUs.content];
+        if (home[0]?.aboutUs?.content) {
+            home[0].aboutUs.content = Array.isArray(home[0].aboutUs.content) 
+                ? home[0].aboutUs.content 
+                : [home[0].aboutUs.content];
         }
 
         // Ensure features is always an array
-        if (about[0]?.features) {
-            about[0].features = Array.isArray(about[0].features) 
-                ? about[0].features 
-                : [about[0].features];
+        if (home[0]?.features) {
+            home[0].features = Array.isArray(home[0].features) 
+                ? home[0].features 
+                : [home[0].features];
         }
 
         // Ensure aboutUs exists
-        if (!about[0].aboutUs) {
-            about[0].aboutUs = {};
+        if (!home[0].aboutUs) {
+            home[0].aboutUs = {};
         }
 
         
 
-        if (about[0]?.stats) {
-            about[0].stats = Array.isArray(about[0].stats) 
-                ? about[0].stats 
-                : [about[0].stats];
+        if (home[0]?.stats) {
+            home[0].stats = Array.isArray(home[0].stats) 
+                ? home[0].stats 
+                : [home[0].stats];
         }
-        console.log('Processed Data:', about[0]);
+        console.log('Processed Data:', home[0]);
 
-        res.json({ about});
+        res.json({ home});
     } catch (error) {
         console.error('Error getting about:', error);
         res.status(500).json({ error: 'Failed to get about section' });
