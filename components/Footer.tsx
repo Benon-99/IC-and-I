@@ -5,8 +5,11 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { MapPin, Phone, Mail, Building2, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
-const Footer = () => {
+const Footer = () => {  
+  console.log("Rendering Footer");
+
   const footerLinks = {
     businessOutsourcing: {
       title: 'Business Outsourcing',
@@ -64,7 +67,12 @@ const Footer = () => {
       transition: { duration: 0.5 },
     },
   };
+  const pathname = usePathname();
 
+  if (pathname.startsWith('/admin') || pathname.startsWith('/blogs/')) {
+    return null; // Hide Footer on admin and blog post pages
+  }
+  
   return (
     <footer className="bg-gradient-to-b from-[#111240] to-[#0A0C2E] relative overflow-hidden">
       {/* Animated Background */}
@@ -181,14 +189,14 @@ const Footer = () => {
             <p className="text-sm text-white/80">
               &copy; {new Date().getFullYear()} Information Consultancies & Installations (IC&I). All rights reserved.
             </p>
-            {/* <div className="flex space-x-6">
+            <div className="flex space-x-6">
               <Link href="/privacy" className="text-sm text-white/80 hover:text-white transition-colors duration-300">
                 Privacy Policy
               </Link>
               <Link href="/terms" className="text-sm text-white/80 hover:text-white transition-colors duration-300">
                 Terms of Service
               </Link>
-            </div> */}
+            </div> 
           </div>
         </motion.div>
       </div>

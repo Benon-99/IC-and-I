@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -21,7 +21,7 @@ model User {
 model Post {
   id          Int       @id @default(autoincrement())
   title       String    @db.VarChar(255)
-  content     String    @db.LongText
+  content     String    @db.Text
   slug        String    @unique @db.VarChar(255)
   date        DateTime  @default(now())
   category    Category  @relation(fields: [categoryId], references: [id])
@@ -58,4 +58,70 @@ model Message {
 enum Role {
   USER
   ADMIN
+}
+
+model Home {
+  id          Int    @id @default(autoincrement())
+  aboutUs     Json
+  advantages  Json
+  services    Json?    
+}
+model Categories {
+  id              Int       @id @default(autoincrement())
+  category        String    @unique  // URL path segment 
+  title           String    // "Business Outsourcing"
+  mainDescription String    // Hero section description
+  overviewTitle   String    // "Market Leading HR Solutions"
+  overviewContent String    // Full overview paragraph
+  offeringsTitle  String    // "Business Outsourcing Solutions"
+  offeringsContent String   // Description of offerings
+  services        Services[]  // Relation to Services
+}
+
+model Services {
+  id              Int        @id @default(autoincrement())
+  title           String     @unique  
+  description     String         
+  servicelink     String     @unique
+  overviewtitle   String         
+  overviewcontent String   
+  features        Feature[]  // Relation to Features
+  category        Categories? @relation(fields: [categoryId], references: [id])
+  categoryId      Int?
+}
+
+model Feature {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  service     Services? @relation(fields: [serviceId], references: [id])
+  serviceId   Int?
+}
+model About {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(255)
+  subtitle    String    @db.VarChar(255)
+  description String[]  // Array of strings for detailed descriptions
+  mission     String    @db.Text
+  vision      String    @db.Text
+  img         String?   @db.VarChar(255) // Optional image
+  values      Value[]   // Relation to the Value model
+  stats       Stat[]    // Relation to the Stat model
+}
+
+model Value {
+  id       Int    @id @default(autoincrement())
+  icon     String @db.VarChar(100)
+  title    String @db.VarChar(255)
+  text     String @db.Text
+  about    About  @relation(fields: [aboutId], references: [id])
+  aboutId  Int
+}
+
+model Stat {
+  id       Int    @id @default(autoincrement())
+  number   String @db.VarChar(50)
+  label    String @db.VarChar(255)
+  about    About  @relation(fields: [aboutId], references: [id])
+  aboutId  Int
 }

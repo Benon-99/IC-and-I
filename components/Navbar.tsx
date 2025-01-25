@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X, ChevronDown, ChevronRight } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,7 +47,12 @@ const Navbar = () => {
       ]
     }
   ];
+  const pathname = usePathname();
 
+  if (pathname.startsWith('/admin')) {
+    return null; // Hide Navbar on admin pages
+  }
+  
   return (
     <motion.nav
       initial={{ y: -100 }}

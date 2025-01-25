@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { User, LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -33,10 +34,12 @@ export default function AdminHeader() {
           <div className="flex items-center gap-4">
             <Link href="/admin" className="flex items-center gap-3">
               <div className="relative h-12 w-32">
-                <img 
-                  src="/logo_ow.webp"
+                <Image 
+                  src="/images/logo.png"
                   alt="IC&I Logo"
-                  className="h-full w-auto object-contain"
+                  width={40}
+                  height={40}
+                  className="h-8 w-auto"
                 />
               </div>
               <div className="flex flex-col">

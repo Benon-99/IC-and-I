@@ -1,37 +1,80 @@
 "use client";
 
+import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Globe, Target, Compass, Shield, Users, Heart, ArrowRight } from 'lucide-react';
+import { Globe, Target, Compass, Shield, Users, Heart, ArrowRight, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 
-export default function About() {
-  const features = [
-    { 
-      icon: Globe, 
-      title: "Global Standards", 
-      text: "UN Global Compact signatory since 2023",
-      color: "from-blue-500 to-cyan-500"
-    },
-    { 
-      icon: Target, 
-      title: "Mission-Driven", 
-      text: "Preferred strategic partner for consultancy and services",
-      color: "from-purple-500 to-pink-500"
-    },
-    { 
-      icon: Compass, 
-      title: "Clear Vision", 
-      text: "Driving innovation and exceptional performance",
-      color: "from-orange-500 to-yellow-500"
-    }
-  ];
 
-  const stats = [
-    { number: "15+", label: "Years Experience" },
-    { number: "200+", label: "Projects Completed" },
-    { number: "50+", label: "Expert Team Members" },
-    { number: "98%", label: "Client Satisfaction" }
-  ];
+const ICONS: Record<string, LucideIcon> = {
+  Globe: Globe,
+  Target: Target,
+  Compass: Compass,
+  Shield: Shield,
+  Users: Users,
+  Heart: Heart,
+  ArrowRight: ArrowRight,
+};
+interface AboutContent {
+  features: {
+    icon: string;
+    title: string;
+    text: string;
+    color: string;
+  }[],
+  stats: {
+    number: string;
+    label: string;
+  }[],
+  title: string;
+  subtitle: string;
+  content: string[];
+  img?: string;
+}
+
+export default function About() {
+
+  const {data: aboutUsContent, isError, isLoading, error} = useQuery<AboutContent>({
+    queryKey: ["about"],
+    queryFn: async () => {
+      const connect = await fetch("http://localhost:8000/home");
+      const data = await connect.json();
+      console.log(data.about[0].aboutUs)
+      return data.about[0].aboutUs;
+    }
+  });
+
+  if (isLoading) {
+    if (isLoading) {
+      return (
+        <div className="flex items-center justify-center h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+          <div className="flex flex-col items-center">
+            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <p className="mt-4 text-white text-lg font-medium">Loading content, please wait...</p>
+          </div>
+        </div>
+      );
+    }
+  }
+
+  if (isError || !aboutUsContent) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+        <div className="text-center space-y-4">
+          <h2 className="text-2xl font-bold text-red-500">Oops! Something went wrong</h2>
+          <p className="text-gray-300">
+            We were unable to load the content. Please try again later or contact support.
+          </p>
+          <button
+            onClick={() => location.reload()}
+            className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-300"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section className="py-24 bg-gradient-to-b from-gray-900 to-gray-800 relative overflow-hidden">
@@ -54,10 +97,10 @@ export default function About() {
               About Us
             </span>
             <h2 className="text-5xl font-bold mb-6 text-[#011240]">
-              DISCOVER IC&I
+              {aboutUsContent.title}
             </h2>
             <p className="text-xl text-[#111240] max-w-2xl mx-auto leading-relaxed">
-              Your Reliable Partner in ICT Consulting, Solutions & Services
+              {aboutUsContent.subtitle}
             </p>
           </motion.div>
         </div>
@@ -74,14 +117,16 @@ export default function About() {
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur-2xl group-hover:blur-3xl transition-all duration-500 opacity-75"></div>
               <img
-                src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80"
+                src={aboutUsContent.img}
                 alt="IC&I Office"
                 className="relative rounded-2xl w-full aspect-[4/3] object-cover transform group-hover:scale-[1.02] transition-transform duration-500"
               />
             </div>
             
             <div className="grid grid-cols-2 gap-4">
-              {stats.map((stat, index) => (
+              {
+              // @ts-ignore
+            aboutUsContent && aboutUsContent.stats && aboutUsContent.stats.map((stat, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
@@ -108,20 +153,18 @@ export default function About() {
             className="space-y-8"
           >
             <div className="space-y-6 text-lg text-[#111240] leading-relaxed">
-              <p>
-                A leading provider of ICT solutions, IC&I specializes in comprehensive consultancy, 
-                installation, commissioning, and outsourcing services. Our corporate business 
-                solutions span a range of sectors, including telecom, ISPs, banking, NGOs and more.
-              </p>
-              <p>
-                We handle all aspects of human resources services, especially contracting and 
-                outsourcing, designed to streamline your workforce management by providing 
-                flexible, efficient and scalable solutions.
-              </p>
+              {aboutUsContent.content && aboutUsContent.content.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
             </div>
 
             <div className="space-y-6">
-              {features.map((feature, index) => (
+
+            {
+            // @ts-ignore
+            aboutUsContent && aboutUsContent.features && aboutUsContent.features.map((feature, index) => {
+              const IconComponent = ICONS[feature.icon] || null;
+              return (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
@@ -130,16 +173,17 @@ export default function About() {
                   className="group p-6 rounded-xl bg-white/10 backdrop-blur-sm border border-[#B5C6F4] hover:bg-[#B5C6F4] transition-all duration-300"
                 >
                   <div className="flex items-start space-x-4">
-                    <div className={`p-3 rounded-lg bg-gradient-to-r ${feature.color} group-hover:scale-110 transition-transform duration-300`}>
-                      <feature.icon className="w-6 h-6 text-white" />
-                    </div>
+                  <div className={`p-3 rounded-lg bg-gradient-to-r ${feature.color} group-hover:scale-110 transition-transform duration-300`}>
+                    {IconComponent && <IconComponent className="w-6 h-6 text-white" />}
+                  </div>
                     <div>
                       <h3 className="text-xl font-semibold text-[#111240] mb-2">{feature.title}</h3>
                       <p className="text-[#111240]">{feature.text}</p>
                     </div>
                   </div>
                 </motion.div>
-              ))}
+              );
+            })}
             </div>
 
             <Link 
