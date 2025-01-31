@@ -112,18 +112,16 @@ export default function NewServicePage({
     const fetchService = async () => {
       if (searchParams.id) {
         try {
-          const response = await apiClient.get(
-            `/services/id/${searchParams.id}`
-          );
-
-          if (response.statusText.toLowerCase() !== "ok")
-            throw new Error("Failed to fetch service");
-          setFormData({
-            ...response.data,
-            categoryId: response.data.categoryId || categories?.[0]?.id || null,
-          });
+          const response = await fetch(`/api/services/${searchParams.id}`);
+          if (response.ok) {
+            const service = await response.json();
+            setFormData({
+              ...service,
+              category: categories.find(c => c.id === service.category.id) || categories[0]
+            });
+          }
         } catch (error) {
-          console.error("Error fetching service:", error);
+          console.error('Error fetching service:', error);
         }
       }
     };
@@ -145,39 +143,25 @@ export default function NewServicePage({
     setIsSubmitting(true);
 
     try {
-      const url = searchParams.id
-        ? `/services/service/${searchParams.id}`
-        : `/services`;
-      const method = searchParams.id ? "put" : "post";
+      const url = searchParams.id ? `/api/services/${searchParams.id}` : '/api/services';
+      const method = searchParams.id ? 'PUT' : 'POST';
 
-      // Ensure features is always an array and has valid structure
-      const features =
-        formData.features?.map((feature) => ({
-          title: feature.title || "",
-          description: feature.description || "",
-        })) || [];
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-      const payload = {
-        ...formData,
-        categoryId: parseInt(formData.categoryId?.toString() || "1"),
-        features: features,
-        status: Boolean(formData.status),
-      };
-
-      console.log("Submitting payload:", payload);
-
-      const response = await apiClient[method](url, payload);
-
-      if (response.statusText.toLowerCase() !== "ok") {
-        throw new Error(response.data.message || "Failed to save service");
+      if (response.ok) {
+        router.push('/admin/services');
+        router.refresh();
+      } else {
+        throw new Error('Failed to save service');
       }
-
-      console.log("Update successful:", response.data);
-      router.push("/admin/services");
-      router.refresh();
     } catch (error) {
-      console.error("Error saving service:", error);
-      // You might want to show an error message to the user here
+      console.error('Error saving service:', error);
     } finally {
       setIsSubmitting(false);
     }
