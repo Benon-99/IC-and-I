@@ -1,164 +1,188 @@
-import prisma from '../prisma/client.js';
+import prisma from "../prisma/client.js";
 
 class ServicesRepository {
-    async createService(serviceDTO) {
-        try {
-            // Check if category exists
-            const categoryExists = await prisma.categories.findUnique({
-                where: { id: parseInt(serviceDTO.categoryID) }
-            });
+  async createService(serviceDTO) {
+    try {
+      // Check if category exists
+      const categoryExists = await prisma.categories.findUnique({
+        where: { id: parseInt(serviceDTO.categoryId) },
+      });
 
-            if (!categoryExists) {
-                throw new Error('Category does not exist');
-            }
+      if (!categoryExists) {
+        throw new Error("Category does not exist");
+      }
+      const { features, ...data } = serviceDTO;
+      const service = await prisma.services.create({
+        data,
+      });
 
-            return await prisma.services.create({
-                data: {
-                    name: serviceDTO.name,
-                    title: serviceDTO.title,
-                    subtitle: serviceDTO.subtitle,
-                    description: serviceDTO.description,
-                    subContent: serviceDTO.subContent,
-                    services: serviceDTO.services,
-                    categoryID: parseInt(serviceDTO.categoryID)
-                }
-            });
-        } catch (error) {
-            console.error('Error creating service:', error);
-            throw error;
-        }
+      const allFeatures = features.reduce((all, item) => {
+        return [...all, { ...item, serviceId: service.id }];
+      }, []);
+
+      if (features.length > 0) {
+        await prisma.feature.createMany({
+          data: allFeatures,
+        });
+      }
+
+      return service;
+    } catch (error) {
+      console.error("Error creating service:", error);
+      throw error;
     }
+  }
 
-    async updateService(id, serviceDTO) {
-        if (!id) throw new Error('ID is required for updating a service');
-        
-        try {
-            const serviceId = parseInt(id);
-            if (isNaN(serviceId)) throw new Error('Invalid service ID format');
+  async updateService(id, serviceDTO) {
+    if (!id) throw new Error("ID is required for updating a service");
 
-            // Check if category exists if categoryID is being updated
-            if (serviceDTO.categoryID) {
-                const categoryExists = await prisma.categories.findUnique({
-                    where: { id: parseInt(serviceDTO.categoryID) }
-                });
+    try {
+      const serviceId = parseInt(id);
+      if (isNaN(serviceId)) throw new Error("Invalid service ID format");
 
-                if (!categoryExists) {
-                    throw new Error('Category does not exist');
-                }
-            }
+      // Check if category exists if categoryID is being updated
+      if (serviceDTO.categoryID) {
+        const categoryExists = await prisma.categories.findUnique({
+          where: { id: parseInt(serviceDTO.categoryID) },
+        });
 
-            return await prisma.services.update({
-                where: { id: serviceId },
-                data: {
-                    name: serviceDTO.name,
-                    title: serviceDTO.title,
-                    subtitle: serviceDTO.subtitle,
-                    description: serviceDTO.description,
-                    subContent: serviceDTO.subContent,
-                    services: serviceDTO.services,
-                    categoryID: serviceDTO.categoryID ? parseInt(serviceDTO.categoryID) : undefined
-                }
-            });
-        } catch (error) {
-            console.error('Error updating service:', error);
-            throw error;
+        if (!categoryExists) {
+          throw new Error("Category does not exist");
         }
+      }
+
+      return await prisma.services.update({
+        where: {
+          id: serviceId,
+        },
+        data: {
+          title: serviceDTO.title,
+          description: serviceDTO.description,
+          servicelink: serviceDTO.servicelink,
+          overviewtitle: serviceDTO.overviewtitle,
+          overviewcontent: serviceDTO.overviewcontent,
+          categoryId: serviceDTO.categoryId
+            ? parseInt(serviceDTO.categoryId)
+            : undefined,
+          status: serviceDTO.status,
+          features: {
+            deleteMany: {}, // First delete existing features
+            create:
+              serviceDTO.features?.map((feature) => ({
+                title: feature.title,
+                description: feature.description,
+              })) || [],
+          },
+        },
+        include: {
+          features: true, // Include features in the response
+        },
+      });
+    } catch (error) {
+      console.error("Error updating service:", error);
+      throw error;
     }
+  }
 
-    async getServiceById(id) {
-        if (!id) throw new Error('ID is required to fetch a service');
-        
-        try {
-            const serviceId = parseInt(id);
-            if (isNaN(serviceId)) throw new Error('Invalid service ID format');
+  async getServiceById(id) {
+    if (!id) throw new Error("ID is required to fetch a service");
 
-            const service = await prisma.services.findUnique({
-                where: { id: serviceId }
-            });
+    try {
+      const serviceId = parseInt(id);
+      if (isNaN(serviceId)) throw new Error("Invalid service ID format");
 
-            if (!service) {
-                throw new Error('Service not found');
-            }
+      const service = await prisma.services.findUnique({
+        where: { id: serviceId },
+      });
 
-            return service;
-        } catch (error) {
-            console.error('Error getting service by ID:', error);
-            throw error;
-        }
+      if (!service) {
+        throw new Error("Service not found");
+      }
+
+      return service;
+    } catch (error) {
+      console.error("Error getting service by ID:", error);
+      throw error;
     }
+  }
 
-    async getServiceByName(name) {
-        if (!name) throw new Error('Service name is required');
+  async getServiceByName(name) {
+    if (!name) throw new Error("Service name is required");
 
-        try {
-            const service = await prisma.services.findUnique({
-                where: { name }
-            });
+    try {
+      const service = await prisma.services.findUnique({
+        where: { name },
+      });
 
-            if (!service) {
-                return null;
-            }
+      if (!service) {
+        return null;
+      }
 
-            return service;
-        } catch (error) {
-            console.error('Error getting service by name:', error);
-            throw error;
-        }
+      return service;
+    } catch (error) {
+      console.error("Error getting service by name:", error);
+      throw error;
     }
+  }
 
-    async getServicesByCategory(categoryId) {
-        if (!categoryId) throw new Error('Category ID is required');
+  async getServicesByCategory(categoryId) {
+    if (!categoryId) throw new Error("Category ID is required");
 
-        try {
-            const parsedCategoryId = parseInt(categoryId);
-            if (isNaN(parsedCategoryId)) throw new Error('Invalid category ID format');
+    try {
+      const parsedCategoryId = parseInt(categoryId);
+      if (isNaN(parsedCategoryId))
+        throw new Error("Invalid category ID format");
 
-            return await prisma.services.findMany({
-                where: { categoryID: parsedCategoryId },
-                orderBy: { name: 'asc' }
-            });
-        } catch (error) {
-            console.error('Error getting services by category:', error);
-            throw error;
-        }
+      return await prisma.services.findMany({
+        where: { categoryID: parsedCategoryId },
+        orderBy: { name: "asc" },
+      });
+    } catch (error) {
+      console.error("Error getting services by category:", error);
+      throw error;
     }
+  }
 
-    async getAllServices() {
-        try {
-            return await prisma.services.findMany({
-                orderBy: {
-                    name: 'asc'
-                }
-            });
-        } catch (error) {
-            console.error('Error getting all services:', error);
-            throw error;
-        }
+  async getAllServices() {
+    try {
+      return await prisma.services.findMany({
+        include: {
+          category: true,
+          features: true,
+        },
+        // orderBy: {
+        //   name: "asc",
+        // },
+      });
+    } catch (error) {
+      console.error("Error getting all services:", error);
+      throw error;
     }
+  }
 
-    async deleteService(id) {
-        if (!id) throw new Error('ID is required to delete a service');
-        
-        try {
-            const serviceId = parseInt(id);
-            if (isNaN(serviceId)) throw new Error('Invalid service ID format');
+  async deleteService(id) {
+    if (!id) throw new Error("ID is required to delete a service");
 
-            const service = await prisma.services.findUnique({
-                where: { id: serviceId }
-            });
+    try {
+      const serviceId = parseInt(id);
+      if (isNaN(serviceId)) throw new Error("Invalid service ID format");
 
-            if (!service) {
-                throw new Error('Service not found');
-            }
+      const service = await prisma.services.findUnique({
+        where: { id: serviceId },
+      });
 
-            return await prisma.services.delete({
-                where: { id: serviceId }
-            });
-        } catch (error) {
-            console.error('Error deleting service:', error);
-            throw error;
-        }
+      if (!service) {
+        throw new Error("Service not found");
+      }
+
+      return await prisma.services.delete({
+        where: { id: serviceId },
+      });
+    } catch (error) {
+      console.error("Error deleting service:", error);
+      throw error;
     }
+  }
 }
 
 // Create a single instance of the repository

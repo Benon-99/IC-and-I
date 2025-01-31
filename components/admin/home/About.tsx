@@ -1,245 +1,265 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { Save, X, Image as ImageIcon, Plus, Trash2, AlertCircle, CheckCircle } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { motion } from 'framer-motion';
-import LoadingComponent from '../LoadingComponent';
-import ErrorComponent from '../ErrorComponent';
+import { useState, useRef, useEffect } from "react";
+import {
+  Save,
+  X,
+  Image as ImageIcon,
+  Plus,
+  Trash2,
+  AlertCircle,
+  CheckCircle,
+} from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { motion } from "framer-motion";
+import LoadingComponent from "../LoadingComponent";
+import ErrorComponent from "../ErrorComponent";
+import { apiClient } from "@/lib/api";
+import axios from "axios";
 
 interface Feature {
-    title: string;
-    text: string;
-  }
-  interface Stat {
-    number: string;
-    label: string;
-  }
-  interface AboutContent {
-    title: string;
-    subtitle: string;
-    content: string[];
-    img?: string;
-    features: Feature[];
-    stats: Stat[];
-  }
-  
-  interface AlertState {
-    type: 'success' | 'error';
-    message: string;
-  }
+  title: string;
+  text: string;
+}
+interface Stat {
+  number: string;
+  label: string;
+}
+interface AboutContent {
+  title: string;
+  subtitle: string;
+  content: string[];
+  img?: string;
+  features: Feature[];
+  stats: Stat[];
+}
+
+interface AlertState {
+  type: "success" | "error";
+  message: string;
+}
 
 export default function About() {
-    const [formData, setFormData] = useState<AboutContent>({
-        title: '',
-        subtitle: '',
-        content: [''],
-        img: '',
-        features: [{ title: '', text: '' }],
-        stats: [{ number: '', label: '' }]
-    });
-        const [imagePreview, setImagePreview] = useState<string>('');
-        const [isSaving, setIsSaving] = useState(false);
-        const [showUrlInput, setShowUrlInput] = useState(false);
-        const [imageUrl, setImageUrl] = useState('');
-        const [alert, setAlert] = useState<AlertState | null>(null);
-        const fileInputRef = useRef<HTMLInputElement>(null);
-    
-    const { data: aboutData, isLoading , isError , error} = useQuery<{ about: { aboutUs: AboutContent }[] }>(
-        {
-            queryKey: ["about"],
-            queryFn: async () => {
-            const response = await fetch("http://localhost:8000/home");
-            const data = await response.json();
-            return data;
-        },
-        }
-    );
-    
-    useEffect(() => {
-        if (aboutData?.about?.[0]) {
-            const { aboutUs } = aboutData.about[0];
-            setFormData({
-                title: aboutUs.title || '',
-                subtitle: aboutUs.subtitle || '',
-                content: Array.isArray(aboutUs.content) 
-                    ? aboutUs.content 
-                    : aboutUs.content 
-                    ? [aboutUs.content] 
-                    : [''],
-                img: aboutUs.img || '',
-                features: Array.isArray(aboutUs.features)
-                    ? aboutUs.features
-                    : typeof aboutUs.features === 'string'
-                    ? JSON.parse(aboutUs.features)
-                    : [{ title: '', text: '' }],
-                stats: Array.isArray(aboutUs.stats)
-                    ? aboutUs.stats
-                    : typeof aboutUs.stats === 'string'
-                    ? JSON.parse(aboutUs.stats)
-                    : [{ number: '', label: '' }]
-            });
-            if (aboutUs.img) {
-                setImagePreview(aboutUs.img);
-            }
-        }
-    }, [aboutData]);
-    
-    useEffect(() => {
-        if (alert) {
-            const timer = setTimeout(() => setAlert(null), 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [alert]);
-    
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        if (name.startsWith('content[')) {
-            const index = parseInt(name.match(/\[(\d+)\]/)?.[1] || '0');
-            setFormData(prev => ({
-    
-            ...prev,
-            content: prev.content.map((item, i) => i === index ? value : item)
-        }));
-        } else {
-            setFormData(prev => ({ ...prev, [name]: value }));
-        }
-    };
-    
-    const addContentField = () => {
-        setFormData(prev => ({
-            ...prev,
-            content: [...prev.content, '']
-        }));
-    };
-    
-    const removeContentField = (index: number) => {
-        if (formData.content.length > 1) {
-            setFormData(prev => ({
-            ...prev,
-            content: prev.content.filter((_, i) => i !== index)
-        }));
-        }
-    };
-    
-        const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-            const base64String = reader.result as string;
-            setImagePreview(base64String);
-        };
-        reader.readAsDataURL(file);
-        }
-    };
-    
-    const addFeature = () => {
-        setFormData(prev => ({
-            ...prev,
-            features: [...prev.features, { title: '', text: '' }]
-        }));
-    };
-    
-    const removeFeature = (index: number) => {
-        if (formData.features.length > 1) {
-            setFormData(prev => ({
-            ...prev,
-            features: prev.features.filter((_, i) => i !== index)
-        }));
-        }
-    };
-    
-    const addStat = () => {
-        setFormData(prev => ({
-            ...prev,
-            stats: [...prev.stats, { number: '', label: '' }]
-        }));
-    };
-    
-    const removeStat = (index: number) => {
-        setFormData(prev => ({
-            ...prev,
-            stats: prev.stats.filter((_, i) => i !== index)
-        }));
-    };
-    
-    const updateStat = (index: number, field: keyof Stat, value: string) => {
-        setFormData(prev => {
-            const newStats = [...prev.stats];
-            newStats[index] = { ...newStats[index], [field]: value };
-            return { ...prev, stats: newStats };
-        });
-    };
-    
-    const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
-      setIsSaving(true);
-    
-      try {
-        const formDataToSend = new FormData();
-        
-        // Ensure arrays are properly stringified
-        const aboutUsData = {
-            title: formData.title,
-            subtitle: formData.subtitle,
-            content: formData.content,
-            features: formData.features,
-            stats: formData.stats,
-            img: formData.img || ''
-        };
-        
-        formDataToSend.append("aboutUs", JSON.stringify(aboutUsData));
-    
-        // Handle image file if present
-        if (fileInputRef.current?.files?.[0]) {
-          formDataToSend.append("photo", fileInputRef.current.files[0]);
-        }
-    
-        console.log("AboutUs data:", aboutUsData);
-        console.log("FormData being sent:", Object.fromEntries(formDataToSend.entries()));
-    
-        const response = await fetch("http://localhost:8000/home/about/update?id=1", {
-          method: "POST",
-          body: formDataToSend,
-          credentials: 'include',
-        });
-    
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to update about content');
-        }
-    
-        const responseData = await response.json();
-        console.log("Content updated successfully:", responseData);
-    
-        setAlert({ 
-          type: "success", 
-          message: "About section updated successfully!" 
-        });
-      } catch (error) {
-        const errorMessage = error instanceof Error 
-          ? error.message 
-          : 'Unknown error occurred while updating content.';
-        
-        console.error("Error updating content:", errorMessage);
-        setAlert({
-          type: "error",
-          message: `Error updating about section: ${errorMessage}`
-        });
-      } finally {
-        setIsSaving(false);
-      }
-    };
-    
-    const showAlert = (type: AlertState['type'], message: string) => {
-        setAlert({ type, message });
-    };
+  const [formData, setFormData] = useState<AboutContent>({
+    title: "",
+    subtitle: "",
+    content: [""],
+    img: "",
+    features: [{ title: "", text: "" }],
+    stats: [{ number: "", label: "" }],
+  });
+  const [imagePreview, setImagePreview] = useState<string>("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [showUrlInput, setShowUrlInput] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+  const [alert, setAlert] = useState<AlertState | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-    if (isLoading) {
-    return <LoadingComponent message="Loading About Section..." />;
+  const {
+    data: aboutData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery<{ about: { aboutUs: AboutContent }[] }>({
+    queryKey: ["about"],
+    queryFn: async () => {
+      const response = await apiClient.get("/home");
+      return response.data;
+    },
+  });
+
+  useEffect(() => {
+    if (aboutData?.about?.[0]) {
+      const { aboutUs } = aboutData.about[0];
+      setFormData({
+        title: aboutUs.title || "",
+        subtitle: aboutUs.subtitle || "",
+        content: Array.isArray(aboutUs.content)
+          ? aboutUs.content
+          : aboutUs.content
+          ? [aboutUs.content]
+          : [""],
+        img: aboutUs.img || "",
+        features: Array.isArray(aboutUs.features)
+          ? aboutUs.features
+          : typeof aboutUs.features === "string"
+          ? JSON.parse(aboutUs.features)
+          : [{ title: "", text: "" }],
+        stats: Array.isArray(aboutUs.stats)
+          ? aboutUs.stats
+          : typeof aboutUs.stats === "string"
+          ? JSON.parse(aboutUs.stats)
+          : [{ number: "", label: "" }],
+      });
+      if (aboutUs.img) {
+        setImagePreview(aboutUs.img);
+      }
     }
+  }, [aboutData]);
+
+  useEffect(() => {
+    if (alert) {
+      const timer = setTimeout(() => setAlert(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [alert]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    if (name.startsWith("content[")) {
+      const index = parseInt(name.match(/\[(\d+)\]/)?.[1] || "0");
+      setFormData((prev) => ({
+        ...prev,
+        content: prev.content.map((item, i) => (i === index ? value : item)),
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const addContentField = () => {
+    setFormData((prev) => ({
+      ...prev,
+      content: [...prev.content, ""],
+    }));
+  };
+
+  const removeContentField = (index: number) => {
+    if (formData.content.length > 1) {
+      setFormData((prev) => ({
+        ...prev,
+        content: prev.content.filter((_, i) => i !== index),
+      }));
+    }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setImagePreview(base64String);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const addFeature = () => {
+    setFormData((prev) => ({
+      ...prev,
+      features: [...prev.features, { title: "", text: "" }],
+    }));
+  };
+
+  const removeFeature = (index: number) => {
+    if (formData.features.length > 1) {
+      setFormData((prev) => ({
+        ...prev,
+        features: prev.features.filter((_, i) => i !== index),
+      }));
+    }
+  };
+
+  const addStat = () => {
+    setFormData((prev) => ({
+      ...prev,
+      stats: [...prev.stats, { number: "", label: "" }],
+    }));
+  };
+
+  const removeStat = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      stats: prev.stats.filter((_, i) => i !== index),
+    }));
+  };
+
+  const updateStat = (index: number, field: keyof Stat, value: string) => {
+    setFormData((prev) => {
+      const newStats = [...prev.stats];
+      newStats[index] = { ...newStats[index], [field]: value };
+      return { ...prev, stats: newStats };
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSaving(true);
+
+    try {
+      const formDataToSend = new FormData();
+
+      // Prepare the about section data
+      const aboutUsData = {
+        title: formData.title,
+        subtitle: formData.subtitle,
+        content: formData.content.length ? formData.content : [""], // Ensure at least one item
+        features: formData.features.length
+          ? formData.features
+          : [{ title: "", text: "" }],
+        stats: formData.stats.length
+          ? formData.stats
+          : [{ number: "", label: "" }],
+        img: imagePreview || formData.img || "",
+      };
+
+      // Append JSON as a string
+      formDataToSend.append("aboutUs", JSON.stringify(aboutUsData));
+
+      // Handle image file if present
+      if (fileInputRef.current?.files?.[0]) {
+        formDataToSend.append("photo", fileInputRef.current.files[0]);
+      }
+
+      console.log("AboutUs data being sent:", aboutUsData);
+      console.log(
+        "FormData being sent:",
+        Object.fromEntries(formDataToSend.entries())
+      );
+
+      // Send the request using axios instance
+      const response = await apiClient.post(
+        "/home/about/update?id=1",
+        formDataToSend,
+        {
+          headers: { "Content-Type": "multipart/form-data" }, // Ensure proper handling of FormData
+        }
+      );
+
+      console.log("Content updated successfully:", response.data);
+
+      setAlert({
+        type: "success",
+        message: "About section updated successfully!",
+      });
+    } catch (error) {
+      // Handle Axios errors properly
+      let errorMessage = "Unknown error occurred while updating content.";
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.error || error.message;
+      }
+
+      console.error("Error updating content:", errorMessage);
+      setAlert({
+        type: "error",
+        message: `Error updating about section: ${errorMessage}`,
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const showAlert = (type: AlertState["type"], message: string) => {
+    setAlert({ type, message });
+  };
+
+  if (isLoading) {
+    return <LoadingComponent message="Loading About Section..." />;
+  }
 
   if (isError) {
     return (
@@ -262,13 +282,13 @@ export default function About() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               className={`p-4 rounded-lg shadow-lg ${
-                alert.type === 'success' 
-                  ? 'bg-green-600 text-white' 
-                  : 'bg-red-600 text-white'
+                alert.type === "success"
+                  ? "bg-green-600 text-white"
+                  : "bg-red-600 text-white"
               }`}
             >
               <div className="flex items-center gap-3">
-                {alert.type === 'success' ? (
+                {alert.type === "success" ? (
                   <CheckCircle className="h-5 w-5 flex-shrink-0" />
                 ) : (
                   <AlertCircle className="h-5 w-5 flex-shrink-0" />
@@ -286,15 +306,21 @@ export default function About() {
         >
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">Update About Section</h1>
-              <p className="text-gray-400">Manage your about page content and features</p>
+              <h1 className="text-3xl font-bold text-white mb-2">
+                Update About Section
+              </h1>
+              <p className="text-gray-400">
+                Manage your about page content and features
+              </p>
             </div>
             <div className="flex items-center gap-4">
               <button
                 onClick={handleSubmit}
                 disabled={isSaving}
                 className={`inline-flex items-center px-6 py-2 bg-blue-600 text-white rounded-lg transition-all transform hover:scale-105 ${
-                  isSaving ? 'opacity-75 cursor-not-allowed' : 'hover:bg-blue-700'
+                  isSaving
+                    ? "opacity-75 cursor-not-allowed"
+                    : "hover:bg-blue-700"
                 }`}
               >
                 {isSaving ? (
@@ -320,10 +346,15 @@ export default function About() {
             className="space-y-6"
           >
             <div className="bg-[#1a1f4b] rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-semibold text-white mb-4">Main Content</h2>
+              <h2 className="text-xl font-semibold text-white mb-4">
+                Main Content
+              </h2>
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="title" className="block text-gray-300 text-sm font-bold mb-2">
+                  <label
+                    htmlFor="title"
+                    className="block text-gray-300 text-sm font-bold mb-2"
+                  >
                     Title
                   </label>
                   <input
@@ -337,7 +368,10 @@ export default function About() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="subtitle" className="block text-gray-300 text-sm font-bold mb-2">
+                  <label
+                    htmlFor="subtitle"
+                    className="block text-gray-300 text-sm font-bold mb-2"
+                  >
                     Subtitle
                   </label>
                   <input
@@ -390,10 +424,15 @@ export default function About() {
             </div>
 
             <div className="bg-[#1a1f4b] rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-semibold text-white mb-4">Features</h2>
+              <h2 className="text-xl font-semibold text-white mb-4">
+                Features
+              </h2>
               <div className="space-y-4">
                 {formData.features.map((feature, index) => (
-                  <div key={index} className="p-4 bg-[#2e3267] rounded-lg border border-gray-700">
+                  <div
+                    key={index}
+                    className="p-4 bg-[#2e3267] rounded-lg border border-gray-700"
+                  >
                     <div className="flex gap-2">
                       <div className="flex-1 space-y-3">
                         <input
@@ -403,7 +442,10 @@ export default function About() {
                           onChange={(e) => {
                             const newFeatures = [...formData.features];
                             newFeatures[index].title = e.target.value;
-                            setFormData(prev => ({ ...prev, features: newFeatures }));
+                            setFormData((prev) => ({
+                              ...prev,
+                              features: newFeatures,
+                            }));
                           }}
                           className="w-full px-4 py-3 bg-[#1a1f4b] border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -413,7 +455,10 @@ export default function About() {
                           onChange={(e) => {
                             const newFeatures = [...formData.features];
                             newFeatures[index].text = e.target.value;
-                            setFormData(prev => ({ ...prev, features: newFeatures }));
+                            setFormData((prev) => ({
+                              ...prev,
+                              features: newFeatures,
+                            }));
                           }}
                           rows={3}
                           className="w-full px-4 py-3 bg-[#1a1f4b] border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -449,17 +494,19 @@ export default function About() {
             className="space-y-6"
           >
             <div className="bg-[#1a1f4b] rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-semibold text-white mb-4">Statistics</h2>
+              <h2 className="text-xl font-semibold text-white mb-4">
+                Statistics
+              </h2>
               <div className="space-y-4">
                 {formData.stats.map((stat, index) => (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className="p-4 bg-[#2e3267] rounded-lg border border-gray-700"
                   >
                     <div className="flex gap-4">
                       <div className="flex-1 space-y-3">
                         <div>
-                          <label 
+                          <label
                             htmlFor={`stat-number-${index}`}
                             className="block text-gray-300 text-sm font-medium mb-1"
                           >
@@ -470,12 +517,14 @@ export default function About() {
                             type="text"
                             placeholder="Enter statistic number"
                             value={stat.number}
-                            onChange={(e) => updateStat(index, 'number', e.target.value)}
+                            onChange={(e) =>
+                              updateStat(index, "number", e.target.value)
+                            }
                             className="w-full px-4 py-2.5 bg-[#1a1f4b] border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           />
                         </div>
                         <div>
-                          <label 
+                          <label
                             htmlFor={`stat-label-${index}`}
                             className="block text-gray-300 text-sm font-medium mb-1"
                           >
@@ -486,7 +535,9 @@ export default function About() {
                             type="text"
                             placeholder="Enter statistic label"
                             value={stat.label}
-                            onChange={(e) => updateStat(index, 'label', e.target.value)}
+                            onChange={(e) =>
+                              updateStat(index, "label", e.target.value)
+                            }
                             className="w-full px-4 py-2.5 bg-[#1a1f4b] border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                           />
                         </div>
@@ -516,7 +567,9 @@ export default function About() {
             </div>
 
             <div className="bg-[#1a1f4b] rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-semibold text-white mb-4">Featured Image</h2>
+              <h2 className="text-xl font-semibold text-white mb-4">
+                Featured Image
+              </h2>
               <div
                 onClick={() => !showUrlInput && fileInputRef.current?.click()}
                 className={`relative border-2 border-dashed rounded-lg p-6 cursor-pointer transition-all duration-300 ${
@@ -532,7 +585,7 @@ export default function About() {
                   accept="image/*"
                   className="hidden"
                 />
-                {(imagePreview || formData.img) ? (
+                {imagePreview || formData.img ? (
                   <div className="relative aspect-video">
                     <img
                       src={imagePreview || formData.img}
@@ -545,7 +598,7 @@ export default function About() {
                         setImagePreview("");
                         setImageUrl("");
                         setShowUrlInput(false);
-                        setFormData(prev => ({ ...prev, img: undefined }));
+                        setFormData((prev) => ({ ...prev, img: undefined }));
                         if (fileInputRef.current) {
                           fileInputRef.current.value = "";
                         }
@@ -558,7 +611,10 @@ export default function About() {
                 ) : (
                   <div className="text-center">
                     {showUrlInput ? (
-                      <div onClick={(e) => e.stopPropagation()} className="space-y-2">
+                      <div
+                        onClick={(e) => e.stopPropagation()}
+                        className="space-y-2"
+                      >
                         <input
                           type="text"
                           value={imageUrl}
@@ -577,7 +633,10 @@ export default function About() {
                             onClick={() => {
                               if (imageUrl) {
                                 setImagePreview(imageUrl);
-                                setFormData(prev => ({ ...prev, img: imageUrl }));
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  img: imageUrl,
+                                }));
                                 setShowUrlInput(false);
                               }
                             }}

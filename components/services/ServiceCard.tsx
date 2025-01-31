@@ -1,12 +1,11 @@
 "use client";
 
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { ArrowRight, Pencil, Trash2 } from "lucide-react";
 
 interface ServiceCardProps {
   service: {
-    icon: any;
     title: string;
     description: string;
     link: string;
@@ -19,30 +18,24 @@ export default function ServiceCard({ service }: ServiceCardProps) {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.5 }
-    }
+      transition: { duration: 0.5 },
+    },
   };
 
   return (
-    <motion.div
-      variants={itemVariants}
-      className="group bg-white rounded-xl shadow-lg hover:shadow-xl 
-        transition-all duration-300 hover:-translate-y-2 overflow-hidden"
-    >
-      <div className="p-8">
-        <service.icon className="w-12 h-12 text-primary mb-4" />
-        <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
-          {service.title}
-        </h3>
-        <p className="text-gray-600 mb-6">{service.description}</p>
-        
-        <Link 
+    <motion.div variants={itemVariants} className="group relative">
+      <div className="absolute inset-0 bg-gradient-to-r from-[#3785CC]/5 to-[#5B8AF0]/5 rounded-2xl transform -rotate-2 scale-[1.02] opacity-50 group-hover:-rotate-1 transition-transform duration-300"></div>
+
+      <div className="relative p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300">
+        <h3 className="text-2xl font-bold text-white mb-3">{service.title}</h3>
+        <p className="text-white/70 mb-6">{service.description}</p>
+
+        <Link
           href={service.link}
-          className="inline-flex items-center text-primary font-medium 
-            hover:text-secondary transition-colors group/link"
+          className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors duration-300"
         >
-          Read More 
-          <ArrowRight className="ml-2 w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" />
+          <span>Learn More</span>
+          <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
         </Link>
       </div>
     </motion.div>

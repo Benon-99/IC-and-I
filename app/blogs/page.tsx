@@ -1,10 +1,11 @@
 "use client";
 
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { ArrowRight, Calendar } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { ArrowRight, Calendar } from "lucide-react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { apiClient } from "@/lib/api";
 
 interface Author {
   id: number;
@@ -35,35 +36,41 @@ export default function EnhancedBlogPage() {
   useEffect(() => {
     fetchBlogs();
   }, []);
+  useEffect(() => {
+    console.log(blogs);
+  }, [blogs]);
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/blog');
-      if (!response.ok) {
-        throw new Error('Failed to fetch blogs');
+      const response = await apiClient.get("/api/blog");
+      console.log(response);
+
+      if (response.statusText.toLowerCase() != "ok") {
+        throw new Error("Failed to fetch blogs");
       }
-      const data = await response.json();
-      if (data.status === 'success') {
-        setBlogs(data.posts.filter((post: BlogPost) => post.published));
+      if (response.data.status == "success") {
+        setBlogs(
+          response.data.posts.filter((post: BlogPost) => post.published)
+        );
       }
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching blogs:', error);
+      console.error("Error fetching blogs:", error);
       setLoading(false);
     }
   };
 
   const getExcerpt = (content: string) => {
     // Remove markdown syntax and get first 150 characters
-    const plainText = content.replace(/[#*`_\[\]]/g, '');
-    return plainText.substring(0, 150).trim() + '...';
+    const plainText = content.replace(/[#*`_\[\]]/g, "");
+    return plainText.substring(0, 150).trim() + "...";
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
     });
   };
 
@@ -71,7 +78,7 @@ export default function EnhancedBlogPage() {
     const gradients = [
       "from-[#3785CC] to-[#4A9BE4]",
       "from-[#4A9BE4] to-[#8590EA]",
-      "from-[#8590EA] to-[#B5C6F4]"
+      "from-[#8590EA] to-[#B5C6F4]",
     ];
     return gradients[index % gradients.length];
   };
@@ -84,7 +91,7 @@ export default function EnhancedBlogPage() {
             <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
           </div>
-          
+
           <div className="relative w-full lg:w-[1280px] mx-auto px-4 py-32">
             <div className="animate-pulse space-y-8">
               <div className="h-8 bg-white/10 rounded w-3/4 mx-auto" />
@@ -148,7 +155,7 @@ export default function EnhancedBlogPage() {
             <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC] animate-gradient"></div>
           </div>
-          
+
           <div className="relative w-full lg:w-[1280px] mx-auto px-4 py-32">
             <div className="text-center opacity-0 animate-fade-in">
               <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-6 inline-block">
@@ -158,8 +165,9 @@ export default function EnhancedBlogPage() {
                 Latest Insights
               </h1>
               <p className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
-                Stay updated with the latest insights on consultancy, IT solutions, and business strategies. 
-                Explore topics from tech advancements to HR best practices and more.
+                Stay updated with the latest insights on consultancy, IT
+                solutions, and business strategies. Explore topics from tech
+                advancements to HR best practices and more.
               </p>
             </div>
           </div>
@@ -190,7 +198,10 @@ export default function EnhancedBlogPage() {
                 >
                   <div className="relative h-64">
                     <Image
-                      src={blog.image || `https://source.unsplash.com/random/800x600?${index}`}
+                      src={
+                        blog.image ||
+                        `https://source.unsplash.com/random/800x600?${index}`
+                      }
                       alt={blog.title}
                       fill
                       className="object-cover"

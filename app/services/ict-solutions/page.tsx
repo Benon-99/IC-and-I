@@ -84,10 +84,10 @@ export default function ICTSolutionsPage() {
           </h2>
           
           <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
-            Our comprehensive ICT solutions are designed to help businesses optimize their operations, 
+     {`       Our comprehensive ICT solutions are designed to help businesses optimize their operations, 
             enhance security, and stay competitive in today's technology-driven landscape. With over two 
             decades of experience, we provide expert consultation, installation, and commissioning services 
-            tailored to meet your specific business needs.
+            tailored to meet your specific business needs.`}
           </p>
         </motion.div>
 

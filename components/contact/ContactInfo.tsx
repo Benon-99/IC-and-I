@@ -73,11 +73,11 @@ export default function ContactInfo() {
           Contact Information
         </span>
         <h2 className="text-4xl font-bold bg-gradient-to-r from-[#111240] via-[#111240]/90 to-[#111240]/80 bg-clip-text text-transparent">
-          Let's Make It Happen
+          {"Let's Make It Happen"}
         </h2>
         <p className="text-[#111240]/70 text-lg leading-relaxed max-w-lg">
-          Have a question or want to work together? We'd love to hear from you. 
-          Get in touch with us using any of the following methods.
+          {`Have a question or want to work together? We'd love to hear from you. 
+          Get in touch with us using any of the following methods.`}
         </p>
       </motion.div>
 

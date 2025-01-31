@@ -1,10 +1,11 @@
 "use client";
 
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowRight, Calendar } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { motion } from "framer-motion";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight, Calendar } from "lucide-react";
+import { useEffect, useState } from "react";
+import { apiClient } from "@/lib/api";
 
 interface Author {
   id: number;
@@ -38,18 +39,21 @@ export default function BlogPreview() {
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/blog');
-      if (!response.ok) {
-        throw new Error('Failed to fetch blogs');
+      const response = await apiClient.get("/api/blog");
+      if (response.statusText.toLowerCase() !== "ok") {
+        throw new Error("Failed to fetch blogs");
       }
-      const data = await response.json();
-      if (data.status === 'success') {
+      if (response.data.status === "success") {
         // Only take the first 3 published blogs for the preview
-        setBlogs(data.posts.filter((post: BlogPost) => post.published).slice(0, 3));
+        setBlogs(
+          response.data.posts
+            .filter((post: BlogPost) => post.published)
+            .slice(0, 3)
+        );
       }
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching blogs:', error);
+      console.error("Error fetching blogs:", error);
       setLoading(false);
     }
   };
@@ -59,9 +63,9 @@ export default function BlogPreview() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -70,9 +74,9 @@ export default function BlogPreview() {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5
-      }
-    }
+        duration: 0.5,
+      },
+    },
   };
 
   if (loading) {
@@ -127,8 +131,8 @@ export default function BlogPreview() {
               <Link href={`/blogs/${blog.slug}`}>
                 <div className="relative rounded-2xl bg-white backdrop-blur-sm border border-gray-100 overflow-hidden transition-all duration-300 group-hover:bg-gray-50 shadow-sm h-[600px]">
                   <div className="relative h-[300px] overflow-hidden">
-                    <Image 
-                      src={blog.image} 
+                    <Image
+                      src={blog.image}
                       alt={blog.title}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -139,10 +143,10 @@ export default function BlogPreview() {
                     <div className="flex items-center text-[#111240]/60 mb-4">
                       <Calendar className="w-4 h-4 mr-2" />
                       <span className="text-sm leading-normal">
-                        {new Date(blog.date).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric'
+                        {new Date(blog.date).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
                         })}
                       </span>
                     </div>

@@ -13,6 +13,9 @@ import Link from "next/link";
 import ServiceHero from "@/components/services/ServiceHero";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { LoadableContext } from "next/dist/shared/lib/loadable-context.shared-runtime";
+import { useContext, useEffect } from "react";
+import { LoadingContext } from "@/components/providers/LoadingProvider";
 
 const fetchingServices = async () => {
   const response = await axios("http://localhost:3001/admin/services/");
@@ -20,13 +23,19 @@ const fetchingServices = async () => {
   return response.data.response; // This should be an array
 };
 
-const icons = [<RefreshCcwDot />, <Shield />];
+const icons = [<RefreshCcwDot key={123456789} />, <Shield key={987654321}/>];
 
 export default function BusinessOutsourcingPage() {
+  const { setIsLoading } = useContext(LoadingContext)!;
   const { data, isFetching, isLoading, error } = useQuery({
     queryKey: ["services"],
     queryFn: fetchingServices,
   });
+
+  useEffect(() => {
+    setIsLoading(isFetching || isLoading);
+  }, [isFetching, isLoading]);
+
   // const services = [
   //   {
   //     icon: UserPlus,
@@ -111,11 +120,11 @@ export default function BusinessOutsourcingPage() {
           </h2>
 
           <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
-            We are the Syrian market leader with the largest market share in
+           {` We are the Syrian market leader with the largest market share in
             providing full recruitment services in UN agencies, NPO's and NGO's.
             Our comprehensive HR outsourcing solutions are designed to
             streamline your operations and drive organizational success through
-            effective talent management.
+            effective talent management.`}
           </p>
         </motion.div>
 
@@ -165,7 +174,7 @@ export default function BusinessOutsourcingPage() {
                   <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
                   <div className="relative p-8 rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300 shadow-sm">
                     {icons && (
-                      <div className="pb-[20px] bg-gradient-to-r from-[#3785CC] to-[#1387ed] transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center p-4 rounded-xl">
+                      <div className="pb-[20px] bg-gradient-to-r from-[#92c1ed] to-[#2284da] transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center p-4 rounded-xl">
                         {icons[index]}{" "}
                       </div>
                     )}

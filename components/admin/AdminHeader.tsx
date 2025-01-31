@@ -1,28 +1,22 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { User, LogOut } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import Link from "next/link";
+import Image from "next/image";
+import { User, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { apiClient } from "@/lib/api";
 
 export default function AdminHeader() {
   const router = useRouter();
 
   const handleLogout = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+      const data = await apiClient.post("/api/auth/logout");
+      console.log(data);
 
-      const data = await res.json();
-
-      if (data.status === 'success') {
-        window.location.href = '/admin/login';
+      if (data.statusText.toLowerCase() == "ok") {
+        window.location.href = "/admin/login";
       }
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     }
   };
 
@@ -34,7 +28,7 @@ export default function AdminHeader() {
           <div className="flex items-center gap-4">
             <Link href="/admin" className="flex items-center gap-3">
               <div className="relative h-12 w-32">
-                <Image 
+                <Image
                   src="/images/logo.png"
                   alt="IC&I Logo"
                   width={40}
@@ -43,7 +37,9 @@ export default function AdminHeader() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-lg font-semibold tracking-wide">IC&I Admin</span>
+                <span className="text-lg font-semibold tracking-wide">
+                  IC&I Admin
+                </span>
                 <span className="text-xs text-gray-400">Management Portal</span>
               </div>
             </Link>
@@ -53,20 +49,20 @@ export default function AdminHeader() {
           <div className="flex items-center gap-8">
             {/* Navigation items */}
             <nav className="hidden md:flex items-center gap-6">
-              <Link 
-                href="/admin/dashboard" 
+              <Link
+                href="/admin"
                 className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
               >
                 Dashboard
               </Link>
-              <Link 
-                href="/admin/blogs" 
+              <Link
+                href="/admin/blogs"
                 className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
               >
                 Blogs
               </Link>
-              <Link 
-                href="/admin/messages" 
+              <Link
+                href="/admin/messages"
                 className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
               >
                 Messages
@@ -79,9 +75,11 @@ export default function AdminHeader() {
                 <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
                   <User className="w-5 h-5" />
                 </div>
-                <span className="hidden md:inline text-sm font-medium">Admin</span>
+                <span className="hidden md:inline text-sm font-medium">
+                  Admin
+                </span>
               </div>
-              <button 
+              <button
                 onClick={handleLogout}
                 className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
               >

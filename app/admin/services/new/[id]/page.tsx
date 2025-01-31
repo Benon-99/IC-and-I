@@ -52,15 +52,16 @@ const iconOptions: { value: string; icon: LucideIcon }[] = [
   { value: "Code", icon: Code },
   { value: "Briefcase", icon: Briefcase },
 ];
-
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
 
 export default function NewServicePage({
   searchParams,
 }: {
-  searchParams: { id?: string };
+  searchParams: { params: { id: string } };
 }) {
+  console.log(searchParams.params.id);
+
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -75,19 +76,17 @@ export default function NewServicePage({
   });
 
   const { data: service, error } = useQuery({
-    queryKey: ["service", searchParams.id],
+    queryKey: ["service", searchParams.params.id],
     queryFn: async () => {
-      const response = await axios.get(`/services/id/${searchParams.id}`);
+      const response = await apiClient.get(
+        `/services/id/${searchParams.params.id}`
+      );
       if (!response.status) throw new Error("Failed to fetch service");
-      console.log("serviceById :", response.data.service);
-      if (response.status) {
-        setFormData(response.data.service);
-      }
-      return response.data.service;
+      console.log("serviceById :", response.data);
+      return response.data;
     },
-    enabled: !!searchParams.id, // Only fetch if there's an ID
+    enabled: !!searchParams.params.id, // Only fetch if there's an ID
   });
-
   const [formData, setFormData] = useState<Partial<Service>>({
     title: "",
     description: "",
@@ -109,27 +108,17 @@ export default function NewServicePage({
   }, [categories]);
 
   useEffect(() => {
-    const fetchService = async () => {
-      if (searchParams.id) {
-        try {
-          const response = await apiClient.get(
-            `/services/id/${searchParams.id}`
-          );
+    if (service) {
+      // Log the service details to the console
+      console.log("Fetched Service Details:", service);
 
-          if (response.statusText.toLowerCase() !== "ok")
-            throw new Error("Failed to fetch service");
-          setFormData({
-            ...response.data,
-            categoryId: response.data.categoryId || categories?.[0]?.id || null,
-          });
-        } catch (error) {
-          console.error("Error fetching service:", error);
-        }
-      }
-    };
-
-    fetchService();
-  }, [searchParams.id, categories]);
+      // Update the form data with the fetched service details
+      setFormData({
+        ...service,
+        categoryId: service.categoryId || categories?.[0]?.id || null,
+      });
+    }
+  }, [service, categories]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -145,39 +134,30 @@ export default function NewServicePage({
     setIsSubmitting(true);
 
     try {
-      const url = searchParams.id
-        ? `/services/service/${searchParams.id}`
+      const url = searchParams.params.id
+        ? `/services/${searchParams.params.id}`
         : `/services`;
-      const method = searchParams.id ? "put" : "post";
+      const method = searchParams.params.id ? "put" : "post";
 
-      // Ensure features is always an array and has valid structure
-      const features =
-        formData.features?.map((feature) => ({
-          title: feature.title || "",
-          description: feature.description || "",
-        })) || [];
+      const response = await apiClient[method](
+        url,
 
-      const payload = {
-        ...formData,
-        categoryId: parseInt(formData.categoryId?.toString() || "1"),
-        features: features,
-        status: Boolean(formData.status),
-      };
+        {
+          ...formData,
+          features: formData.features?.map((feature) => ({
+            title: feature.title,
+            description: feature.description,
+          })),
+        }
+      );
 
-      console.log("Submitting payload:", payload);
+      if (response.statusText.toLowerCase() !== "ok")
+        throw new Error("Failed to save service");
 
-      const response = await apiClient[method](url, payload);
-
-      if (response.statusText.toLowerCase() !== "ok") {
-        throw new Error(response.data.message || "Failed to save service");
-      }
-
-      console.log("Update successful:", response.data);
       router.push("/admin/services");
       router.refresh();
     } catch (error) {
       console.error("Error saving service:", error);
-      // You might want to show an error message to the user here
     } finally {
       setIsSubmitting(false);
     }
@@ -202,7 +182,7 @@ export default function NewServicePage({
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
               <h1 className="text-3xl font-bold text-white mb-2">
-                {searchParams.id ? "Edit Service" : "Create New Service"}
+                {searchParams.params.id ? "Edit Service" : "Create New Service"}
               </h1>
               <p className="text-gray-400">
                 Configure your service details and appearance
@@ -233,7 +213,9 @@ export default function NewServicePage({
                 ) : (
                   <>
                     <Save className="w-5 h-5 mr-2" />
-                    {searchParams.id ? "Update Service" : "Create Service"}
+                    {searchParams.params.id
+                      ? "Update Service"
+                      : "Create Service"}
                   </>
                 )}
               </button>

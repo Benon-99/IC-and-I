@@ -93,13 +93,13 @@ export default function DataCenterPage() {
           </h2>
 
           <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
-            In today's digital world, a robust and reliable data center
+           {` In today's digital world, a robust and reliable data center
             infrastructure is critical to the success of any organization. IC&I
             specializes in the design, implementation, and support of data
             centers that meet the highest standards of performance and security.
             Our comprehensive services cover every aspect of data center
             creation, ensuring that your infrastructure is equipped to handle
-            your business's current and future needs.
+            your business's current and future needs.`}
           </p>
         </motion.div>
         <div className="w-full h-[2px] bg-gradient-to-r from-[#3785CC] to-[#4A9BE4] my-12 opacity-50" />
@@ -128,9 +128,9 @@ export default function DataCenterPage() {
               variants={itemVariants}
               className="text-xl text-[#111240]/70 max-w-2xl mx-auto"
             >
-              IC&I's data center infrastructure services are designed to provide
+              {`IC&I's data center infrastructure services are designed to provide
               a solid foundation for your digital operations, helping you to
-              achieve your business objectives with confidence.
+              achieve your business objectives with confidence.`}
             </motion.p>
           </div>
 
