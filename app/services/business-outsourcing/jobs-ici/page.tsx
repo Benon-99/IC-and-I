@@ -128,13 +128,13 @@ export default function JobsIciPage() {
           </h2>
 
           <p className="text-lg text-[#111240]/70 leading-relaxed">
-            IC&I is dedicated to fostering a thriving job market in Syria
+        {`    IC&I is dedicated to fostering a thriving job market in Syria
             through our specialized platform, Jobs.ici. This initiative is
             designed to connect ambitious and competent professionals with the
             right job opportunities, helping to build careers and drive economic
             growth. Our platform's intelligent matching algorithms actively work
             to pair job seekers with opportunities that align with their
-            qualifications and career goals.
+            qualifications and career goals.`}
           </p>
         </motion.div>
 
@@ -163,10 +163,10 @@ export default function JobsIciPage() {
             <motion.p
               variants={itemVariants}
               className="text-xl text-[#111240]/70 max-w-2xl mx-auto"
-            >
+            >{`
               Jobs.ici is more than just a job board—it's a comprehensive
               career-building tool designed to empower Syrian professionals to
-              achieve their career aspirations.
+              achieve their career aspirations.`}
             </motion.p>
           </div>
 
@@ -180,7 +180,7 @@ export default function JobsIciPage() {
                   key={feature.id}
                   variants={itemVariants}
                   className="group relative"
-                >
+                > 
                   <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
                   <div className="relative p-8 rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300 shadow-sm">
                     {/* <div
@@ -189,7 +189,7 @@ export default function JobsIciPage() {
                     <feature.icon className="w-8 h-8 text-white" />
                   </div> */}
                     {icons && (
-                      <div className="pb-[20px] bg-gradient-to-r from-[#3785CC] to-[#1387ed] transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center p-4 rounded-xl">
+                      <div className="pb-[20px] bg-gradient-to-r from-[#92c1ed] to-[#2284da] transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center p-4 rounded-xl">
                         {icons[index]}{" "}
                       </div>
                     )}

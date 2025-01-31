@@ -1,10 +1,19 @@
 "use client";
 
-import { useQuery } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
-import { Globe, Target, Compass, Shield, Users, Heart, ArrowRight, LucideIcon } from 'lucide-react';
-import Link from 'next/link';
-
+import { apiClient } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import {
+  Globe,
+  Target,
+  Compass,
+  Shield,
+  Users,
+  Heart,
+  ArrowRight,
+  LucideIcon,
+} from "lucide-react";
+import Link from "next/link";
 
 const ICONS: Record<string, LucideIcon> = {
   Globe: Globe,
@@ -21,11 +30,11 @@ interface AboutContent {
     title: string;
     text: string;
     color: string;
-  }[],
+  }[];
   stats: {
     number: string;
     label: string;
-  }[],
+  }[];
   title: string;
   subtitle: string;
   content: string[];
@@ -33,15 +42,18 @@ interface AboutContent {
 }
 
 export default function About() {
-
-  const {data: aboutUsContent, isError, isLoading, error} = useQuery<AboutContent>({
+  const {
+    data: aboutUsContent,
+    isError,
+    isLoading,
+    error,
+  } = useQuery<AboutContent>({
     queryKey: ["about"],
     queryFn: async () => {
-      const connect = await fetch("http://localhost:8000/home");
-      const data = await connect.json();
-      console.log(data.about[0].aboutUs)
-      return data.about[0].aboutUs;
-    }
+      const connect = await apiClient.get("/home");
+      console.log(connect.data.home[0].aboutUs);
+      return connect.data.home[0].aboutUs;
+    },
   });
 
   if (isLoading) {
@@ -50,7 +62,9 @@ export default function About() {
         <div className="flex items-center justify-center h-screen bg-gradient-to-b from-gray-900 to-gray-800">
           <div className="flex flex-col items-center">
             <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            <p className="mt-4 text-white text-lg font-medium">Loading content, please wait...</p>
+            <p className="mt-4 text-white text-lg font-medium">
+              Loading content, please wait...
+            </p>
           </div>
         </div>
       );
@@ -61,9 +75,12 @@ export default function About() {
     return (
       <div className="flex items-center justify-center h-screen bg-gradient-to-b from-gray-900 to-gray-800">
         <div className="text-center space-y-4">
-          <h2 className="text-2xl font-bold text-red-500">Oops! Something went wrong</h2>
+          <h2 className="text-2xl font-bold text-red-500">
+            Oops! Something went wrong
+          </h2>
           <p className="text-gray-300">
-            We were unable to load the content. Please try again later or contact support.
+            We were unable to load the content. Please try again later or
+            contact support.
           </p>
           <button
             onClick={() => location.reload()}
@@ -122,26 +139,27 @@ export default function About() {
                 className="relative rounded-2xl w-full aspect-[4/3] object-cover transform group-hover:scale-[1.02] transition-transform duration-500"
               />
             </div>
-            
+
             <div className="grid grid-cols-2 gap-4">
               {
-              // @ts-ignore
-            aboutUsContent && aboutUsContent.stats && aboutUsContent.stats.map((stat, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="p-6 rounded-xl bg-transparent backdrop-blur-sm border border-[#B5C6F4] transition-colors duration-300"
-                >
-                  <div className="text-3xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text mb-2 text-[#111240]">
-                    {stat.number}
-                  </div>
-                  <div className="text-[#111240] text-sm">
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
+                // @ts-ignore
+                aboutUsContent &&
+                  aboutUsContent.stats &&
+                  aboutUsContent.stats.map((stat, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="p-6 rounded-xl bg-transparent backdrop-blur-sm border border-[#B5C6F4] transition-colors duration-300"
+                    >
+                      <div className="text-3xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text mb-2 text-[#111240]">
+                        {stat.number}
+                      </div>
+                      <div className="text-[#111240] text-sm">{stat.label}</div>
+                    </motion.div>
+                  ))
+              }
             </div>
           </motion.div>
 
@@ -153,40 +171,49 @@ export default function About() {
             className="space-y-8"
           >
             <div className="space-y-6 text-lg text-[#111240] leading-relaxed">
-              {aboutUsContent.content && aboutUsContent.content.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              ))}
+              {aboutUsContent.content &&
+                aboutUsContent.content.map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
             </div>
 
             <div className="space-y-6">
-
-            {
-            // @ts-ignore
-            aboutUsContent && aboutUsContent.features && aboutUsContent.features.map((feature, index) => {
-              const IconComponent = ICONS[feature.icon] || null;
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group p-6 rounded-xl bg-white/10 backdrop-blur-sm border border-[#B5C6F4] hover:bg-[#B5C6F4] transition-all duration-300"
-                >
-                  <div className="flex items-start space-x-4">
-                  <div className={`p-3 rounded-lg bg-gradient-to-r ${feature.color} group-hover:scale-110 transition-transform duration-300`}>
-                    {IconComponent && <IconComponent className="w-6 h-6 text-white" />}
-                  </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-[#111240] mb-2">{feature.title}</h3>
-                      <p className="text-[#111240]">{feature.text}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
+              {
+                // @ts-ignore
+                aboutUsContent &&
+                  aboutUsContent.features &&
+                  aboutUsContent.features.map((feature, index) => {
+                    const IconComponent = ICONS[feature.icon] || null;
+                    return (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        className="group p-6 rounded-xl bg-white/10 backdrop-blur-sm border border-[#B5C6F4] hover:bg-[#B5C6F4] transition-all duration-300"
+                      >
+                        <div className="flex items-start space-x-4">
+                          <div
+                            className={`p-3 rounded-lg bg-gradient-to-r ${feature.color} group-hover:scale-110 transition-transform duration-300`}
+                          >
+                            {IconComponent && (
+                              <IconComponent className="w-6 h-6 text-white" />
+                            )}
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-semibold text-[#111240] mb-2">
+                              {feature.title}
+                            </h3>
+                            <p className="text-[#111240]">{feature.text}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })
+              }
             </div>
 
-            <Link 
+            <Link
               href="/about"
               className="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-[#111240]
                 backdrop-blur-sm border border-white/10 transition-all duration-300 group"

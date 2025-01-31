@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { 
-  Users, 
-  UserPlus, 
-  ClipboardList, 
+import { motion } from "framer-motion";
+import {
+  Users,
+  UserPlus,
+  ClipboardList,
   ArrowRight,
   Search,
   Upload,
@@ -14,29 +14,30 @@ import {
   Building,
   LineChart,
   Target,
-  Lightbulb
-} from 'lucide-react';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import ServiceHero from '@/components/services/ServiceHero';
-import { useParams } from 'next/navigation';
+  Lightbulb,
+} from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import ServiceHero from "@/components/services/ServiceHero";
+import { useParams } from "next/navigation";
+import { apiClient } from "@/lib/api";
 
 // Map string icon names to actual components
 const iconMap: Record<string, any> = {
-  'Users': Users,
-  'UserPlus': UserPlus,
-  'ClipboardList': ClipboardList,
-  'Search': Search,
-  'Upload': Upload,
-  'Bell': Bell,
-  'Activity': Activity,
-  'BookOpen': BookOpen,
-  'Building': Building,
-  'LineChart': LineChart,
-  'Target': Target,
-  'Lightbulb': Lightbulb,
+  Users: Users,
+  UserPlus: UserPlus,
+  ClipboardList: ClipboardList,
+  Search: Search,
+  Upload: Upload,
+  Bell: Bell,
+  Activity: Activity,
+  BookOpen: BookOpen,
+  Building: Building,
+  LineChart: LineChart,
+  Target: Target,
+  Lightbulb: Lightbulb,
   // Add a default icon
-  'default': Users
+  default: Users,
 };
 
 export default function CategoryPage() {
@@ -52,22 +53,26 @@ export default function CategoryPage() {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await fetch(`http://localhost:8000/categories/category/${category}`);
+        const response = await apiClient.get(
+          `/categories/category/${category}`
+        );
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch category data: ${response.statusText}`);
+        if (response.statusText.toLowerCase() !== "ok") {
+          throw new Error(
+            `Failed to fetch category data: ${response.statusText.toLowerCase()}`
+          );
         }
 
-        const result = await response.json();
-        
-        if (!result?.category) {
-          throw new Error('Invalid data format received from server');
+        if (!response.data?.category) {
+          throw new Error("Invalid data format received from server");
         }
-        console.log('Received category data:', result.category);
-        setData(result.category);
+        console.log("Received category data:", response.data.category);
+        setData(response.data.category);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred');
-        console.error('Error fetching category data:', err);
+        setError(
+          err instanceof Error ? err.message : "An unknown error occurred"
+        );
+        console.error("Error fetching category data:", err);
       } finally {
         setIsLoading(false);
       }
@@ -83,9 +88,9 @@ export default function CategoryPage() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -93,8 +98,8 @@ export default function CategoryPage() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 }
-    }
+      transition: { duration: 0.5 },
+    },
   };
 
   if (isLoading) {
@@ -123,10 +128,7 @@ export default function CategoryPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <ServiceHero 
-        title={data.title}
-        description={data.mainDescription}
-      />
+      <ServiceHero title={data.title} description={data.mainDescription} />
 
       <div className="w-full lg:w-[1280px] mx-auto px-4 sm:px-6 py-12 sm:py-24">
         <motion.div
@@ -143,11 +145,11 @@ export default function CategoryPage() {
           >
             Overview
           </motion.span>
-          
+
           <h2 className="text-4xl font-bold bg-gradient-to-r from-[#3785CC] to-[#4A9BE4] bg-clip-text text-transparent mb-8">
             {data.overviewTitle}
           </h2>
-          
+
           <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
             {data.overviewContent}
           </p>
@@ -183,7 +185,7 @@ export default function CategoryPage() {
             </motion.p>
           </div>
 
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto"
           >
@@ -198,16 +200,24 @@ export default function CategoryPage() {
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
                   <div className="relative p-4 sm:p-6 lg:p-8 rounded-2xl bg-white backdrop-blur-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300 shadow-sm">
-                    <div 
-                      className={`p-4 rounded-xl ${service.gradient || 'bg-[#3785CC]'} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-12 sm:w-16 h-12 sm:h-16 flex items-center justify-center`}
+                    <div
+                      className={`p-4 rounded-xl ${
+                        service.gradient || "bg-[#3785CC]"
+                      } transform group-hover:scale-110 transition-transform duration-300 mb-6 w-12 sm:w-16 h-12 sm:h-16 flex items-center justify-center`}
                       style={{
-                        background: service.gradient || 'linear-gradient(to right, #3785CC, #4A9BE4)'
+                        background:
+                          service.gradient ||
+                          "linear-gradient(to right, #3785CC, #4A9BE4)",
                       }}
                     >
                       <IconComponent className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
-                    <p className="text-[#111240]/60 mb-6">{service.description}</p>
+                    <h3 className="text-xl font-semibold text-[#111240] mb-4">
+                      {service.title}
+                    </h3>
+                    <p className="text-[#111240]/60 mb-6">
+                      {service.description}
+                    </p>
                     <Link
                       href={service.link}
                       className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] group/link"

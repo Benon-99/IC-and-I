@@ -36,8 +36,8 @@ export default function CTA() {
           </h2>
           
           <p className="text-xl mb-12 text-white/80 max-w-2xl mx-auto leading-relaxed">
-            Let's discuss how IC&I can help you achieve your business goals with our comprehensive solutions.
-          </p>
+{`            Let's discuss how IC&I can help you achieve your business goals with our comprehensive solutions.
+`}          </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <Link

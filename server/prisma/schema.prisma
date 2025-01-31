@@ -88,11 +88,12 @@ model Services {
   features        Feature[]  // Relation to Features
   category        Categories? @relation(fields: [categoryId], references: [id])
   categoryId      Int?
+  status          Boolean   @default(false)
 }
 
 model Feature {
   id          Int      @id @default(autoincrement())
-  title       String
+  title       String    
   description String
   service     Services? @relation(fields: [serviceId], references: [id])
   serviceId   Int?

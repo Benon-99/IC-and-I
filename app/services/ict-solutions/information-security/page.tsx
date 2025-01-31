@@ -111,11 +111,11 @@ export default function InformationSecurityPage() {
           </h2>
 
           <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
-            In an era where cyber threats are increasingly sophisticated, IC&I
+           {` In an era where cyber threats are increasingly sophisticated, IC&I
             is dedicated to providing comprehensive information security
             services that protect your organization's digital assets. We offer a
             wide range of security solutions designed to safeguard your data,
-            ensure compliance, and provide peace of mind.
+            ensure compliance, and provide peace of mind.`}
           </p>
         </motion.div>
 

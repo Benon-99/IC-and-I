@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus,
   Search,
@@ -18,13 +18,18 @@ import {
   Users,
   Database,
   Code,
-  Briefcase
-} from 'lucide-react';
-import React from 'react';
+  Briefcase,
+} from "lucide-react";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import ServiceCard from "@/components/services/ServiceCard";
+import ServiceCardAdmin from "@/components/services/ServicesCardAdmin";
+import { apiClient } from "@/lib/api";
 
 interface Category {
   id: string;
-  name: string;
+  category: string;
+  title: string;
 }
 
 interface Service {
@@ -41,7 +46,7 @@ interface Service {
 }
 
 interface Alert {
-  type: 'success' | 'error' | 'info';
+  type: "success" | "error" | "info";
   message: string;
 }
 
@@ -53,62 +58,92 @@ const iconMap: Record<string, any> = {
   Code: Code,
   Briefcase: Briefcase,
 };
-
+interface Servicedb {
+  categoryId: number;
+  description: string;
+  id: number;
+  overviewcontent: string;
+  overviewtitle: string;
+  servicelink: string;
+  title: string;
+}
 export default function ServicesPage() {
-  const [services, setServices] = useState<Service[]>([
-    {
-      id: '1',
-      title: 'Data Center Infrastructure',
-      description: 'Advanced data center solutions optimized for your growing business needs.',
-      icon: 'Server',
-      gradient: 'from-[#3785CC] to-[#4A9BE4]',
-      link: '/services/ict-solutions/data-center',
-      category: { id: 'ict', name: 'ICT Solutions' },
-      published: true,
-      created_at: '2024-01-20T10:00:00Z',
-      updated_at: '2024-01-20T10:00:00Z'
+  const [services, setServices] = useState<Service[]>([]);
+  const [search, setSearch] = useState("");
+
+  const { data: categories, isLoading: isCategoriesLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const response = await apiClient.get(`/categories`);
+      if (response.statusText.toLowerCase() !== "ok")
+        throw new Error("Failed to fetch categories");
+      return response.data.categories;
     },
-    {
-      id: '2',
-      title: 'Solutions Integration',
-      description: 'Strategic technology solutions to enhance operations and drive business growth.',
-      icon: 'Network',
-      gradient: 'from-[#4A9BE4] to-[#5B8AF0]',
-      link: '/services/ict-solutions/solutions-integration',
-      category: { id: 'ict', name: 'ICT Solutions' },
-      published: true,
-      created_at: '2024-01-20T10:00:00Z',
-      updated_at: '2024-01-20T10:00:00Z'
-    },
-    {
-      id: '3',
-      title: 'Jobs.ici – Recruiting',
-      description: 'Connect with top talents across various industries.',
-      icon: 'Users',
-      gradient: 'from-[#3785CC] to-[#5B8AF0]',
-      link: '/services/business-outsourcing/recruiting',
-      category: { id: 'bpo', name: 'Business Process Outsourcing' },
-      published: false,
-      created_at: '2024-01-20T10:00:00Z',
-      updated_at: '2024-01-20T10:00:00Z'
-    }
-  ]);
-  
-  const [categories] = useState<Category[]>([
-    { id: 'ict', name: 'ICT Solutions' },
-    { id: 'bpo', name: 'Business Process Outsourcing' }
-  ]);
-  
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filter, setFilter] = useState<'all' | 'published' | 'draft'>('all');
-  const [categoryFilter, setCategoryFilter] = useState<string | 'all'>('all');
-  const [alert, setAlert] = useState<Alert | null>(null);
-  const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean; serviceId: string | null }>({
-    show: false,
-    serviceId: null
   });
 
-  const showAlert = (type: Alert['type'], message: string) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["services"],
+    queryFn: async () => {
+      const response = await apiClient.get("/services/");
+      return response.data.services;
+    },
+  });
+  console.log(data);
+
+  // const [services, setServices] = useState<Service[]>([
+  //   {
+  //     id: "1",
+  //     title: "Data Center Infrastructure",
+  //     description:
+  //       "Advanced data center solutions optimized for your growing business needs.",
+  //     icon: "Server",
+  //     gradient: "from-[#3785CC] to-[#4A9BE4]",
+  //     link: "/services/ict-solutions/data-center",
+  //     category: { id: "ict", name: "ICT Solutions" },
+  //     published: true,
+  //     created_at: "2024-01-20T10:00:00Z",
+  //     updated_at: "2024-01-20T10:00:00Z",
+  //   },
+  //   {
+  //     id: "2",
+  //     title: "Solutions Integration",
+  //     description:
+  //       "Strategic technology solutions to enhance operations and drive business growth.",
+  //     icon: "Network",
+  //     gradient: "from-[#4A9BE4] to-[#5B8AF0]",
+  //     link: "/services/ict-solutions/solutions-integration",
+  //     category: { id: "ict", name: "ICT Solutions" },
+  //     published: true,
+  //     created_at: "2024-01-20T10:00:00Z",
+  //     updated_at: "2024-01-20T10:00:00Z",
+  //   },
+  //   {
+  //     id: "3",
+  //     title: "Jobs.ici – Recruiting",
+  //     description: "Connect with top talents across various industries.",
+  //     icon: "Users",
+  //     gradient: "from-[#3785CC] to-[#5B8AF0]",
+  //     link: "/services/business-outsourcing/recruiting",
+  //     category: { id: "bpo", name: "Business Process Outsourcing" },
+  //     published: false,
+  //     created_at: "2024-01-20T10:00:00Z",
+  //     updated_at: "2024-01-20T10:00:00Z",
+  //   },
+  // ]);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState<"all" | "published" | "draft">("all");
+  const [categoryFilter, setCategoryFilter] = useState<string | "all">("all");
+  const [alert, setAlert] = useState<Alert | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    show: boolean;
+    serviceId: string | null;
+  }>({
+    show: false,
+    serviceId: null,
+  });
+
+  const showAlert = (type: Alert["type"], message: string) => {
     setAlert({ type, message });
     setTimeout(() => setAlert(null), 3000);
   };
@@ -119,22 +154,32 @@ export default function ServicesPage() {
 
   const handleDelete = () => {
     if (deleteConfirm.serviceId) {
-      setServices(services.filter(service => service.id !== deleteConfirm.serviceId));
+      setServices(
+        services.filter((service) => service.id !== deleteConfirm.serviceId)
+      );
       setDeleteConfirm({ show: false, serviceId: null });
-      showAlert('success', 'Service deleted successfully');
+      showAlert("success", "Service deleted successfully");
     }
   };
 
-  const filteredServices = services.filter(service => {
-    const matchesSearch = service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         service.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filter === 'all' ? true :
-                         filter === 'published' ? service.published :
-                         !service.published;
-    const matchesCategory = categoryFilter === 'all' ? true :
-                           service.category.id === categoryFilter;
-    return matchesSearch && matchesStatus && matchesCategory;
-  });
+  const filteredServices =
+    data &&
+    data.filter((service: Service) => {
+      const matchesSearch =
+        service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        service.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus =
+        filter === "all"
+          ? true
+          : filter === "published"
+          ? service.published
+          : !service.published;
+      const matchesCategory =
+        categoryFilter === "all"
+          ? true
+          : service.category.title === categoryFilter;
+      return matchesSearch && matchesStatus && matchesCategory;
+    });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f1035] to-[#2e3267] p-8">
@@ -151,14 +196,22 @@ export default function ServicesPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg flex items-center space-x-2 z-50 ${
-                alert.type === 'success' ? 'bg-green-500' :
-                alert.type === 'error' ? 'bg-red-500' :
-                'bg-blue-500'
+                alert.type === "success"
+                  ? "bg-green-500"
+                  : alert.type === "error"
+                  ? "bg-red-500"
+                  : "bg-blue-500"
               }`}
             >
-              {alert.type === 'success' && <CheckCircle className="w-5 h-5 text-white" />}
-              {alert.type === 'error' && <XCircle className="w-5 h-5 text-white" />}
-              {alert.type === 'info' && <AlertCircle className="w-5 h-5 text-white" />}
+              {alert.type === "success" && (
+                <CheckCircle className="w-5 h-5 text-white" />
+              )}
+              {alert.type === "error" && (
+                <XCircle className="w-5 h-5 text-white" />
+              )}
+              {alert.type === "info" && (
+                <AlertCircle className="w-5 h-5 text-white" />
+              )}
               <p className="text-white font-medium">{alert.message}</p>
             </motion.div>
           )}
@@ -166,7 +219,7 @@ export default function ServicesPage() {
 
         {/* Header Section */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold">Services</h1>
+          <h1 className="text-2xl font-bold text-white">Services</h1>
           <div className="flex items-center gap-4">
             <Link
               href="/admin/services/categories"
@@ -205,38 +258,39 @@ export default function ServicesPage() {
                 className="px-4 py-2 bg-[#2e3267] border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="all">All Categories</option>
-                {categories.map(category => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
+                {categories &&
+                  categories.map((category: any) => (
+                    <option key={category.id} value={category.title}>
+                      {category.title}
+                    </option>
+                  ))}
               </select>
               <button
-                onClick={() => setFilter('all')}
+                onClick={() => setFilter("all")}
                 className={`px-4 py-2 rounded-lg transition-colors ${
-                  filter === 'all'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-[#2e3267] text-gray-400 hover:bg-[#363b7e]'
+                  filter === "all"
+                    ? "bg-blue-600 text-white"
+                    : "bg-[#2e3267] text-gray-400 hover:bg-[#363b7e]"
                 }`}
               >
                 All
               </button>
               <button
-                onClick={() => setFilter('published')}
+                onClick={() => setFilter("published")}
                 className={`px-4 py-2 rounded-lg transition-colors ${
-                  filter === 'published'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-[#2e3267] text-gray-400 hover:bg-[#363b7e]'
+                  filter === "published"
+                    ? "bg-blue-600 text-white"
+                    : "bg-[#2e3267] text-gray-400 hover:bg-[#363b7e]"
                 }`}
               >
                 Published
               </button>
               <button
-                onClick={() => setFilter('draft')}
+                onClick={() => setFilter("draft")}
                 className={`px-4 py-2 rounded-lg transition-colors ${
-                  filter === 'draft'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-[#2e3267] text-gray-400 hover:bg-[#363b7e]'
+                  filter === "draft"
+                    ? "bg-blue-600 text-white"
+                    : "bg-[#2e3267] text-gray-400 hover:bg-[#363b7e]"
                 }`}
               >
                 Drafts
@@ -246,92 +300,40 @@ export default function ServicesPage() {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredServices.map((service) => (
-            <motion.div
-              key={service.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="bg-[#1a1f4b] rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
-            >
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-12 h-12 rounded-lg ${service.gradient} flex items-center justify-center`}>
-                      {iconMap[service.icon] && React.createElement(iconMap[service.icon], {
-                        size: 24,
-                        className: "text-white"
-                      })}
-                    </div>
-                    <div>
-                      <h2 className="text-xl font-semibold text-white">
-                        {service.title}
-                      </h2>
-                      <span className="text-blue-400 text-sm">
-                        {service.category.name}
-                      </span>
-                    </div>
-                  </div>
-                  <span
-                    className={`ml-2 px-3 py-1 rounded-full text-xs font-medium ${
-                      service.published
-                        ? 'bg-green-500/20 text-green-400'
-                        : 'bg-yellow-500/20 text-yellow-400'
-                    }`}
-                  >
-                    {service.published ? 'Published' : 'Draft'}
-                  </span>
-                </div>
-                
-                <div className="text-gray-400 text-sm mb-4 line-clamp-2">
-                  {service.description}
-                </div>
-
-                <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-700">
-                  <div className="flex items-center gap-2 text-gray-400">
-                    <Clock className="w-4 h-4" />
-                    <span className="text-sm">
-                      {new Date(service.updated_at).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Link
-                      href={`/admin/services/new?id=${service.id}`}
-                      className="text-blue-500 hover:text-blue-700"
-                    >
-                      <Pencil className="h-5 w-5" />
-                    </Link>
-                    <button
-                      onClick={() => initiateDelete(service.id)}
-                      className="p-2 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+        <div className="grid grid-cols-1  gap-6">
+          <div className="flex flex-wrap  gap-10 w-full">
+            {filteredServices?.map((service: Servicedb) => (
+              <ServiceCardAdmin
+                key={service.id}
+                service={{
+                  id: service.id,
+                  title: service.title,
+                  description: service.description,
+                  link: `/services/${service.servicelink}`,
+                }}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Empty State */}
-        {filteredServices.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-12"
-          >
-            <div className="text-gray-400 mb-4">No services found</div>
-            <Link
-              href="/admin/services/new"
-              className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300"
+        {(data && data.length === 0) ||
+          (filteredServices && filteredServices.lenght === 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-12"
             >
-              <Plus className="w-4 h-4" />
-              Create your first service
-            </Link>
-          </motion.div>
-        )}
+              <div className="text-gray-400 mb-4">No services found</div>
+              <Link
+                href="/admin/services/new"
+                className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300"
+              >
+                <Plus className="w-4 h-4" />
+                Create your first service
+              </Link>
+            </motion.div>
+          ))}
 
         {/* Delete Confirmation Modal */}
         {deleteConfirm.show && (
@@ -344,14 +346,19 @@ export default function ServicesPage() {
             >
               <div className="flex items-center gap-3 mb-4">
                 <AlertTriangle className="h-6 w-6 text-yellow-500" />
-                <h3 className="text-xl font-semibold text-white">Delete Service?</h3>
+                <h3 className="text-xl font-semibold text-white">
+                  Delete Service?
+                </h3>
               </div>
               <p className="text-gray-300 mb-6">
-                This action cannot be undone. The service will be permanently removed from the system.
+                This action cannot be undone. The service will be permanently
+                removed from the system.
               </p>
               <div className="flex justify-end gap-3">
                 <button
-                  onClick={() => setDeleteConfirm({ show: false, serviceId: null })}
+                  onClick={() =>
+                    setDeleteConfirm({ show: false, serviceId: null })
+                  }
                   className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
                 >
                   Cancel

@@ -88,11 +88,11 @@ export default function JobsIciPage() {
           </h2>
           
           <p className="text-lg text-[#111240]/70 leading-relaxed">
-            IC&I is dedicated to fostering a thriving job market in Syria through our specialized platform, 
+            {`IC&I is dedicated to fostering a thriving job market in Syria through our specialized platform, 
             Jobs.ici. This initiative is designed to connect ambitious and competent professionals with the 
             right job opportunities, helping to build careers and drive economic growth. Our platform's 
             intelligent matching algorithms actively work to pair job seekers with opportunities that align 
-            with their qualifications and career goals.
+            with their qualifications and career goals.`}
           </p>
         </motion.div>
 
@@ -122,8 +122,8 @@ export default function JobsIciPage() {
               variants={itemVariants}
               className="text-xl text-[#111240]/70 max-w-2xl mx-auto"
             >
-              Jobs.ici is more than just a job board—it's a comprehensive career-building tool designed 
-              to empower Syrian professionals to achieve their career aspirations.
+              {`Jobs.ici is more than just a job board—it's a comprehensive career-building tool designed 
+              to empower Syrian professionals to achieve their career aspirations.`}
             </motion.p>
           </div>
 

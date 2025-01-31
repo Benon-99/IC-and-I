@@ -21,31 +21,48 @@ const PORT = process.env.PORT || 8000;
 app.use(cookieParser());
 app.use(express.json());
 
-const allowedOrigins =
-  process.env.NODE_ENV === "production"
-    ? [process.env.FRONTEND_URL] // Use environment variable in production
-    : ["http://localhost:3000"]; // Allow localhost in development
+// const allowedOrigins =
+//   process.env.NODE_ENV === "production"
+//     ? [process.env.FRONTEND_URL] // Use environment variable in production
+//     : ["http://localhost:3001"]; // Allow localhost in development
 
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       // Allow requests with no origin (like mobile apps or curl requests)
+//       if (!origin) return callback(null, true);
+
+//       if (allowedOrigins.indexOf(origin) === -1) {
+//         return callback(
+//           new Error(
+//             "The CORS policy for this site does not allow access from the specified Origin."
+//           ),
+//           false
+//         );
+//       }
+//       return callback(null, true);
+//     },
+//     credentials: true,
+//   })
+// );
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.indexOf(origin) === -1) {
-        return callback(
-          new Error(
-            "The CORS policy for this site does not allow access from the specified Origin."
-          ),
-          false
-        );
-      }
-      return callback(null, true);
-    },
+    origin: allowedOrigins,
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "Accept",
+    ],
   })
 );
-
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },

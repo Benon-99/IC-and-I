@@ -1,9 +1,23 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Pencil, Trash2, Plus, Search, Filter, Clock, Eye, Image as ImageIcon, AlertCircle, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import {
+  Pencil,
+  Trash2,
+  Plus,
+  Search,
+  Filter,
+  Clock,
+  Eye,
+  Image as ImageIcon,
+  AlertCircle,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { apiClient } from "@/lib/api";
 
 interface Category {
   id: number;
@@ -31,27 +45,33 @@ interface Blog {
 }
 
 interface Alert {
-  type: 'success' | 'error' | 'info';
+  type: "success" | "error" | "info";
   message: string;
 }
 
 export default function BlogsPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [filter, setFilter] = useState<'all' | 'published' | 'draft'>('all');
-  const [categoryFilter, setCategoryFilter] = useState<number | 'all'>('all');
+  const [filter, setFilter] = useState<"all" | "published" | "draft">("all");
+  const [categoryFilter, setCategoryFilter] = useState<number | "all">("all");
   const [alert, setAlert] = useState<Alert | null>(null);
-  const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean; blogId: number | null }>({
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    show: boolean;
+    blogId: number | null;
+  }>({
     show: false,
-    blogId: null
+    blogId: null,
   });
 
   useEffect(() => {
     fetchBlogs();
     fetchCategories();
   }, []);
+  useEffect(() => {
+    console.log(blogs);
+  }, [blogs]);
 
   useEffect(() => {
     if (alert) {
@@ -60,21 +80,22 @@ export default function BlogsPage() {
     }
   }, [alert]);
 
-  const showAlert = (type: Alert['type'], message: string) => {
+  const showAlert = (type: Alert["type"], message: string) => {
     setAlert({ type, message });
   };
 
   const fetchBlogs = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/blog');
-      if (!response.ok) {
-        throw new Error('Failed to fetch blogs');
+      const response = await apiClient.get("/api/blog");
+      console.log(response);
+
+      if (response.statusText.toLowerCase() != "ok") {
+        throw new Error("Failed to fetch blogs");
       }
-      const data = await response.json();
-      setBlogs(data.posts || []);
+      setBlogs(response.data.posts || []);
     } catch (error) {
-      console.error('Error fetching blogs:', error);
-      showAlert('error', 'Failed to fetch blogs');
+      console.error("Error fetching blogs:", error);
+      showAlert("error", "Failed to fetch blogs");
     } finally {
       setIsLoading(false);
     }
@@ -82,11 +103,10 @@ export default function BlogsPage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/blog/categories');
-      const data = await response.json();
-      setCategories(data.categories || []);
+      const response = await apiClient.get("/api/blog/categories");
+      setCategories(response.data.categories || []);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error("Error fetching categories:", error);
     }
   };
 
@@ -96,40 +116,40 @@ export default function BlogsPage() {
 
   const handleDelete = async () => {
     if (!deleteConfirm.blogId) return;
-    
+
     try {
-      const response = await fetch(`http://localhost:8000/api/blog/post/${deleteConfirm.blogId}`, {
-        method: 'DELETE',
-        credentials: 'include'
-      });
-      
-      if (response.ok) {
-        setBlogs(blogs.filter(blog => blog.id !== deleteConfirm.blogId));
-        showAlert('success', 'Blog post deleted successfully');
+      const response = await apiClient.delete(
+        `/api/blog/post/${deleteConfirm.blogId}`
+      );
+
+      if (response.statusText.toLowerCase() == "ok") {
+        setBlogs(blogs.filter((blog) => blog.id !== deleteConfirm.blogId));
+        showAlert("success", "Blog post deleted successfully");
       } else {
-        throw new Error('Failed to delete blog post');
+        throw new Error("Failed to delete blog post");
       }
     } catch (error) {
-      console.error('Error deleting blog:', error);
-      showAlert('error', 'Failed to delete blog post');
+      console.error("Error deleting blog:", error);
+      showAlert("error", "Failed to delete blog post");
     } finally {
       setDeleteConfirm({ show: false, blogId: null });
     }
   };
 
   const filteredBlogs = blogs
-    .filter(blog => {
-      if (filter === 'published') return blog.published;
-      if (filter === 'draft') return !blog.published;
+    .filter((blog) => {
+      if (filter === "published") return blog.published;
+      if (filter === "draft") return !blog.published;
       return true;
     })
-    .filter(blog => {
-      if (categoryFilter === 'all') return true;
+    .filter((blog) => {
+      if (categoryFilter === "all") return true;
       return blog.category.id === categoryFilter;
     })
-    .filter(blog =>
-      blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.content.toLowerCase().includes(searchTerm.toLowerCase())
+    .filter(
+      (blog) =>
+        blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        blog.content.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
   const containerVariants = {
@@ -137,17 +157,17 @@ export default function BlogsPage() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
-      opacity: 1
-    }
+      opacity: 1,
+    },
   };
 
   return (
@@ -168,14 +188,19 @@ export default function BlogsPage() {
             >
               <div className="flex items-center gap-3 mb-4">
                 <AlertTriangle className="h-6 w-6 text-yellow-500" />
-                <h3 className="text-xl font-semibold text-white">Delete Blog Post?</h3>
+                <h3 className="text-xl font-semibold text-white">
+                  Delete Blog Post?
+                </h3>
               </div>
               <p className="text-gray-300 mb-6">
-                This action cannot be undone. The blog post will be permanently removed from the system.
+                This action cannot be undone. The blog post will be permanently
+                removed from the system.
               </p>
               <div className="flex justify-end gap-3">
                 <button
-                  onClick={() => setDeleteConfirm({ show: false, blogId: null })}
+                  onClick={() =>
+                    setDeleteConfirm({ show: false, blogId: null })
+                  }
                   className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
                 >
                   Cancel
@@ -199,14 +224,22 @@ export default function BlogsPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg flex items-center space-x-2 z-50 ${
-                alert.type === 'success' ? 'bg-green-500' :
-                alert.type === 'error' ? 'bg-red-500' :
-                'bg-blue-500'
+                alert.type === "success"
+                  ? "bg-green-500"
+                  : alert.type === "error"
+                  ? "bg-red-500"
+                  : "bg-blue-500"
               }`}
             >
-              {alert.type === 'success' && <CheckCircle className="w-5 h-5 text-white" />}
-              {alert.type === 'error' && <XCircle className="w-5 h-5 text-white" />}
-              {alert.type === 'info' && <AlertCircle className="w-5 h-5 text-white" />}
+              {alert.type === "success" && (
+                <CheckCircle className="w-5 h-5 text-white" />
+              )}
+              {alert.type === "error" && (
+                <XCircle className="w-5 h-5 text-white" />
+              )}
+              {alert.type === "info" && (
+                <AlertCircle className="w-5 h-5 text-white" />
+              )}
               <p className="text-white font-medium">{alert.message}</p>
             </motion.div>
           )}
@@ -215,10 +248,12 @@ export default function BlogsPage() {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">Blog Management</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">
+              Blog Management
+            </h1>
             <p className="text-gray-400">Manage and organize your blog posts</p>
           </div>
-          <Link 
+          <Link
             href="/admin/blogs/new"
             className="group bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition-all duration-300 transform hover:scale-105"
           >
@@ -243,42 +278,46 @@ export default function BlogsPage() {
             <div className="flex gap-2">
               <select
                 value={categoryFilter}
-                onChange={(e) => setCategoryFilter(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+                onChange={(e) =>
+                  setCategoryFilter(
+                    e.target.value === "all" ? "all" : Number(e.target.value)
+                  )
+                }
                 className="px-4 py-2 bg-[#2e3267] border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="all">All Categories</option>
-                {categories.map(category => (
+                {categories.map((category) => (
                   <option key={category.id} value={category.id}>
                     {category.name}
                   </option>
                 ))}
               </select>
               <button
-                onClick={() => setFilter('all')}
+                onClick={() => setFilter("all")}
                 className={`px-4 py-2 rounded-lg transition-colors ${
-                  filter === 'all'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-[#2e3267] text-gray-400 hover:bg-[#363b7e]'
+                  filter === "all"
+                    ? "bg-blue-600 text-white"
+                    : "bg-[#2e3267] text-gray-400 hover:bg-[#363b7e]"
                 }`}
               >
                 All
               </button>
               <button
-                onClick={() => setFilter('published')}
+                onClick={() => setFilter("published")}
                 className={`px-4 py-2 rounded-lg transition-colors ${
-                  filter === 'published'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-[#2e3267] text-gray-400 hover:bg-[#363b7e]'
+                  filter === "published"
+                    ? "bg-blue-600 text-white"
+                    : "bg-[#2e3267] text-gray-400 hover:bg-[#363b7e]"
                 }`}
               >
                 Published
               </button>
               <button
-                onClick={() => setFilter('draft')}
+                onClick={() => setFilter("draft")}
                 className={`px-4 py-2 rounded-lg transition-colors ${
-                  filter === 'draft'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-[#2e3267] text-gray-400 hover:bg-[#363b7e]'
+                  filter === "draft"
+                    ? "bg-blue-600 text-white"
+                    : "bg-[#2e3267] text-gray-400 hover:bg-[#363b7e]"
                 }`}
               >
                 Drafts
@@ -323,22 +362,26 @@ export default function BlogsPage() {
                           {blog.title}
                         </h2>
                         <div className="flex items-center gap-2 text-sm">
-                          <span className="text-gray-400">By {blog.author.name}</span>
+                          <span className="text-gray-400">
+                            By {blog.author.name}
+                          </span>
                           <span className="text-gray-600">•</span>
-                          <span className="text-blue-400">{blog.category.name}</span>
+                          <span className="text-blue-400">
+                            {blog.category.name}
+                          </span>
                         </div>
                       </div>
                       <span
                         className={`ml-2 px-3 py-1 rounded-full text-xs font-medium ${
                           blog.published
-                            ? 'bg-green-500/20 text-green-400'
-                            : 'bg-yellow-500/20 text-yellow-400'
+                            ? "bg-green-500/20 text-green-400"
+                            : "bg-yellow-500/20 text-yellow-400"
                         }`}
                       >
-                        {blog.published ? 'Published' : 'Draft'}
+                        {blog.published ? "Published" : "Draft"}
                       </span>
                     </div>
-                    
+
                     <div className="text-gray-400 text-sm mb-4 line-clamp-2">
                       {blog.content}
                     </div>
@@ -346,7 +389,9 @@ export default function BlogsPage() {
                     <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-700">
                       <div className="flex items-center gap-2 text-gray-400">
                         <Clock className="w-4 h-4" />
-                        <span className="text-sm">{new Date(blog.date).toLocaleDateString()}</span>
+                        <span className="text-sm">
+                          {new Date(blog.date).toLocaleDateString()}
+                        </span>
                       </div>
                       <div className="flex items-center gap-3">
                         <Link

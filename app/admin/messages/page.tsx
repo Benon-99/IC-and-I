@@ -1,8 +1,19 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Search, Trash2, Mail, Clock, Eye, AlertCircle, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from "react";
+import {
+  Search,
+  Trash2,
+  Mail,
+  Clock,
+  Eye,
+  AlertCircle,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { apiClient } from "@/lib/api";
 
 interface Message {
   id: number;
@@ -14,18 +25,21 @@ interface Message {
 }
 
 interface Alert {
-  type: 'success' | 'error' | 'info';
+  type: "success" | "error" | "info";
   message: string;
 }
 
 export default function MessagesPage() {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [alert, setAlert] = useState<Alert | null>(null);
-  const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean; messageId: number | null }>({
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    show: boolean;
+    messageId: number | null;
+  }>({
     show: false,
-    messageId: null
+    messageId: null,
   });
 
   useEffect(() => {
@@ -39,25 +53,26 @@ export default function MessagesPage() {
     }
   }, [alert]);
 
-  const showAlert = (type: Alert['type'], message: string) => {
+  const showAlert = (type: Alert["type"], message: string) => {
     setAlert({ type, message });
   };
 
   const fetchMessages = async () => {
     try {
-      console.log('Fetching messages...');
-      const response = await fetch('http://localhost:8000/api/messages');
-      console.log('Response status:', response.status);
-      if (!response.ok) {
-        throw new Error('Failed to fetch messages');
+      console.log("Fetching messages...");
+      const response = await apiClient.get("/api/messages");
+      console.log("Response status:", response.status);
+      if (response.statusText.toLowerCase() !== "ok") {
+        throw new Error("Failed to fetch messages");
       }
-      const data = await response.json();
-      console.log('Received data:', data);
-      const messagesList = Array.isArray(data) ? data : data.messages || [];
-      console.log('Setting messages:', messagesList);
+      console.log("Received data:", response.data);
+      const messagesList = Array.isArray(response.data)
+        ? response.data
+        : response.data.messages || [];
+      console.log("Setting messages:", messagesList);
       setMessages(messagesList);
     } catch (error) {
-      console.error('Error fetching messages:', error);
+      console.error("Error fetching messages:", error);
     } finally {
       setIsLoading(false);
     }
@@ -69,21 +84,23 @@ export default function MessagesPage() {
 
   const handleDelete = async () => {
     if (!deleteConfirm.messageId) return;
-    
+
     try {
-      const response = await fetch(`http://localhost:8000/api/messages/${deleteConfirm.messageId}`, {
-        method: 'DELETE',
-      });
-      
-      if (response.ok) {
-        setMessages(messages.filter(message => message.id !== deleteConfirm.messageId));
-        showAlert('success', 'Message deleted successfully');
+      const response = await apiClient.delete(
+        `/api/messages/${deleteConfirm.messageId}`
+      );
+
+      if (response.statusText.toLowerCase() === "ok") {
+        setMessages(
+          messages.filter((message) => message.id !== deleteConfirm.messageId)
+        );
+        showAlert("success", "Message deleted successfully");
       } else {
-        throw new Error('Failed to delete message');
+        throw new Error("Failed to delete message");
       }
     } catch (error) {
-      console.error('Error deleting message:', error);
-      showAlert('error', 'Failed to delete message');
+      console.error("Error deleting message:", error);
+      showAlert("error", "Failed to delete message");
     } finally {
       setDeleteConfirm({ show: false, messageId: null });
     }
@@ -91,33 +108,32 @@ export default function MessagesPage() {
 
   const handleReply = async (email: string, subject: string) => {
     try {
-      const response = await fetch('http://localhost:3001/message/reply', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const response = await apiClient.post(
+        "/message/reply",
+
+        {
           to: email,
           subject: `Re: ${subject}`,
-          text: 'Thank you for your message. We will get back to you shortly.',
-        }),
-      });
+          text: "Thank you for your message. We will get back to you shortly.",
+        }
+      );
 
-      if (response.ok) {
-        showAlert('success', 'Reply sent successfully');
+      if (response.statusText.toLowerCase() === "ok") {
+        showAlert("success", "Reply sent successfully");
       } else {
-        throw new Error('Failed to send reply');
+        throw new Error("Failed to send reply");
       }
     } catch (error) {
-      console.error('Error sending reply:', error);
-      showAlert('error', 'Failed to send reply');
+      console.error("Error sending reply:", error);
+      showAlert("error", "Failed to send reply");
     }
   };
 
-  const filteredMessages = messages.filter(message =>
-    message.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    message.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    message.message.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredMessages = messages.filter(
+    (message) =>
+      message.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      message.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      message.message.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -134,14 +150,19 @@ export default function MessagesPage() {
             >
               <div className="flex items-center gap-3 mb-4">
                 <AlertTriangle className="h-6 w-6 text-yellow-500" />
-                <h3 className="text-xl font-semibold text-white">Delete Message?</h3>
+                <h3 className="text-xl font-semibold text-white">
+                  Delete Message?
+                </h3>
               </div>
               <p className="text-gray-300 mb-6">
-                This action cannot be undone. The message will be permanently removed from the system.
+                This action cannot be undone. The message will be permanently
+                removed from the system.
               </p>
               <div className="flex justify-end gap-3">
                 <button
-                  onClick={() => setDeleteConfirm({ show: false, messageId: null })}
+                  onClick={() =>
+                    setDeleteConfirm({ show: false, messageId: null })
+                  }
                   className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
                 >
                   Cancel
@@ -165,14 +186,22 @@ export default function MessagesPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg flex items-center space-x-2 z-50 ${
-                alert.type === 'success' ? 'bg-green-500' :
-                alert.type === 'error' ? 'bg-red-500' :
-                'bg-blue-500'
+                alert.type === "success"
+                  ? "bg-green-500"
+                  : alert.type === "error"
+                  ? "bg-red-500"
+                  : "bg-blue-500"
               }`}
             >
-              {alert.type === 'success' && <CheckCircle className="w-5 h-5 text-white" />}
-              {alert.type === 'error' && <XCircle className="w-5 h-5 text-white" />}
-              {alert.type === 'info' && <AlertCircle className="w-5 h-5 text-white" />}
+              {alert.type === "success" && (
+                <CheckCircle className="w-5 h-5 text-white" />
+              )}
+              {alert.type === "error" && (
+                <XCircle className="w-5 h-5 text-white" />
+              )}
+              {alert.type === "info" && (
+                <AlertCircle className="w-5 h-5 text-white" />
+              )}
               <p className="text-white font-medium">{alert.message}</p>
             </motion.div>
           )}
@@ -181,7 +210,9 @@ export default function MessagesPage() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-white">Messages</h1>
-            <p className="text-gray-400">Manage incoming messages and inquiries</p>
+            <p className="text-gray-400">
+              Manage incoming messages and inquiries
+            </p>
           </div>
           <div className="relative">
             <input
@@ -202,8 +233,12 @@ export default function MessagesPage() {
         ) : filteredMessages.length === 0 ? (
           <div className="text-center py-12">
             <Mail className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-white">No messages found</h3>
-            <p className="text-gray-400">No messages match your search criteria</p>
+            <h3 className="text-lg font-medium text-white">
+              No messages found
+            </h3>
+            <p className="text-gray-400">
+              No messages match your search criteria
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6">
@@ -218,9 +253,14 @@ export default function MessagesPage() {
                 >
                   <div className="flex flex-col md:flex-row justify-between gap-4">
                     <div className="space-y-2">
-                      <h3 className="text-lg font-medium text-white">{message.name}</h3>
+                      <h3 className="text-lg font-medium text-white">
+                        {message.name}
+                      </h3>
                       <p className="text-blue-400 hover:text-blue-300 transition-colors">
-                        <a href={`mailto:${message.email}`} className="flex items-center gap-2">
+                        <a
+                          href={`mailto:${message.email}`}
+                          className="flex items-center gap-2"
+                        >
                           <Mail className="w-4 h-4" />
                           {message.email}
                         </a>
@@ -233,7 +273,9 @@ export default function MessagesPage() {
                     </div>
                     <div className="flex items-center gap-3">
                       <button
-                        onClick={() => handleReply(message.email, message.subject)}
+                        onClick={() =>
+                          handleReply(message.email, message.subject)
+                        }
                         className="p-2 text-blue-400 hover:text-blue-300 transition-colors"
                         title="Reply to message"
                       >

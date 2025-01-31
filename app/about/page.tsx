@@ -14,9 +14,10 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import * as LucideIcons from "lucide-react";
+import { apiClient } from "@/lib/api";
 
 const fetchingAbout = async () => {
-  const response = await axios.get("http://localhost:3001/about/");
+  const response = await apiClient.get("/about/");
   console.log(response.data.about);
   const obj = Object.entries(response.data.about);
   console.log(obj);
@@ -30,9 +31,12 @@ export default function AboutPage() {
   });
 
   const DynamicIcon = ({ iconName }: { iconName: string }) => {
-    const Icon = LucideIcons[iconName as keyof typeof LucideIcons];
+    const Icon = LucideIcons[
+      iconName as keyof typeof LucideIcons
+    ] as React.ElementType;
     return Icon ? <Icon className="w-8 h-8 text-white" /> : null;
   };
+
   interface AboutResponse {
     status: string;
     about: About;

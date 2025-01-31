@@ -1,11 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Save, X, Image as ImageIcon, Plus, Eye, Calendar, Layout, Tag } from 'lucide-react';
-import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
-import ReactMarkdown from 'react-markdown';
+import { useState, useEffect, useRef, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Save,
+  X,
+  Image as ImageIcon,
+  Plus,
+  Eye,
+  Calendar,
+  Layout,
+  Tag,
+} from "lucide-react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import ReactMarkdown from "react-markdown";
+import { apiClient } from "@/lib/api";
 
 interface Category {
   id: number;
@@ -30,16 +40,16 @@ export default function EditBlogPost() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [formData, setFormData] = useState<BlogPost>({
     id: 0,
-    title: '',
-    content: '',
+    title: "",
+    content: "",
     categoryId: 1,
-    image: 'placeholder.jpg',
+    image: "placeholder.jpg",
     published: false,
     authorId: 1,
     date: new Date().toISOString(),
-    slug: ''
+    slug: "",
   });
-  const [imagePreview, setImagePreview] = useState<string>('');
+  const [imagePreview, setImagePreview] = useState<string>("");
   const [showPreview, setShowPreview] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -52,37 +62,36 @@ export default function EditBlogPost() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/blog/categories');
-      const data = await response.json();
-      setCategories(data.categories || []);
+      const response = await apiClient.get("/api/blog/categories");
+
+      setCategories(response.data.categories || []);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error("Error fetching categories:", error);
     }
   };
 
   const fetchBlogPost = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/blog/post/${params.id}`, {
+      const response = await apiClient.get(`/api/blog/post/${params.id}`, {
         headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch blog post');
+
+      if (response.statusText.toLowerCase() !== "ok") {
+        throw new Error("Failed to fetch blog post");
       }
 
-      const data = await response.json();
       setFormData({
-        ...data.post,
-        date: new Date(data.post.date).toISOString().split('T')[0]
+        ...response.data.post,
+        date: new Date(response.data.post.date).toISOString().split("T")[0],
       });
-      if (data.post.image) {
-        setImagePreview(data.post.image);
+      if (response.data.post.image) {
+        setImagePreview(response.data.post.image);
       }
     } catch (error) {
-      console.error('Error fetching blog post:', error);
-      router.push('/admin/blogs');
+      console.error("Error fetching blog post:", error);
+      router.push("/admin/blogs");
     }
   }, [params.id]);
 
@@ -90,11 +99,15 @@ export default function EditBlogPost() {
     fetchBlogPost();
   }, [fetchBlogPost]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ 
-      ...prev, 
-      [name]: name === 'categoryId' ? parseInt(value) : value 
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "categoryId" ? parseInt(value) : value,
     }));
   };
 
@@ -105,27 +118,29 @@ export default function EditBlogPost() {
       reader.onloadend = () => {
         const base64String = reader.result as string;
         setImagePreview(base64String);
-        setFormData(prev => ({ ...prev, image: base64String }));
+        setFormData((prev) => ({ ...prev, image: base64String }));
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handlePublishToggle = () => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      published: !prev.published
+      published: !prev.published,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
-    
+
     try {
       // Validate required fields
       if (!formData.title || !formData.content || !formData.categoryId) {
-        alert('Please fill in all required fields (title, content, and category)');
+        alert(
+          "Please fill in all required fields (title, content, and category)"
+        );
         return;
       }
 
@@ -133,33 +148,38 @@ export default function EditBlogPost() {
       const dataToSend = {
         ...formData,
         categoryId: parseInt(String(formData.categoryId)),
-        image: formData.image || 'placeholder.jpg',
-        date: new Date(formData.date).toISOString()
+        image: formData.image || "placeholder.jpg",
+        date: new Date(formData.date).toISOString(),
       };
 
-      const response = await fetch(`http://localhost:8000/api/blog/post/${params.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('token'),
-        },
-        body: JSON.stringify(dataToSend),
-      });
+      const response = await apiClient.put(
+        `/api/blog/post/${params.id}`,
+        dataToSend,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
 
-      if (!response.ok) {
-        throw new Error('Failed to update blog post');
+      if (response.statusText.toLowerCase() !== "ok") {
+        throw new Error("Failed to update blog post");
       }
 
-      router.push('/admin/blogs');
+      router.push("/admin/blogs");
     } catch (error) {
-      console.error('Error updating blog post:', error);
-      alert(`Error updating blog post: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      console.error("Error updating blog post:", error);
+      alert(
+        `Error updating blog post: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
     } finally {
       setIsSaving(false);
     }
   };
 
-  const insertText = (before: string, after: string = '') => {
+  const insertText = (before: string, after: string = "") => {
     const textarea = contentRef.current;
     if (!textarea) return;
 
@@ -171,15 +191,12 @@ export default function EditBlogPost() {
     const afterText = text.substring(end);
 
     const newText = `${beforeText}${before}${selectedText}${after}${afterText}`;
-    setFormData(prev => ({ ...prev, content: newText }));
+    setFormData((prev) => ({ ...prev, content: newText }));
 
     // Reset cursor position
     setTimeout(() => {
       textarea.focus();
-      textarea.setSelectionRange(
-        start + before.length,
-        end + before.length
-      );
+      textarea.setSelectionRange(start + before.length, end + before.length);
     }, 0);
   };
 
@@ -193,8 +210,12 @@ export default function EditBlogPost() {
         >
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">Edit Blog Post</h1>
-              <p className="text-gray-400">Update your story with our enhanced markdown editor</p>
+              <h1 className="text-3xl font-bold text-white mb-2">
+                Edit Blog Post
+              </h1>
+              <p className="text-gray-400">
+                Update your story with our enhanced markdown editor
+              </p>
             </div>
             <div className="flex items-center gap-4">
               <button
@@ -202,7 +223,7 @@ export default function EditBlogPost() {
                 className="inline-flex items-center px-4 py-2 bg-[#2e3267] text-gray-300 rounded-lg hover:bg-[#363b7e] transition-colors"
               >
                 <Eye className="w-5 h-5 mr-2" />
-                {showPreview ? 'Edit' : 'Preview'}
+                {showPreview ? "Edit" : "Preview"}
               </button>
               <Link
                 href="/admin/blogs"
@@ -215,7 +236,9 @@ export default function EditBlogPost() {
                 onClick={handleSubmit}
                 disabled={isSaving}
                 className={`inline-flex items-center px-6 py-2 bg-blue-600 text-white rounded-lg transition-all transform hover:scale-105 ${
-                  isSaving ? 'opacity-75 cursor-not-allowed' : 'hover:bg-blue-700'
+                  isSaving
+                    ? "opacity-75 cursor-not-allowed"
+                    : "hover:bg-blue-700"
                 }`}
               >
                 {isSaving ? (
@@ -253,10 +276,12 @@ export default function EditBlogPost() {
                 />
               </div>
 
-              <div 
+              <div
                 onClick={() => fileInputRef.current?.click()}
                 className={`relative border-2 border-dashed rounded-lg p-6 cursor-pointer transition-all duration-300 ${
-                  imagePreview ? 'border-blue-500 hover:border-blue-400' : 'border-gray-600 hover:border-gray-500'
+                  imagePreview
+                    ? "border-blue-500 hover:border-blue-400"
+                    : "border-gray-600 hover:border-gray-500"
                 }`}
               >
                 <input
@@ -267,7 +292,7 @@ export default function EditBlogPost() {
                   className="hidden"
                 />
                 {imagePreview ? (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="relative aspect-video"
@@ -280,8 +305,8 @@ export default function EditBlogPost() {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        setImagePreview('');
-                        setFormData(prev => ({ ...prev, image: '' }));
+                        setImagePreview("");
+                        setFormData((prev) => ({ ...prev, image: "" }));
                       }}
                       className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
                     >
@@ -308,42 +333,42 @@ export default function EditBlogPost() {
               {!showPreview && (
                 <div className="flex items-center gap-2 p-2 border-b border-gray-700">
                   <button
-                    onClick={() => insertText('**', '**')}
+                    onClick={() => insertText("**", "**")}
                     className="p-2 text-gray-400 hover:bg-[#2e3267] rounded"
                     title="Bold"
                   >
                     <strong>B</strong>
                   </button>
                   <button
-                    onClick={() => insertText('*', '*')}
+                    onClick={() => insertText("*", "*")}
                     className="p-2 text-gray-400 hover:bg-[#2e3267] rounded"
                     title="Italic"
                   >
                     <em>I</em>
                   </button>
                   <button
-                    onClick={() => insertText('### ')}
+                    onClick={() => insertText("### ")}
                     className="p-2 text-gray-400 hover:bg-[#2e3267] rounded"
                     title="Heading"
                   >
                     H
                   </button>
                   <button
-                    onClick={() => insertText('- ')}
+                    onClick={() => insertText("- ")}
                     className="p-2 text-gray-400 hover:bg-[#2e3267] rounded"
                     title="List"
                   >
                     •
                   </button>
                   <button
-                    onClick={() => insertText('![Alt text](', ')')}
+                    onClick={() => insertText("![Alt text](", ")")}
                     className="p-2 text-gray-400 hover:bg-[#2e3267] rounded"
                     title="Image"
                   >
                     <ImageIcon className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={() => insertText('[', '](url)')}
+                    onClick={() => insertText("[", "](url)")}
                     className="p-2 text-gray-400 hover:bg-[#2e3267] rounded"
                     title="Link"
                   >
@@ -378,8 +403,10 @@ export default function EditBlogPost() {
             className="space-y-6"
           >
             <div className="bg-[#1a1f4b] rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-semibold text-white mb-4">Post Settings</h2>
-              
+              <h2 className="text-xl font-semibold text-white mb-4">
+                Post Settings
+              </h2>
+
               <div className="space-y-4">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="flex-1">
@@ -390,8 +417,8 @@ export default function EditBlogPost() {
                       className="appearance-none w-full px-4 py-2.5 rounded-lg bg-[#24294d] text-white border border-gray-700 hover:border-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200 text-sm font-medium cursor-pointer"
                     >
                       {categories.map((category) => (
-                        <option 
-                          key={category.id} 
+                        <option
+                          key={category.id}
                           value={category.id}
                           className="bg-[#24294d] text-white py-2 hover:bg-[#2e3267]"
                         >
@@ -400,8 +427,18 @@ export default function EditBlogPost() {
                       ))}
                     </select>
                     <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      <svg
+                        className="w-4 h-4 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M19 9l-7 7-7-7"
+                        />
                       </svg>
                     </div>
                   </div>
@@ -411,8 +448,12 @@ export default function EditBlogPost() {
                   <div className="flex items-center gap-3">
                     <Calendar className="w-5 h-5 text-gray-400" />
                     <div>
-                      <p className="text-sm font-medium text-white">Publication Date</p>
-                      <p className="text-xs text-gray-400">When to publish this post</p>
+                      <p className="text-sm font-medium text-white">
+                        Publication Date
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        When to publish this post
+                      </p>
                     </div>
                   </div>
                   <input
@@ -428,8 +469,12 @@ export default function EditBlogPost() {
                   <div className="flex items-center gap-3">
                     <Layout className="w-5 h-5 text-gray-400" />
                     <div>
-                      <p className="text-sm font-medium text-white">Publication Status</p>
-                      <p className="text-xs text-gray-400">Control post visibility</p>
+                      <p className="text-sm font-medium text-white">
+                        Publication Status
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        Control post visibility
+                      </p>
                     </div>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
@@ -446,7 +491,9 @@ export default function EditBlogPost() {
             </div>
 
             <div className="bg-[#1a1f4b] rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-semibold text-white mb-4">Writing Tips</h2>
+              <h2 className="text-xl font-semibold text-white mb-4">
+                Writing Tips
+              </h2>
               <ul className="space-y-3 text-gray-400">
                 <li className="flex items-start gap-2">
                   <span className="text-blue-400">•</span>

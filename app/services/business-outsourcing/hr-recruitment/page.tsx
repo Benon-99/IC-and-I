@@ -99,12 +99,12 @@ export default function HRRecruitmentPage() {
           </h2>
 
           <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
-            At IC&I, we understand that the success of your organization hinges
+            {`At IC&I, we understand that the success of your organization hinges
             on the quality of your workforce. That's why we offer comprehensive
             HR and recruitment management services that go beyond simply filling
             positions. What we offer is designed to attract, assess, and deploy
             the right talent, ensuring your organization is equipped with the
-            expertise it needs to thrive.
+            expertise it needs to thrive.`}
           </p>
         </motion.div>
 
