@@ -2,6 +2,7 @@
 import React from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { apiClient } from "@/lib/api";
 
 interface MessageData {
   id: number;
@@ -14,7 +15,7 @@ interface MessageData {
 
 // Fetch function
 const fetchMessages = async (): Promise<MessageData[]> => {
-  const { data } = await axios.get("http://localhost:3001/message/messages"); // Replace with your API endpoint
+  const { data } = await apiClient.get("/message/messages"); // Replace with your API endpoint
   return data;
 };
 

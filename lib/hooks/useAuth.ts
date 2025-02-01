@@ -1,5 +1,6 @@
-import { create } from 'zustand';
-import axios from 'axios';
+import { create } from "zustand";
+import axios from "axios";
+import { apiClient } from "../api";
 
 interface User {
   id: string;
@@ -17,7 +18,7 @@ interface AuthState {
   checkAuth: () => Promise<void>;
 }
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL = "/api";
 
 export const useAuth = create<AuthState>((set) => ({
   user: null,
@@ -26,35 +27,25 @@ export const useAuth = create<AuthState>((set) => ({
 
   login: async (email: string, password: string) => {
     try {
-      const response = await axios.post(
-        `${API_URL}/auth/login`,
-        { email, password },
-        {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      const response = await apiClient.post(`${API_URL}/auth/login`, {
+        email,
+        password,
+      });
 
-      if (response.data.status === 'success' && response.data.user) {
+      if (response.data.status === "success" && response.data.user) {
         set({ user: response.data.user, isAuthenticated: true });
         return true;
       }
       return false;
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
       return false;
     }
   },
 
   logout: async () => {
     try {
-      await axios.post(
-        `${API_URL}/auth/logout`,
-        {},
-        { withCredentials: true }
-      );
+      await apiClient.post(`${API_URL}/auth/logout`);
     } finally {
       set({ user: null, isAuthenticated: false });
     }
@@ -63,29 +54,27 @@ export const useAuth = create<AuthState>((set) => ({
   checkAuth: async () => {
     try {
       set({ isLoading: true });
-      const response = await axios.get(`${API_URL}/auth/check`, {
-        withCredentials: true
-      });
+      const response = await apiClient.get(`${API_URL}/auth/check`);
 
-      if (response.data.status === 'success' && response.data.user) {
+      if (response.data.status === "success" && response.data.user) {
         set({
           user: response.data.user,
           isAuthenticated: true,
-          isLoading: false
+          isLoading: false,
         });
       } else {
         set({
           user: null,
           isAuthenticated: false,
-          isLoading: false
+          isLoading: false,
         });
       }
     } catch (error) {
       set({
         user: null,
         isAuthenticated: false,
-        isLoading: false
+        isLoading: false,
       });
     }
-  }
+  },
 }));

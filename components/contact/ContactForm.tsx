@@ -1,13 +1,14 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 import styled from "styled-components";
 import * as Yup from "yup";
-import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
-import { CheckCircle2 } from 'lucide-react';
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
+import { apiClient } from "@/lib/api";
 
 // Define form data type
 interface FormData {
@@ -50,8 +51,8 @@ const ContactForm: React.FC = () => {
   const onSubmit = async (formData: FormData) => {
     setIsSending(true);
     try {
-      const response = await axios.post("http://localhost:8000/api/email/send-email", formData);
-      
+      const response = await apiClient.post("/api/email/send-email", formData);
+
       if (response.status === 200) {
         setShowSuccess(true);
         reset();
@@ -63,7 +64,7 @@ const ContactForm: React.FC = () => {
         throw new Error(response.data?.message || "Failed to send message");
       }
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
     } finally {
       setIsSending(false);
     }
@@ -83,10 +84,12 @@ const ContactForm: React.FC = () => {
           </SuccessNotification>
         )}
       </AnimatePresence>
-      <FormWrapper onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit(onSubmit)(e);
-      }}>
+      <FormWrapper
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(onSubmit)(e);
+        }}
+      >
         <Title>Contact Us</Title>
         <Description>
           We would love to hear from you! Fill out the form below.
@@ -99,9 +102,7 @@ const ContactForm: React.FC = () => {
             {...register("name")}
             $isError={!!errors.name}
           />
-          {errors.name && (
-            <ErrorMessage>{errors.name?.message}</ErrorMessage>
-          )}
+          {errors.name && <ErrorMessage>{errors.name?.message}</ErrorMessage>}
         </InputWrapper>
 
         <InputWrapper>
@@ -111,9 +112,7 @@ const ContactForm: React.FC = () => {
             {...register("email")}
             $isError={!!errors.email}
           />
-          {errors.email && (
-            <ErrorMessage>{errors.email?.message}</ErrorMessage>
-          )}
+          {errors.email && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
         </InputWrapper>
 
         <InputWrapper>
@@ -140,7 +139,7 @@ const ContactForm: React.FC = () => {
         </InputWrapper>
 
         <SubmitButton type="submit" disabled={isSending}>
-          {isSending ? 'Sending...' : 'Send Message'}
+          {isSending ? "Sending..." : "Send Message"}
         </SubmitButton>
       </FormWrapper>
     </Container>
@@ -266,6 +265,7 @@ const SuccessNotification = styled(motion.div)`
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   z-index: 1000;
 `;

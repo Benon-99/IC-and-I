@@ -77,7 +77,7 @@ export default function NewServicePage({
   const { data: service, error } = useQuery({
     queryKey: ["service", searchParams.id],
     queryFn: async () => {
-      const response = await axios.get(`/services/id/${searchParams.id}`);
+      const response = await apiClient.get(`/services/id/${searchParams.id}`);
       if (!response.status) throw new Error("Failed to fetch service");
       console.log("serviceById :", response.data.service);
       if (response.status) {

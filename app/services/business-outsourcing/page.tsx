@@ -16,14 +16,15 @@ import { useQuery } from "@tanstack/react-query";
 import { LoadableContext } from "next/dist/shared/lib/loadable-context.shared-runtime";
 import { useContext, useEffect } from "react";
 import { LoadingContext } from "@/components/providers/LoadingProvider";
+import { apiClient } from "@/lib/api";
 
 const fetchingServices = async () => {
-  const response = await axios("http://localhost:3001/admin/services/");
+  const response = await apiClient.get("/admin/services/");
   console.log("API Response:", response.data.response); // Check structure
   return response.data.response; // This should be an array
 };
 
-const icons = [<RefreshCcwDot key={123456789} />, <Shield key={987654321}/>];
+const icons = [<RefreshCcwDot key={123456789} />, <Shield key={987654321} />];
 
 export default function BusinessOutsourcingPage() {
   const { setIsLoading } = useContext(LoadingContext)!;
@@ -120,7 +121,7 @@ export default function BusinessOutsourcingPage() {
           </h2>
 
           <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
-           {` We are the Syrian market leader with the largest market share in
+            {` We are the Syrian market leader with the largest market share in
             providing full recruitment services in UN agencies, NPO's and NGO's.
             Our comprehensive HR outsourcing solutions are designed to
             streamline your operations and drive organizational success through
