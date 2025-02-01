@@ -61,7 +61,7 @@ export default function About() {
     isLoading,
     isError,
     error,
-  } = useQuery<{ about: { aboutUs: AboutContent }[] }>({
+  } = useQuery<{ home: { aboutUs: AboutContent }[] }>({
     queryKey: ["about"],
     queryFn: async () => {
       const response = await apiClient.get("/home");
