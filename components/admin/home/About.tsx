@@ -70,8 +70,8 @@ export default function About() {
   });
 
   useEffect(() => {
-    if (aboutData?.about?.[0]) {
-      const { aboutUs } = aboutData.about[0];
+    if (aboutData?.home?.[0]) {
+      const { aboutUs } = aboutData.home[0];
       setFormData({
         title: aboutUs.title || "",
         subtitle: aboutUs.subtitle || "",

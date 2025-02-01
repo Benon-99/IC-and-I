@@ -84,7 +84,7 @@ export default function ServicesPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["services"],
     queryFn: async () => {
-      const response = await apiClient.get("/services/");
+      const response = await apiClient.get("/services");
       return response.data.services;
     },
   });

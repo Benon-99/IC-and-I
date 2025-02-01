@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import ServiceCard from "./services/ServiceCard";
 import { apiClient } from "@/lib/api";
+import axios from "axios";
+import { useEffect } from "react";
 
 interface Service {
   categoryId: number;
@@ -35,10 +37,12 @@ const variants = {
 };
 
 export default function Services() {
-  const { data, isLoading } = useQuery({
+  const { data: services, isLoading } = useQuery({
     queryKey: ["services"],
     queryFn: async () => {
-      const response = await apiClient.get("/services/");
+      const response = await apiClient.get("/services");
+      console.log(response);
+
       return response.data.services;
     },
   });
@@ -76,16 +80,17 @@ export default function Services() {
           variants={variants.container}
           className="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
-          {data?.map((service: Service) => (
-            <ServiceCard
-              key={service.id}
-              service={{
-                title: service.title,
-                description: service.description,
-                link: `/services/${service.servicelink}`,
-              }}
-            />
-          ))}
+          {services &&
+            services.map((service: Service) => (
+              <ServiceCard
+                key={service.id}
+                service={{
+                  title: service.title,
+                  description: service.description,
+                  link: `/services/${service.servicelink}`,
+                }}
+              />
+            ))}
         </motion.div>
       </div>
     </section>

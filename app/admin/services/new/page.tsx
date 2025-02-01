@@ -112,16 +112,20 @@ export default function NewServicePage({
     const fetchService = async () => {
       if (searchParams.id) {
         try {
-          const response = await fetch(`/api/services/${searchParams.id}`);
-          if (response.ok) {
-            const service = await response.json();
+          const response = await apiClient.get(
+            `/api/services/${searchParams.id}`
+          );
+          if (response.statusText.toLowerCase() == "ok") {
+            const service = await response.data;
             setFormData({
               ...service,
-              category: categories.find(c => c.id === service.category.id) || categories[0]
+              category:
+                categories.find((c: any) => c.id === service.category.id) ||
+                categories[0],
             });
           }
         } catch (error) {
-          console.error('Error fetching service:', error);
+          console.error("Error fetching service:", error);
         }
       }
     };
@@ -143,25 +147,23 @@ export default function NewServicePage({
     setIsSubmitting(true);
 
     try {
-      const url = searchParams.id ? `/api/services/${searchParams.id}` : '/api/services';
-      const method = searchParams.id ? 'PUT' : 'POST';
+      const url = searchParams.id
+        ? `/services/${searchParams.id}`
+        : "/services/";
+      const method = searchParams.id ? "put" : "post";
 
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+      const response = await apiClient[method](url, {
+        formData,
       });
 
-      if (response.ok) {
-        router.push('/admin/services');
+      if (response.statusText.toLowerCase() == "ok") {
+        router.push("/admin/services");
         router.refresh();
       } else {
-        throw new Error('Failed to save service');
+        throw new Error("Failed to save service");
       }
     } catch (error) {
-      console.error('Error saving service:', error);
+      console.error("Error saving service:", error);
     } finally {
       setIsSubmitting(false);
     }
