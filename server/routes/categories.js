@@ -1,30 +1,17 @@
 import express from 'express';
 import { 
-    createCategoryController, 
-    updateCategoryController, 
-    deleteCategoryController, 
-    getCategoryController, 
-    getAllCategoriesController,
-    getCategoryByIdController 
-} from '../controllers/categoriesController.js';
-import { authenticateToken } from '../middleware/auth.js';
+    getCategories, 
+    createCategory, 
+    updateCategory, 
+    deleteCategory 
+} from '../controllers/adminControllers/categoryController.js';
 
 const router = express.Router();
 
-// Debug middleware
-router.use((req, res, next) => {
-    console.log(`Categories Route - ${req.method} ${req.originalUrl}`);
-    next();
-});
-
-// Public routes
-router.get('/', getAllCategoriesController);
-router.get('/category/:category', getCategoryController);
-router.get('/id/:id', getCategoryByIdController);
-
-// Protected routes
-router.post('/', createCategoryController);
-router.put('/category/:id', updateCategoryController);
-router.delete('/category/:id' ,deleteCategoryController);
+// Categories routes
+router.get('/', getCategories);
+router.post('/create', createCategory);
+router.put('/update', updateCategory);
+router.delete('/delete', deleteCategory);
 
 export default router;

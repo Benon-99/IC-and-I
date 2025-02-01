@@ -20,6 +20,7 @@ class ServiceRepository {
           servicelink: serviceDTO.servicelink,
           overviewtitle: serviceDTO.overviewtitle,
           overviewcontent: serviceDTO.overviewcontent,
+          status: serviceDTO.status,
           categoryId: serviceDTO.categoryId,
         },
       });

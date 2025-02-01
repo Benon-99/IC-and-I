@@ -2,9 +2,6 @@ import prisma from "../prisma/client.js";
 import { AboutRepository } from "../repositories/about-repo.js";
 import { AboutDTO } from "../DTOs/aboutDTO.js";
 
-import prisma from "../prisma/client.js"
-import { AboutRepository } from "../repositories/about-repo.js";
-import { AboutDTO } from "../DTOs/aboutDTO.js";
 
 export const getHome = async (req, res) => {
     try {

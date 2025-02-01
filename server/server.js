@@ -10,7 +10,7 @@ import emailRouter from "./routes/email.js";
 import adminRouter from "./routes/admin.js";
 import homeRouter from "./routes/home.js";
 import categoriesRouter from "./routes/categories.js";
-import servicesRouter from "./routes/services.js";
+// import servicesRouter from "./routes/services.js";
 import AdminFeatureRouter from "./routes/adminRoutes/adminPanel.js";
 import aboutRouter from "./routes/about.js";
 
@@ -82,7 +82,7 @@ app.use("/api/email", emailRouter);
 app.use("/api/admin", adminRouter);
 app.use("/home", homeRouter);
 app.use("/categories", categoriesRouter);
-app.use("/services", servicesRouter);
+// app.use("/services", servicesRouter);
 app.use("/about", aboutRouter);
 app.use(express.static("uploads"));
 

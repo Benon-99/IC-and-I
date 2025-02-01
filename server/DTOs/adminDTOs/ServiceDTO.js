@@ -8,6 +8,7 @@ export class ServiceDTO {
     overviewcontent,
     features,
     categoryId,
+    status,
   }) {
     this.id = id;
     this.title = title;
@@ -17,5 +18,6 @@ export class ServiceDTO {
     this.overviewcontent = overviewcontent;
     this.features = features;
     this.categoryId = categoryId;
+    this.status = status;
   }
 }

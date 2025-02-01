@@ -18,7 +18,7 @@ export default function Features() {
     queryFn: async () => {
       const response = await fetch("http://localhost:8000/home");
       const data = await response.json();
-      return data.about[0].advantages || {};
+      return data.home[0]; // Return the entire home object
     },
   });
 
@@ -51,7 +51,7 @@ export default function Features() {
     );
   }
 
-  if (isError || !homeData.features || homeData.features.length === 0) {
+  if (isError || !homeData || !homeData.features || homeData.features.length === 0) {
     return (
       <div className="text-center py-12">
         <h3 className="text-xl font-semibold text-gray-500 mb-2">No Advantages Available</h3>

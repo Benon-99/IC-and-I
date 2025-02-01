@@ -76,19 +76,21 @@ model Categories {
   offeringsTitle  String    // "Business Outsourcing Solutions"
   offeringsContent String   // Description of offerings
   services        Services[]  // Relation to Services
+  status          Boolean   @default(false)
 }
 
 model Services {
   id              Int        @id @default(autoincrement())
   title           String     @unique  
-  description     String         
+  description     String        
   servicelink     String     @unique
-  overviewtitle   String         
-  overviewcontent String   
-  features        Feature[]  // Relation to Features
+  overviewtitle   String        
+  overviewcontent String  
+  features        Feature[]
   category        Categories? @relation(fields: [categoryId], references: [id])
-  categoryId      Int?
-}
+  categoryId      Int?     
+  status          Boolean   @default(false)
+} 
 
 model Feature {
   id          Int      @id @default(autoincrement())
