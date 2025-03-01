@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Save, X, Image as ImageIcon, Plus, Eye, Calendar, Layout, Tag } from 'lucide-react';
 import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 
 interface Category {
@@ -12,6 +13,7 @@ interface Category {
 }
 
 interface BlogPost {
+  id: number;
   title: string;
   content: string;
   categoryId: number;
@@ -19,18 +21,23 @@ interface BlogPost {
   published: boolean;
   authorId: number;
   date: string;
+  slug: string;
 }
 
-export default function NewBlogPost() {
+export default function EditBlogPost() {
+  const params = useParams();
+  const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
   const [formData, setFormData] = useState<BlogPost>({
+    id: 0,
     title: '',
     content: '',
-    categoryId: 1, // Technology category
+    categoryId: 1,
     image: 'placeholder.jpg',
     published: false,
     authorId: 1,
     date: new Date().toISOString(),
+    slug: ''
   });
   const [imagePreview, setImagePreview] = useState<string>('');
   const [showPreview, setShowPreview] = useState(false);
@@ -40,7 +47,7 @@ export default function NewBlogPost() {
 
   useEffect(() => {
     fetchCategories();
-    fetchCurrentUser();
+    fetchBlogPost();
   }, []);
 
   const fetchCategories = async () => {
@@ -48,32 +55,40 @@ export default function NewBlogPost() {
       const response = await fetch('http://localhost:8000/api/blog/categories');
       const data = await response.json();
       setCategories(data.categories || []);
-      if (data.categories?.length > 0) {
-        setFormData(prev => ({ ...prev, categoryId: data.categories[0].id }));
-      }
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
   };
 
-  const fetchCurrentUser = async () => {
+  const fetchBlogPost = useCallback(async () => {
     try {
-      const token = localStorage.getItem('token'); // Get token from storage
-      const response = await fetch('http://localhost:8000/api/auth/me', {
+      const response = await fetch(`http://localhost:8000/api/blog/post/${params.id}`, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        },
       });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch blog post');
+      }
+
       const data = await response.json();
-      if (data.user?.id) {
-        setFormData(prev => ({ ...prev, authorId: data.user.id }));
-      } else {
-        console.error('No user found - please log in');
+      setFormData({
+        ...data.post,
+        date: new Date(data.post.date).toISOString().split('T')[0]
+      });
+      if (data.post.image) {
+        setImagePreview(data.post.image);
       }
     } catch (error) {
-      console.error('Error fetching user:', error);
+      console.error('Error fetching blog post:', error);
+      router.push('/admin/blogs');
     }
-  };
+  }, [params.id]);
+
+  useEffect(() => {
+    fetchBlogPost();
+  }, [fetchBlogPost]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -122,40 +137,23 @@ export default function NewBlogPost() {
         date: new Date(formData.date).toISOString()
       };
 
-      console.log('Submitting blog post with data:', dataToSend);
-      
-      const response = await fetch('http://localhost:8000/api/blog', {
-        method: 'POST',
+      const response = await fetch(`http://localhost:8000/api/blog/post/${params.id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
         },
-        credentials: 'include',
         body: JSON.stringify(dataToSend),
       });
-      
-      let responseData;
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.indexOf("application/json") !== -1) {
-        responseData = await response.json();
-      } else {
-        const text = await response.text();
-        responseData = { message: text };
+
+      if (!response.ok) {
+        throw new Error('Failed to update blog post');
       }
 
-      console.log('Response status:', response.status);
-      console.log('Response data:', responseData);
-      
-      if (response.ok) {
-        console.log('Blog post created successfully');
-        window.location.href = '/admin/blogs';
-      } else {
-        const errorMessage = responseData.message || 'Unknown error occurred';
-        console.error('Failed to create blog post:', errorMessage);
-        alert(`Failed to create blog post: ${errorMessage}`);
-      }
+      router.push('/admin/blogs');
     } catch (error) {
-      console.error('Error creating blog post:', error);
-      alert(`Error creating blog post: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      console.error('Error updating blog post:', error);
+      alert(`Error updating blog post: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsSaving(false);
     }
@@ -195,8 +193,8 @@ export default function NewBlogPost() {
         >
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">Create New Blog Post</h1>
-              <p className="text-gray-400">Craft your story with our enhanced markdown editor</p>
+              <h1 className="text-3xl font-bold text-white mb-2">Edit Blog Post</h1>
+              <p className="text-gray-400">Update your story with our enhanced markdown editor</p>
             </div>
             <div className="flex items-center gap-4">
               <button
@@ -228,7 +226,7 @@ export default function NewBlogPost() {
                 ) : (
                   <>
                     <Save className="w-5 h-5 mr-2" />
-                    Publish Post
+                    Update Post
                   </>
                 )}
               </button>
@@ -383,37 +381,13 @@ export default function NewBlogPost() {
               <h2 className="text-xl font-semibold text-white mb-4">Post Settings</h2>
               
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-[#2e3267] rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Calendar className="w-5 h-5 text-gray-400" />
-                    <div>
-                      <p className="text-sm font-medium text-white">Publication Date</p>
-                      <p className="text-xs text-gray-400">When to publish this post</p>
-                    </div>
-                  </div>
-                  <input
-                    type="datetime-local"
-                    name="date"
-                    value={formData.date.slice(0, 16)}
-                    onChange={handleChange}
-                    className="px-3 py-2 bg-[#1a1f4b] border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-[#2e3267] rounded-lg mb-4">
-                  <div className="flex items-center gap-3">
-                    <Tag className="w-5 h-5 text-gray-400" />
-                    <div>
-                      <h3 className="text-sm font-medium text-gray-200">Category</h3>
-                      <p className="text-xs text-gray-400">Select post category</p>
-                    </div>
-                  </div>
-                  <div className="relative">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="flex-1">
                     <select
                       name="categoryId"
                       value={formData.categoryId}
                       onChange={handleChange}
-                      className="appearance-none w-[180px] px-4 py-2.5 rounded-lg bg-[#24294d] text-white border border-gray-700 hover:border-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200 text-sm font-medium cursor-pointer"
+                      className="appearance-none w-full px-4 py-2.5 rounded-lg bg-[#24294d] text-white border border-gray-700 hover:border-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors duration-200 text-sm font-medium cursor-pointer"
                     >
                       {categories.map((category) => (
                         <option 
@@ -431,6 +405,23 @@ export default function NewBlogPost() {
                       </svg>
                     </div>
                   </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-[#2e3267] rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <Calendar className="w-5 h-5 text-gray-400" />
+                    <div>
+                      <p className="text-sm font-medium text-white">Publication Date</p>
+                      <p className="text-xs text-gray-400">When to publish this post</p>
+                    </div>
+                  </div>
+                  <input
+                    type="datetime-local"
+                    name="date"
+                    value={formData.date.slice(0, 16)}
+                    onChange={handleChange}
+                    className="px-3 py-2 bg-[#1a1f4b] border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
                 </div>
 
                 <div className="flex items-center justify-between p-4 bg-[#2e3267] rounded-lg">
