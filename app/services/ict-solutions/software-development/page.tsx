@@ -86,7 +86,7 @@ export default function SoftwareDevelopmentPage() {
             Overview
           </motion.span>
           
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#00B4D8] to-[#4A9BE4] bg-clip-text text-transparent mb-8">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent mb-8">
             Enterprise Software Solutions
           </h2>
           <p className="text-lg text-[#111240]/70 leading-relaxed text-justify">
@@ -115,7 +115,7 @@ export default function SoftwareDevelopmentPage() {
             </motion.span>
             <motion.h2
               variants={itemVariants}
-              className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#4A9BE4] to-[#8590EA] bg-clip-text text-transparent"
+              className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#002060#002060#8590EA] bg-clip-text text-transparent"
             >
               Development Solutions & Services
             </motion.h2>
@@ -144,7 +144,7 @@ export default function SoftwareDevelopmentPage() {
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
 
-                  <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
+                  <h3 className="text-xl font-semibold text-[#002060] mb-4">{service.title}</h3>
                   <p className="text-[#111240]/60">{service.description}</p>
                 </div>
               </motion.div>

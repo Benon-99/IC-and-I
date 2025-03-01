@@ -30,7 +30,7 @@ export default function ServiceHero({ title, description }: ServiceHeroProps) {
             What We Offer
           </motion.span>
           
-          <h1 className="text-6xl font-bold bg-gradient-to-r from-[#3785CC] via-[#4A9BE4] to-[#5B8AF0] bg-clip-text text-transparent mb-6 leading-normal">
+          <h1 className="text-6xl font-bold bg-gradient-to-r from-[#fff] via-[#fff] to-[#fff] bg-clip-text text-transparent mb-6 leading-normal">
             {title}
           </h1>
           
