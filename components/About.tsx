@@ -14,8 +14,8 @@ export default function About() {
     },
     { 
       icon: Target, 
-      title: "Mission-Driven", 
-      text: "Preferred strategic partner for consultancy and services",
+      title: "Member in UN Global Compact", 
+      text: "ICI affirms every year its support of Ten principles of the UN Global Compact in the areas of Human Rights, Labour, Environment, and Anti corruption.",
       color: "from-purple-500 to-pink-500"
     },
     { 
@@ -27,9 +27,9 @@ export default function About() {
   ];
 
   const stats = [
-    { number: "15+", label: "Years Experience" },
+    { number: "20+", label: "Years Experience" },
     { number: "200+", label: "Projects Completed" },
-    { number: "50+", label: "Expert Team Members" },
+    { number: "25+", label: "Expert Team Members" },
     { number: "98%", label: "Client Satisfaction" }
   ];
 
