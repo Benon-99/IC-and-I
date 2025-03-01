@@ -47,6 +47,63 @@ app.use(express.json()); // Middleware to parse JSON requests
 // Mount message routes
 app.use('/message', messageRoutes);
 
+// Email sending endpoint
+app.post('/api/send-email', async (req, res) => {
+  try {
+    const { name, email, subject, message } = req.body;
+    
+    console.log('Received contact form submission:', { name, email, subject });
+    
+    // Pass all fields including subject to the createSubmission function
+    await createSubmission({ name, email, message, subject });
+    
+    // Configure email transporter
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+    
+    console.log('Email transporter configured');
+    
+    // Email content
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER, // Send to ourselves for testing
+      subject: `Contact Form: ${subject || "New Message"}`,
+      text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+      html: `
+        <h3>New contact form submission</h3>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Subject:</strong> ${subject || "Not provided"}</p>
+        <p><strong>Message:</strong> ${message}</p>
+      `
+    };
+    
+    console.log('Attempting to send email...');
+    
+    // Send email
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully:', info);
+    
+    res.status(200).json({ success: true, message: "Email sent successfully" });
+  } catch (error) {
+    console.error('Error sending email:', {
+      message: error.message,
+      name: error.name,
+      code: error.code,
+      response: error.response,
+      stack: error.stack
+    });
+    res.status(500).json({ success: false, message: "Failed to send email: " + error.message });
+  }
+});
+
 // Start the server
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

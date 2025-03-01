@@ -18,6 +18,7 @@ model Submission {
   id         Int      @id @default(autoincrement()) // Auto-increment primary key
   name       String   // Name of the submitter
   email      String   // Email of the submitter
+  subject    String?  // Subject line (optional)
   message    String   @db.Text // Message content
   created_at DateTime @default(now()) // Auto-filled timestamp for creation
 }
@@ -30,3 +31,4 @@ model User {
   role       String   @default("user")
   created_at DateTime @default(now())
 }
+

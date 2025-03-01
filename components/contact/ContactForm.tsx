@@ -1,8 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import * as Yup from "yup";
 
 // Define form data type
@@ -14,6 +14,16 @@ interface FormData {
 }
 
 const ContactForm: React.FC = () => {
+  const [notification, setNotification] = useState<{
+    visible: boolean;
+    type: "success" | "error";
+    message: string;
+  }>({
+    visible: false,
+    type: "success",
+    message: "",
+  });
+
   const validationSchema = Yup.object({
     name: Yup.string()
       .min(2, "Name must be at least 2 characters")
@@ -43,16 +53,58 @@ const ContactForm: React.FC = () => {
     try {
       // Send data to backend
       await axios.post("http://localhost:3001/api/send-email", data);
-      // alert("Email sent successfully!");
+      
+      // Show success notification
+      setNotification({
+        visible: true,
+        type: "success",
+        message: "Message sent successfully! We'll get back to you soon.",
+      });
+      
+      // Hide notification after 5 seconds
+      setTimeout(() => {
+        setNotification((prev) => ({ ...prev, visible: false }));
+      }, 5000);
+      
       reset();
     } catch (error) {
       console.error("Error sending email:", error);
-      alert("Failed to send the email. Please try again.");
+      
+      // Show error notification
+      setNotification({
+        visible: true,
+        type: "error",
+        message: "Failed to send the message. Please try again later.",
+      });
+      
+      // Hide notification after 5 seconds
+      setTimeout(() => {
+        setNotification((prev) => ({ ...prev, visible: false }));
+      }, 5000);
     }
   };
 
   return (
     <Container>
+      {notification.visible && (
+        <NotificationWrapper type={notification.type}>
+          <NotificationIcon type={notification.type}>
+            {notification.type === "success" ? "✓" : "✕"}
+          </NotificationIcon>
+          <NotificationContent>
+            <NotificationTitle>
+              {notification.type === "success" ? "Success!" : "Error!"}
+            </NotificationTitle>
+            <NotificationMessage>{notification.message}</NotificationMessage>
+          </NotificationContent>
+          <CloseButton 
+            onClick={() => setNotification((prev) => ({ ...prev, visible: false }))}
+          >
+            ×
+          </CloseButton>
+        </NotificationWrapper>
+      )}
+
       <FormWrapper onSubmit={handleSubmit(onSubmit)}>
         <Title>Contact Us</Title>
         <Description>
@@ -107,6 +159,78 @@ const ContactForm: React.FC = () => {
 };
 
 export default ContactForm;
+
+// Animation for notification
+const slideIn = keyframes`
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
+
+// Notification Styles
+const NotificationWrapper = styled.div<{ type: "success" | "error" }>`
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: ${({ type }) => (type === "success" ? "#ecfdf5" : "#fef2f2")};
+  border-left: 4px solid ${({ type }) => (type === "success" ? "#10b981" : "#ef4444")};
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 320px;
+  z-index: 1000;
+  animation: ${slideIn} 0.3s ease-out forwards;
+`;
+
+const NotificationIcon = styled.div<{ type: "success" | "error" }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: ${({ type }) => (type === "success" ? "#10b981" : "#ef4444")};
+  color: white;
+  font-weight: bold;
+  margin-right: 12px;
+`;
+
+const NotificationContent = styled.div`
+  flex: 1;
+`;
+
+const NotificationTitle = styled.h4`
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+`;
+
+const NotificationMessage = styled.p`
+  margin: 0;
+  font-size: 14px;
+  color: #4b5563;
+`;
+
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 8px;
+  
+  &:hover {
+    color: #6b7280;
+  }
+`;
 
 // Styled-components for design (same as before)
 const Container = styled.div`
