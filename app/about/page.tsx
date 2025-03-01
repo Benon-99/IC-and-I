@@ -125,7 +125,7 @@ export default function AboutPage() {
                 <div className="absolute inset-0 bg-gradient-to-r from-[#3785CC] to-[#4A9BE4] rounded-2xl blur-2xl group-hover:blur-3xl transition-all duration-500 opacity-20"></div>
                 <div className="relative rounded-2xl overflow-hidden">
                   <Image 
-                    src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80"
+                    src="/about.webp"
                     alt="IC&I Office"
                     width={800}
                     height={600}

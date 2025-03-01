@@ -81,7 +81,7 @@ export default function Features() {
           </motion.span>
           <motion.h2
             variants={itemVariants}
-            className="text-5xl font-bold mb-6 bg-gradient-to-r from-[#111240] to-[#111240]/80 bg-clip-text text-transparent"
+            className="text-5xl font-bold mb-6 pb-6 bg-gradient-to-r from-[#002060] to-[#002060]/80 bg-clip-text text-transparent"
           >
             Why Choose IC&I?
           </motion.h2>
@@ -109,7 +109,7 @@ export default function Features() {
                   <div className={`p-4 rounded-xl bg-gradient-to-r ${feature.gradient} mx-auto w-16 h-16 flex items-center justify-center mb-6 transform group-hover:scale-110 transition-transform duration-300`}>
                     <feature.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold mb-4 text-[#111240]">{feature.title}</h3>
+                  <h3 className="text-xl font-bold mb-4 text-[#002060]">{feature.title}</h3>
                   <p className="text-[#111240]/60 mb-6">{feature.description}</p>
                   {/* <div className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] group/link">
                     <span className="mr-2">Learn More</span>

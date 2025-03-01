@@ -74,7 +74,7 @@ export default function About() {
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur-2xl group-hover:blur-3xl transition-all duration-500 opacity-75"></div>
               <img
-                src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80"
+                src="/about.webp"
                 alt="IC&I Office"
                 className="relative rounded-2xl w-full aspect-[4/3] object-cover transform group-hover:scale-[1.02] transition-transform duration-500"
               />
@@ -89,7 +89,7 @@ export default function About() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="p-6 rounded-xl bg-transparent backdrop-blur-sm border border-[#B5C6F4] transition-colors duration-300"
                 >
-                  <div className="text-3xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text mb-2 text-[#111240]">
+                  <div className="text-3xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text mb-2 text-[#002060]">
                     {stat.number}
                   </div>
                   <div className="text-[#111240] text-sm">
@@ -134,7 +134,7 @@ export default function About() {
                       <feature.icon className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-[#111240] mb-2">{feature.title}</h3>
+                      <h3 className="text-xl font-semibold text-[#002060] mb-2">{feature.title}</h3>
                       <p className="text-[#111240]">{feature.text}</p>
                     </div>
                   </div>

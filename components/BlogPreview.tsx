@@ -74,7 +74,7 @@ export default function BlogPreview() {
           </motion.span>
           <motion.h2
             variants={itemVariants}
-            className="text-5xl font-bold mb-6 bg-gradient-to-r from-[#111240] to-[#111240]/80 bg-clip-text text-transparent leading-normal"
+            className="text-5xl font-bold mb-6 bg-gradient-to-r from-[#002060] to-[#002060]/80 bg-clip-text text-transparent leading-normal"
           >
             Latest Insights
           </motion.h2>
@@ -112,7 +112,7 @@ export default function BlogPreview() {
                       <Calendar className="w-4 h-4 mr-2" />
                       <span className="text-sm leading-normal">{blog.date}</span>
                     </div>
-                    <h3 className="text-xl font-semibold text-[#111240] mb-4 group-hover:text-[#111240]/90 transition-colors duration-300 leading-normal">
+                    <h3 className="text-xl font-semibold text-[#002060] mb-4 group-hover:text-[#111240]/90 transition-colors duration-300 leading-normal">
                       {blog.title}
                     </h3>
                     <p className="text-[#111240]/60 mb-6 line-clamp-2 leading-relaxed">

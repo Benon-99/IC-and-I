@@ -37,7 +37,7 @@ const slides = [
     }
   },
   {
-    title: "Installation, Commissioning, and Beyond",
+    title: ["Installation,", "Commissioning,", "and Beyond"].join("\n"),
     subtitle: "SUCCESS ALL THE WAY",
     description: "Our solutions go beyond implementation, offering strong after-sales support to ensure maximum performance.",
     image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80",
@@ -103,7 +103,7 @@ export default function Hero() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.4 }}
-                        className="text-6xl md:text-7xl font-bold mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80"
+                        className="text-6xl md:text-7xl font-bold mb-6 pb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 whitespace-pre-line"
                       >
                         {slide.title}
                       </motion.h1>
