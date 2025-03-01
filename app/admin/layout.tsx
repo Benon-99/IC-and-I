@@ -1,22 +1,28 @@
 'use client';
 
-import AdminSidebar from '@/components/admin/AdminSidebar';
+import { usePathname } from 'next/navigation';
 import AdminHeader from '@/components/admin/AdminHeader';
-import AdminFooter from '@/components/admin/AdminFooter';
+import AdminSidebar from '@/components/admin/AdminSidebar';
 
 export default function AdminLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return (
-    <div className="min-h-screen bg-[#0a0b2e] flex flex-col">
-      <AdminHeader />
-      <div className="flex flex-1">
-        <AdminSidebar />
-        <main className="flex-1 p-8 animate-fade-in">{children}</main>
-      </div>
-      <AdminFooter />
-    </div>
-  );
+    const pathname = usePathname();
+
+    // Don't show admin layout for login page
+    if (pathname === '/admin/login') {
+        return <>{children}</>;
+    }
+
+    return (
+        <div className="min-h-screen bg-[#070817]">
+            <AdminHeader />
+            <div className="flex">
+                <AdminSidebar />
+                <main className="flex-1">{children}</main>
+            </div>
+        </div>
+    );
 }
