@@ -1,3 +1,5 @@
+// Rename this file to tailwind.config.js.bak or delete it
+// We're using tailwind.config.ts instead
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
