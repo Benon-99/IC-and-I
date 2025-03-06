@@ -142,7 +142,7 @@ export default function ServicesPage() {
               </motion.span>
               <motion.h2
                 variants={itemVariants}
-                className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#111240] via-[#111240]/90 to-[#111240]/80 bg-clip-text text-transparent"
+                className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#002060] via-[#002060]/90 to-[#002060]/80 bg-clip-text text-transparent"
               >
                 {section.title}
               </motion.h2>
@@ -173,7 +173,7 @@ export default function ServicesPage() {
                     <div className={`p-4 rounded-xl bg-gradient-to-r ${item.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
                       <item.icon className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-xl font-semibold text-[#111240] mb-4">{item.title}</h3>
+                    <h3 className="text-xl font-semibold text-[#002060] mb-4">{item.title}</h3>
                     <p className="text-[#111240]/70 mb-6">{item.description}</p>
                     <Link
                       href={item.link}

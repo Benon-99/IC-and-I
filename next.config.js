@@ -2,7 +2,26 @@
 const nextConfig = {
   output: 'standalone',
   images: {
-    domains: ['images.unsplash.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://localhost:3002/api/:path*',
+      },
+      {
+        source: '/message/:path*',
+        destination: 'http://localhost:3002/message/:path*',
+      }
+    ];
   },
 }
 

@@ -126,7 +126,7 @@ export default function Services() {
               )}
               <motion.h2
                 variants={itemVariants}
-                className={`text-5xl font-bold mb-6 bg-gradient-to-r ${category.gradient} bg-clip-text text-[#3785CC]`}
+                className={`text-5xl font-bold mb-6 bg-gradient-to-r ${category.gradient} bg-clip-text text-[#fff]`}
               >
                 {category.category}
               </motion.h2>

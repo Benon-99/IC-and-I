@@ -3,73 +3,65 @@ import nodemailer from "nodemailer";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
+import fs from "fs";
+import path from "path";
 import messageRoutes from "./routes/messages.js";
-import prisma from './lib/prisma.js';
-import createSubmission from "./repositories/messageRepo.js";
 
+// Load environment variables
 dotenv.config();
 
 const app = express();
 
-// Test database connection
-async function testDbConnection() {
-  try {
-    console.log('[Server] Testing database connection...');
-    await prisma.$connect();
-    console.log('[Server] Successfully connected to database');
+// Configure middleware
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+
+// Add request logging middleware
+app.use((req, res, next) => {
+  console.log(`[Server] ${req.method} request to: ${req.url}`);
+  next();
+});
+
+// Get allowed origins from environment variable or default to all
+const allowedOrigins = process.env.ALLOWED_ORIGINS 
+  ? process.env.ALLOWED_ORIGINS.split(',') 
+  : ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'];
+
+console.log('[Server] Allowed CORS origins:', allowedOrigins);
+
+// Enable CORS with configurable origins
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl requests)
+    if (!origin) return callback(null, true);
     
-    // Test query to verify connection
-    const testQuery = await prisma.$queryRaw`SELECT 1`;
-    console.log('[Server] Database query test successful:', testQuery);
-  } catch (error) {
-    console.error('[Server] Failed to connect to database:', {
-      name: error.name,
-      message: error.message,
-      code: error.code,
-      stack: error.stack
-    });
-    process.exit(1);
-  }
-}
+    if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes('*')) {
+      callback(null, true);
+    } else {
+      console.log(`[Server] Origin blocked by CORS: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ["GET", "POST", "OPTIONS"],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
-testDbConnection();
+// Parse JSON requests
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-app.use(helmet());
-// Enable CORS
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', time: new Date().toISOString() });
+});
 
-app.use(express.json()); // Middleware to parse JSON requests
-
-// Mount message routes
-app.use('/message', messageRoutes);
+// Use the message routes for contact form submissions
+app.use('/api/contact', messageRoutes);
 
 // Start the server
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
-  console.log(`[Server] Running on port ${PORT}`);
-  console.log('[Server] Environment:', process.env.NODE_ENV);
-  console.log('[Server] Database URL:', process.env.DATABASE_URL ? 'Set' : 'Not set');
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('[Server] Unhandled Rejection:', {
-    reason: reason instanceof Error ? {
-      name: reason.name,
-      message: reason.message,
-      stack: reason.stack
-    } : reason,
-    promise
-  });
-});
-
-process.on('uncaughtException', (error) => {
-  console.error('[Server] Uncaught Exception:', {
-    name: error.name,
-    message: error.message,
-    stack: error.stack
-  });
+  console.log(`[Server] Email server running on port ${PORT}`);
 });

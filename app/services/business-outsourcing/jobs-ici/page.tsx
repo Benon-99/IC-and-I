@@ -83,7 +83,7 @@ export default function JobsIciPage() {
             Overview
           </motion.span>
           
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#00B4D8] to-[#4A9BE4] bg-clip-text text-transparent mb-8">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent mb-8">
             Building Careers in Syria
           </h2>
           
@@ -114,7 +114,7 @@ export default function JobsIciPage() {
             </motion.span>
             <motion.h2
               variants={itemVariants}
-              className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#4A9BE4] to-[#8590EA] bg-clip-text text-transparent"
+              className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent"
             >
               Comprehensive Career Tools
             </motion.h2>
@@ -142,7 +142,7 @@ export default function JobsIciPage() {
                   <div className={`p-4 rounded-xl bg-gradient-to-r ${service.gradient} transform group-hover:scale-110 transition-transform duration-300 mb-6 w-16 h-16 flex items-center justify-center`}>
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
+                  <h3 className="text-xl font-semibold text-[#002060] mb-4">{service.title}</h3>
                   <p className="text-[#111240]/60 mb-6">{service.description}</p>
                 </div>
               </motion.div>

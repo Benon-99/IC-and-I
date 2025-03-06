@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, Calendar } from 'lucide-react';
 
 export default function EnhancedBlogPage() {
@@ -111,7 +112,7 @@ export default function EnhancedBlogPage() {
               <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 backdrop-blur-sm mb-6 inline-block">
                 Our Blog
               </span>
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-[#3785CC] via-[#4A9BE4] to-[#5B8AF0] bg-clip-text text-transparent mb-6 leading-normal">
+              <h1 className="text-6xl font-bold bg-gradient-to-r from-[#ffffff] via-[#ffffff] to-[#ffffff] bg-clip-text text-transparent mb-6 leading-normal">
                 Latest Insights
               </h1>
               <p className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
@@ -160,10 +161,10 @@ export default function EnhancedBlogPage() {
                           <Calendar className="w-4 h-4 mr-2" />
                           <span className="text-sm">{blog.date}</span>
                         </div>
-                        <h3 className="text-xl font-semibold text-[#111240] mb-4 group-hover:text-[#111240]/90 transition-colors duration-300">
+                        <h3 className="text-xl font-semibold text-[#002060] mb-4 group-hover:text-[#002060]/90 transition-colors duration-300">
                           {blog.title}
                         </h3>
-                        <p className="text-[#111240]/60 mb-6 line-clamp-2">
+                        <p className="text-[#111240]/60 mb-auto line-clamp-2">
                           {blog.excerpt}
                         </p>
                         <div className="inline-flex items-center text-[#111240]/80 hover:text-[#111240] group/link">

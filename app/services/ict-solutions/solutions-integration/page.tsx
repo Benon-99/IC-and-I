@@ -81,7 +81,7 @@ export default function SolutionsIntegrationPage() {
             Overview
           </motion.span>
           
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#00B4D8] to-[#4A9BE4] bg-clip-text text-transparent mb-8">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent mb-8">
             Enterprise Solutions Integration
           </h2>
           
@@ -112,7 +112,7 @@ export default function SolutionsIntegrationPage() {
             </motion.span>
             <motion.h2
               variants={itemVariants}
-              className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#4A9BE4] to-[#8590EA] bg-clip-text text-transparent"
+              className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent"
             >
               Integration Solutions & Services
             </motion.h2>
@@ -141,7 +141,7 @@ export default function SolutionsIntegrationPage() {
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
 
-                  <h3 className="text-xl font-semibold text-[#111240] mb-4">{service.title}</h3>
+                  <h3 className="text-xl font-semibold text-[#002060] mb-4">{service.title}</h3>
                   <p className="text-[#111240]/60">{service.description}</p>
 
                 </div>

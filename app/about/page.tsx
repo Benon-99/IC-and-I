@@ -45,9 +45,9 @@ export default function AboutPage() {
   ];
 
   const stats = [
-    { number: "15+", label: "Years Experience" },
+    { number: "20+", label: "Years Experience" },
     { number: "200+", label: "Projects Completed" },
-    { number: "50+", label: "Expert Team Members" },
+    { number: "25+", label: "Expert Team Members" },
     { number: "98%", label: "Client Satisfaction" }
   ];
 
@@ -125,7 +125,7 @@ export default function AboutPage() {
                 <div className="absolute inset-0 bg-gradient-to-r from-[#3785CC] to-[#4A9BE4] rounded-2xl blur-2xl group-hover:blur-3xl transition-all duration-500 opacity-20"></div>
                 <div className="relative rounded-2xl overflow-hidden">
                   <Image 
-                    src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80"
+                    src="/about-page.webp"
                     alt="IC&I Office"
                     width={800}
                     height={600}
@@ -142,7 +142,7 @@ export default function AboutPage() {
                     variants={itemVariants}
                     className="p-6 rounded-xl bg-white shadow-sm border border-gray-100 hover:bg-gray-50 transition-colors duration-300"
                   >
-                    <div className="text-3xl font-bold bg-gradient-to-r from-[#3785CC] to-[#4A9BE4] bg-clip-text text-transparent mb-2">
+                    <div className="text-3xl font-bold bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent mb-2">
                       {stat.number}
                     </div>
                     <div className="text-[#111240]/60 text-sm">
@@ -156,7 +156,7 @@ export default function AboutPage() {
             {/* Story Content */}
             <motion.div variants={itemVariants} className="space-y-8">
               <div className="space-y-6">
-                <h2 className="text-4xl font-bold bg-gradient-to-r from-[#3785CC] to-[#4A9BE4] bg-clip-text text-transparent">
+                <h2 className="text-4xl font-bold bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent">
                   Our Story
                 </h2>
                 <div className="space-y-4 text-[#111240]/70 text-lg leading-relaxed">
@@ -182,7 +182,7 @@ export default function AboutPage() {
               {/* Mission & Vision */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="p-8 rounded-2xl bg-white shadow-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300">
-                  <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-[#3785CC] to-[#4A9BE4] bg-clip-text text-transparent">
+                  <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent">
                     Our Mission
                   </h3>
                   <p className="text-[#111240]/70">
@@ -192,7 +192,7 @@ export default function AboutPage() {
                   </p>
                 </div>
                 <div className="p-8 rounded-2xl bg-white shadow-sm border border-gray-100 hover:bg-gray-50 transition-all duration-300">
-                  <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-[#4A9BE4] to-[#8590EA] bg-clip-text text-transparent">
+                  <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent">
                     Our Vision
                   </h3>
                   <p className="text-[#111240]/70">
