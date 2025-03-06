@@ -2,8 +2,9 @@
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import styled from "styled-components";
 import * as Yup from "yup";
 import { motion } from "framer-motion";
 import { Send, User, Mail, MessageSquare, AlertCircle, CheckCircle, Loader } from "lucide-react";
@@ -21,7 +22,17 @@ const ContactForm: React.FC = () => {
   const [apiBaseUrl, setApiBaseUrl] = useState('');
 
   // Detect the current environment when the component mounts
-  useEffect(() => {
+  const [submitStatus, setSubmitStatus] = useState<{ 
+    type: 'success' | 'error' | 'loading' | null; 
+    message: string;
+    visible?: boolean;
+  }>({ 
+    type: null, 
+    message: '' 
+  });
+
+  // Detect the current environment when the component mounts
+  const useEffect = async () => {
     const isLocalhost = 
       window.location.hostname === 'localhost' || 
       window.location.hostname === '127.0.0.1';
@@ -70,17 +81,7 @@ const ContactForm: React.FC = () => {
     };
     
     tryServerPorts();
-  }, []);
-
-  const [notification, setNotification] = useState<{
-    visible: boolean;
-    type: "success" | "error" | "loading";
-    message: string;
-  }>({
-    visible: false,
-    type: "success",
-    message: "",
-  });
+  };
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -108,9 +109,10 @@ const ContactForm: React.FC = () => {
 
   // Form submission handler
   const onSubmit = async (data: FormData) => {
+    setSubmitStatus({ type: null, message: '' });
     try {
       // Show loading state
-      setNotification({
+      setSubmitStatus({
         visible: true,
         type: "loading",
         message: "Sending your message, please wait...",
@@ -132,20 +134,17 @@ const ContactForm: React.FC = () => {
       
       console.log('Form submission response:', response.data);
       
-      // Show success notification
-      setNotification({
-        visible: true,
-        type: "success",
-        message: response.data.message || "Message sent successfully!",
+      // Show success notification without timestamp
+      setSubmitStatus({ 
+        type: 'success', 
+        message: 'Thank you! Your message has been sent successfully. We will get back to you soon.' 
       });
-      
-      // Hide notification after 5 seconds
-      setTimeout(() => {
-        setNotification((prev) => ({ ...prev, visible: false }));
-      }, 5000);
-      
-      // Reset form
       reset();
+      
+      // Automatically hide the success message after 2 seconds
+      setTimeout(() => {
+        setSubmitStatus({ type: null, message: '' });
+      }, 2000);
       
     } catch (error: any) {
       console.error("Form submission error:", {
@@ -155,16 +154,10 @@ const ContactForm: React.FC = () => {
       });
       
       // Show error notification
-      setNotification({
-        visible: true,
-        type: "error",
-        message: error.response?.data?.message || "Failed to send message. Please try again.",
+      setSubmitStatus({ 
+        type: 'error', 
+        message: 'Failed to send the email. Please try again.' 
       });
-      
-      // Hide notification after 5 seconds
-      setTimeout(() => {
-        setNotification((prev) => ({ ...prev, visible: false }));
-      }, 5000);
     }
   };
 
@@ -207,29 +200,31 @@ const ContactForm: React.FC = () => {
         </p>
       </motion.div>
 
-      {notification.visible && (
+      {submitStatus.type && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           className={`p-4 rounded-lg flex items-center space-x-3 ${
-            notification.type === "success"
+            submitStatus.type === "success"
               ? "bg-gradient-to-r from-green-500/10 to-green-600/10 text-green-600 border border-green-500/20"
-              : notification.type === "error"
+              : submitStatus.type === "error"
               ? "bg-gradient-to-r from-red-500/10 to-red-600/10 text-red-600 border border-red-500/20"
+              : submitStatus.type === "loading"
+              ? "bg-gradient-to-r from-[#3785CC]/10 to-[#5B8AF0]/10 text-[#111240] border border-[#3785CC]/20"
               : "bg-gradient-to-r from-[#3785CC]/10 to-[#5B8AF0]/10 text-[#111240] border border-[#3785CC]/20"
           }`}
         >
-          {notification.type === "loading" && (
+          {submitStatus.type === "loading" && (
             <Loader className="w-5 h-5 animate-spin" />
           )}
-          {notification.type === "success" && (
+          {submitStatus.type === "success" && (
             <CheckCircle className="w-5 h-5" />
           )}
-          {notification.type === "error" && (
+          {submitStatus.type === "error" && (
             <AlertCircle className="w-5 h-5" />
           )}
-          <span className="font-medium">{notification.message}</span>
+          <span className="font-medium">{submitStatus.message}</span>
         </motion.div>
       )}
 
@@ -378,3 +373,22 @@ const ContactForm: React.FC = () => {
 };
 
 export default ContactForm;
+
+const StatusMessage = styled.div<{ type: 'success' | 'error' | 'loading' }>`
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  text-align: center;
+  background-color: ${({ type }) => 
+    type === 'success' ? '#e6f7e6' : 
+    type === 'error' ? '#fff2f0' : 
+    '#f0f7ff'};
+  color: ${({ type }) => 
+    type === 'success' ? '#52c41a' : 
+    type === 'error' ? '#ff4d4f' : 
+    '#3785CC'};
+  border: 1px solid ${({ type }) => 
+    type === 'success' ? '#b7eb8f' : 
+    type === 'error' ? '#ffccc7' : 
+    '#91caff'};
+`;

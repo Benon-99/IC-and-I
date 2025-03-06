@@ -99,6 +99,36 @@ router.post(['/', ''], async (req, res) => {
             console.log('[Message Route] Email sent successfully:', info.messageId);
           }
         });
+        
+        // Send thank you email to the client
+        const thankYouMailOptions = {
+          from: `"IC & I" <${process.env.EMAIL_USER}>`,
+          to: email,
+          subject: `Thank you for contacting us`,
+          text: `Dear ${name},\n\nThank you for reaching out to us. We have received your message and will get back to you as soon as possible.\n\nRegards,\nThe IC & I Team`,
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 5px;">
+              <h2 style="color: #3785CC;">Thank You for Contacting Us</h2>
+              <p>Dear ${name},</p>
+              <p>Thank you for reaching out to us. We have received your message and will get back to you as soon as possible.</p>
+              <p>Here's a summary of your inquiry:</p>
+              <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 15px 0;">
+                <p><strong>Subject:</strong> ${subject || "Not provided"}</p>
+                <p><strong>Message:</strong> ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}</p>
+              </div>
+              <p>Regards,<br>The IC & I Team</p>
+            </div>
+          `
+        };
+        
+        // Send thank you email
+        transporter.sendMail(thankYouMailOptions, (error, info) => {
+          if (error) {
+            console.error('[Message Route] Thank you email error:', error.message);
+          } else {
+            console.log('[Message Route] Thank you email sent successfully:', info.messageId);
+          }
+        });
       } catch (emailError) {
         console.error('[Message Route] Email setup error:', emailError.message);
       }
