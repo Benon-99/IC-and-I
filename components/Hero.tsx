@@ -15,7 +15,7 @@ import CenterLayout from './CenterLayout';
 
 const slides = [
   {
-    title: "Information Consultancies & Installations",
+    title: ["Information Consultancies", "& Installations"].join("\n"),
     subtitle: "WELCOME TO IC&I",
     description: "Our customized ICT solutions are designed to drive client growth, adapt to their evolving needs, and ensure success in a constantly changing world.",
     video: "/hero_section.webm",
