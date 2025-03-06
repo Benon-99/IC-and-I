@@ -14,8 +14,8 @@ export default function About() {
     },
     { 
       icon: Target, 
-      title: "Mission-Driven", 
-      text: "Preferred strategic partner for consultancy and services",
+      title: "Member in UN Global Compact", 
+      text: "ICI affirms every year its support of Ten principles of the UN Global Compact in the areas of Human Rights, Labour, Environment, and Anti corruption.",
       color: "from-purple-500 to-pink-500"
     },
     { 
@@ -53,7 +53,7 @@ export default function About() {
             <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-gray-200 text-[#111240] backdrop-blur-sm mb-4 inline-block">
               About Us
             </span>
-            <h2 className="text-5xl font-bold mb-6 text-[#011240]">
+            <h2 className="text-5xl font-bold mb-6 text-[#002060]">
               DISCOVER IC&I
             </h2>
             <p className="text-xl text-[#111240] max-w-2xl mx-auto leading-relaxed">
@@ -88,7 +88,7 @@ export default function About() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="p-6 rounded-xl bg-transparent backdrop-blur-sm border border-[#B5C6F4] transition-colors duration-300"
                 >
-                  <div className="text-3xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text mb-2 text-[#111240]">
+                  <div className="text-3xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text mb-2 text-[#002060]">
                     {stat.number}
                   </div>
                   <div className="text-[#111240] text-sm">
@@ -133,7 +133,7 @@ export default function About() {
                       <feature.icon className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-[#111240] mb-2">{feature.title}</h3>
+                      <h3 className="text-xl font-semibold text-[#002060] mb-2">{feature.title}</h3>
                       <p className="text-[#111240]">{feature.text}</p>
                     </div>
                   </div>
@@ -143,7 +143,7 @@ export default function About() {
 
             <Link 
               href="/about"
-              className="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-[#111240]
+              className="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-[#002060]
                 backdrop-blur-sm border border-white/10 transition-all duration-300 group"
             >
               <span>Learn More About Us</span>

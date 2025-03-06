@@ -31,7 +31,7 @@ export default function CTA() {
             Get Started
           </span>
           
-          <h2 className="text-5xl font-bold mb-8 bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent">
+          <h2 className="text-5xl font-bold pb-8 mb-8 bg-gradient-to-r from-white via-purple-100 to-white/80 bg-clip-text text-transparent">
             Ready to Transform Your Business?
           </h2>
           
