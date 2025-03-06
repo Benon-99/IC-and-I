@@ -25,7 +25,7 @@ export default function About() {
       color: "from-orange-500 to-yellow-500"
     }
   ];
-out
+
   const stats = [
     { number: "20+", label: "Years Experience" },
     { number: "200+", label: "Projects Completed" },
