@@ -18,7 +18,7 @@ const slides = [
     title: "Information Consultancies & Installations",
     subtitle: "WELCOME TO IC&I",
     description: "Our customized ICT solutions are designed to drive client growth, adapt to their evolving needs, and ensure success in a constantly changing world.",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
+    video: "/hero_section.webm",
     accent: "from-[#002060] to-[#B5C6F4]",
     buttons: {
       primary: { text: "Learn More", href: "/about" },
@@ -29,7 +29,7 @@ const slides = [
     title: "Consultancy Services for SMEs",
     subtitle: "ACHIEVE YOUR BUSINESS GOALS",
     description: "Our consultancy services, ranging from market research to project management, are tailored to enhance your business strategy.",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
+    video: "/hero_section.webm",
     accent: "from-[#002060] to-[#B5C6F4]",
     buttons: {
       primary: { text: "Get a Consultation", href: "/contact" },
@@ -40,7 +40,7 @@ const slides = [
     title: ["Installation,", "Commissioning,", "and Beyond"].join("\n"),
     subtitle: "SUCCESS ALL THE WAY",
     description: "Our solutions go beyond implementation, offering strong after-sales support to ensure maximum performance.",
-    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80",
+    video: "/hero_section.webm",
     accent: "from-[#002060] to-[#B5C6F4]",
     buttons: {
       primary: { text: "What We Offer", href: "/services" },
@@ -75,11 +75,16 @@ export default function Hero() {
           {slides.map((slide, index) => (
             <SwiperSlide key={index}>
               <div className="relative h-full w-full">
-                <div 
-                  className="absolute inset-0 bg-cover bg-center bg-fixed transform hover:scale-105 transition-transform duration-[2s]"
-                  style={{ backgroundImage: `url(${slide.image})` }}
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-r ${slide.accent} opacity-90`} />
+                <div className="absolute inset-0">
+                  <video
+                    className="absolute inset-0 w-full h-full object-cover"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    src={slide.video}
+                  />
+                  <div className={`absolute inset-0 bg-gradient-to-r from-blue-900/80 to-blue-600/70 mix-blend-multiply`} />
                   <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20" />
                 </div>
 

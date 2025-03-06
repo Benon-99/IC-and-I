@@ -74,12 +74,11 @@ export default function About() {
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur-2xl group-hover:blur-3xl transition-all duration-500 opacity-75"></div>
               <img
-                src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80"
+                src="/about.webp"
                 alt="IC&I Office"
                 className="relative rounded-2xl w-full aspect-[4/3] object-cover transform group-hover:scale-[1.02] transition-transform duration-500"
               />
             </div>
-            
             <div className="grid grid-cols-2 gap-4">
               {stats.map((stat, index) => (
                 <motion.div
