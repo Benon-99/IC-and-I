@@ -92,7 +92,7 @@ export default function InformationSecurityPage() {
             Overview
           </motion.span>
           
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#002060] to-[#4A9BE4] bg-clip-text text-transparent mb-8">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent mb-8">
             Advanced Security Solutions
           </h2>
           
@@ -122,7 +122,7 @@ export default function InformationSecurityPage() {
             </motion.span>
             <motion.h2
               variants={itemVariants}
-              className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent"
+              className="text-4xl font-bold mb-6 pb-1 bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent"
             >
               Security Solutions & Services
             </motion.h2>

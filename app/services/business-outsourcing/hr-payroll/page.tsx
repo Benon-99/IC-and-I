@@ -80,7 +80,7 @@ export default function HRPayrollPage() {
             Overview
           </motion.span>
           
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent mb-8">
+          <h2 className="text-4xl font-bold pb-1 bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent mb-8">
             Streamlined Payroll Solutions
           </h2>
           
@@ -111,7 +111,7 @@ export default function HRPayrollPage() {
             </motion.span>
             <motion.h2
               variants={itemVariants}
-              className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent"
+              className="text-4xl font-bold mb-6 pb-1  bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent"
             >
               Payroll & Performance Solutions
             </motion.h2>

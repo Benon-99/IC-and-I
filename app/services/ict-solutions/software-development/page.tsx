@@ -115,7 +115,7 @@ export default function SoftwareDevelopmentPage() {
             </motion.span>
             <motion.h2
               variants={itemVariants}
-              className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#002060#002060#8590EA] bg-clip-text text-transparent"
+              className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent"
             >
               Development Solutions & Services
             </motion.h2>

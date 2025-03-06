@@ -189,13 +189,13 @@ const ContactForm: React.FC = () => {
       className="space-y-6"
     >
       <motion.div variants={itemVariants} className="space-y-4">
-        <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#111240]/5 text-[#111240] backdrop-blur-sm inline-block">
+        <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#002060]/5 text-[#002060] backdrop-blur-sm inline-block">
           Send us a message
         </span>
-        <h2 className="text-4xl font-bold bg-gradient-to-r from-[#111240] via-[#111240]/90 to-[#111240]/80 bg-clip-text text-transparent">
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-[#002060] via-[#002060]/90 to-[#002060]/80 bg-clip-text text-transparent">
           Contact Us
         </h2>
-        <p className="text-[#111240]/70 text-lg leading-relaxed max-w-lg">
+        <p className="text-[#002060]/70 text-lg leading-relaxed max-w-lg">
           Fill out the form below and we'll get back to you as soon as possible.
         </p>
       </motion.div>
@@ -211,8 +211,8 @@ const ContactForm: React.FC = () => {
               : submitStatus.type === "error"
               ? "bg-gradient-to-r from-red-500/10 to-red-600/10 text-red-600 border border-red-500/20"
               : submitStatus.type === "loading"
-              ? "bg-gradient-to-r from-[#3785CC]/10 to-[#5B8AF0]/10 text-[#111240] border border-[#3785CC]/20"
-              : "bg-gradient-to-r from-[#3785CC]/10 to-[#5B8AF0]/10 text-[#111240] border border-[#3785CC]/20"
+              ? "bg-gradient-to-r from-[#3785CC]/10 to-[#5B8AF0]/10 text-[#002060] border border-[#3785CC]/20"
+              : "bg-gradient-to-r from-[#3785CC]/10 to-[#5B8AF0]/10 text-[#002060] border border-[#3785CC]/20"
           }`}
         >
           {submitStatus.type === "loading" && (
@@ -235,11 +235,11 @@ const ContactForm: React.FC = () => {
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <motion.div variants={itemVariants} className="space-y-2">
-            <label htmlFor="name" className="text-[#111240]/90 font-medium block">
+            <label htmlFor="name" className="text-[#002060]/90 font-medium block">
               Your Name
             </label>
             <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#111240]/40">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#002060]/40">
                 <User className="w-5 h-5" />
               </div>
               <input
@@ -250,7 +250,7 @@ const ContactForm: React.FC = () => {
                 className={`w-full py-3 pl-10 pr-4 rounded-lg bg-white border ${
                   errors.name
                     ? "border-red-300 focus:border-red-500 focus:ring focus:ring-red-200"
-                    : "border-[#111240]/10 focus:border-[#3785CC] focus:ring focus:ring-[#3785CC]/20"
+                    : "border-[#002060]/10 focus:border-[#3785CC] focus:ring focus:ring-[#3785CC]/20"
                 } outline-none transition-all duration-200`}
               />
             </div>
@@ -263,11 +263,11 @@ const ContactForm: React.FC = () => {
           </motion.div>
 
           <motion.div variants={itemVariants} className="space-y-2">
-            <label htmlFor="email" className="text-[#111240]/90 font-medium block">
+            <label htmlFor="email" className="text-[#002060]/90 font-medium block">
               Email Address
             </label>
             <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#111240]/40">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#002060]/40">
                 <Mail className="w-5 h-5" />
               </div>
               <input
@@ -278,7 +278,7 @@ const ContactForm: React.FC = () => {
                 className={`w-full py-3 pl-10 pr-4 rounded-lg bg-white border ${
                   errors.email
                     ? "border-red-300 focus:border-red-500 focus:ring focus:ring-red-200"
-                    : "border-[#111240]/10 focus:border-[#3785CC] focus:ring focus:ring-[#3785CC]/20"
+                    : "border-[#002060]/10 focus:border-[#3785CC] focus:ring focus:ring-[#3785CC]/20"
                 } outline-none transition-all duration-200`}
               />
             </div>
@@ -292,11 +292,11 @@ const ContactForm: React.FC = () => {
         </div>
 
         <motion.div variants={itemVariants} className="space-y-2">
-          <label htmlFor="subject" className="text-[#111240]/90 font-medium block">
+          <label htmlFor="subject" className="text-[#002060]/90 font-medium block">
             Subject
           </label>
           <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#111240]/40">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[#002060]/40">
               <MessageSquare className="w-5 h-5" />
             </div>
             <input
@@ -307,7 +307,7 @@ const ContactForm: React.FC = () => {
               className={`w-full py-3 pl-10 pr-4 rounded-lg bg-white border ${
                 errors.subject
                   ? "border-red-300 focus:border-red-500 focus:ring focus:ring-red-200"
-                  : "border-[#111240]/10 focus:border-[#3785CC] focus:ring focus:ring-[#3785CC]/20"
+                  : "border-[#002060]/10 focus:border-[#3785CC] focus:ring focus:ring-[#3785CC]/20"
               } outline-none transition-all duration-200`}
             />
           </div>
@@ -320,7 +320,7 @@ const ContactForm: React.FC = () => {
         </motion.div>
 
         <motion.div variants={itemVariants} className="space-y-2">
-          <label htmlFor="message" className="text-[#111240]/90 font-medium block">
+          <label htmlFor="message" className="text-[#002060]/90 font-medium block">
             Your Message
           </label>
           <textarea
@@ -331,7 +331,7 @@ const ContactForm: React.FC = () => {
             className={`w-full py-3 px-4 rounded-lg bg-white border ${
               errors.message
                 ? "border-red-300 focus:border-red-500 focus:ring focus:ring-red-200"
-                : "border-[#111240]/10 focus:border-[#3785CC] focus:ring focus:ring-[#3785CC]/20"
+                : "border-[#002060]/10 focus:border-[#3785CC] focus:ring focus:ring-[#3785CC]/20"
             } outline-none transition-all duration-200`}
           />
           {errors.message && (
@@ -350,7 +350,7 @@ const ContactForm: React.FC = () => {
             whileTap={{ scale: 0.98 }}
             className={`w-full py-3.5 px-6 rounded-lg font-medium text-white flex items-center justify-center space-x-2 transition-all duration-300 ${
               isSubmitting 
-                ? "bg-[#111240]/70 cursor-not-allowed" 
+                ? "bg-[#002060]/70 cursor-not-allowed" 
                 : "bg-gradient-to-r from-[#3785CC] to-[#5B8AF0] hover:shadow-lg hover:shadow-[#3785CC]/20"
             }`}
           >

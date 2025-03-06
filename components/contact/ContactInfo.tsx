@@ -69,10 +69,10 @@ export default function ContactInfo() {
       className="space-y-12"
     >
       <motion.div variants={itemVariants} className="space-y-4">
-        <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#111240]/5 text-[#111240] backdrop-blur-sm inline-block">
+        <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#002060]/5 text-[#002060] backdrop-blur-sm inline-block">
           Contact Information
         </span>
-        <h2 className="text-4xl font-bold bg-gradient-to-r from-[#111240] via-[#111240]/90 to-[#111240]/80 bg-clip-text text-transparent">
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-[#002060] via-[#002060]/90 to-[#002060]/80 bg-clip-text text-transparent">
           Let's Make It Happen
         </h2>
         <p className="text-[#111240]/70 text-lg leading-relaxed max-w-lg">
@@ -95,7 +95,7 @@ export default function ContactInfo() {
                   <item.icon className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-[#111240] font-semibold mb-2">{item.title}</h3>
+                  <h3 className="text-[#002060] font-semibold mb-2">{item.title}</h3>
                   {item.details.map((detail, detailIndex) => (
                     <div
                       key={detailIndex}
@@ -105,7 +105,7 @@ export default function ContactInfo() {
                         <span>{detail}</span>
                       ) : (
                         <div className="flex items-center space-x-2">
-                          <span className="font-semibold text-[#111240]">{detail.label}</span>
+                          <span className="font-semibold text-[#002060]">{detail.label}</span>
                           <span>{detail.text}</span>
                         </div>
                       )}
@@ -119,13 +119,13 @@ export default function ContactInfo() {
       </motion.div>
 
       <motion.div variants={itemVariants} className="space-y-4">
-        <h3 className="text-lg font-semibold text-[#111240]">Follow Us</h3>
+        <h3 className="text-lg font-semibold text-[#002060]">Follow Us</h3>
         <div className="flex space-x-4">
           {socialLinks.map((social, index) => (
             <Link
               key={index}
               href={social.href}
-              className="p-3 rounded-lg bg-[#111240]/5 hover:bg-[#111240]/10 text-[#111240]/80 hover:text-[#111240] transition-all duration-300"
+              className="p-3 rounded-lg bg-[#002060]/5 hover:bg-[#002060]/10 text-[#002060]/80 hover:text-[#002060] transition-all duration-300"
               aria-label={social.label}
             >
               <social.icon className="w-5 h-5" />

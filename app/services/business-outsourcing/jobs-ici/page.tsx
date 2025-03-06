@@ -83,7 +83,7 @@ export default function JobsIciPage() {
             Overview
           </motion.span>
           
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent mb-8">
+          <h2 className="text-4xl font-bold pb-1 bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent mb-8">
             Building Careers in Syria
           </h2>
           

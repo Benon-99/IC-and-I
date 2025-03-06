@@ -113,7 +113,7 @@ export default function ServicesPage() {
             >
               What We Offer
             </motion.span>
-            <h1 className="text-6xl font-bold bg-gradient-to-r from-[#3785CC] via-[#4A9BE4] to-[#5B8AF0] bg-clip-text text-transparent mb-6">
+            <h1 className="text-6xl font-bold bg-gradient-to-r from-[#fff] via-[#fff] to-[#fff] bg-clip-text text-transparent mb-6">
               Comprehensive Business Solutions
             </h1>
             <p className="text-xl text-white/80 max-w-2xl mx-auto">

@@ -112,7 +112,7 @@ export default function SolutionsIntegrationPage() {
             </motion.span>
             <motion.h2
               variants={itemVariants}
-              className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent"
+              className="text-4xl font-bold mb-6 pb-1 bg-gradient-to-r from-[#002060] to-[#002060] bg-clip-text text-transparent"
             >
               Integration Solutions & Services
             </motion.h2>
