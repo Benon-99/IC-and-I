@@ -48,4 +48,8 @@ export async function getMessages() {
   }
 }
 
+// Export createSubmission as a named export too
+export { createSubmission };
+
+// Keep the default export for backward compatibility
 export default createSubmission;

@@ -1,10 +1,5 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,23 +7,55 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  relationMode = "foreignKeys"
 }
 
 model Submission {
-  id         Int      @id @default(autoincrement()) // Auto-increment primary key
-  name       String   // Name of the submitter
-  email      String   // Email of the submitter
-  subject    String?  // Subject line (optional)
-  message    String   @db.Text // Message content
-  created_at DateTime @default(now()) // Auto-filled timestamp for creation
-}
-
-model User {
   id         Int      @id @default(autoincrement())
-  name       String
-  email      String   @unique
-  password   String
-  role       String   @default("user")
+  name       String   @db.VarChar(50)
+  email      String   @db.VarChar(50)
+  subject    String?  @db.VarChar(50)
+  message    String   @db.Text
   created_at DateTime @default(now())
 }
 
+model Post {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(150)
+  content     String    @db.Text
+  slug        String    @unique @db.VarChar(191) // reduced from 255 to 191
+  date        DateTime  @default(now())
+  category    Category  @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  image       String    @db.VarChar(150)
+  published   Boolean   @default(false)
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  @@index([authorId])
+  @@index([categoryId])
+}
+
+model Category {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique @db.VarChar(100)
+  posts Post[]
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(150)
+  email      String    @unique @db.VarChar(191) // reduced from 255 to 191
+  password   String    @db.VarChar(150)
+  role       Role      @default(USER)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  posts      Post[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}

@@ -1,7 +1,9 @@
+/* Import Tailwind CSS directives first */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Then define custom variables */
 :root {
   --primary: #002060;
   --secondary: #B5C6F4;
