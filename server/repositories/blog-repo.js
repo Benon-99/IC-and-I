@@ -1,4 +1,4 @@
-import prisma from '../prisma/client.js';
+
 import slugify from 'slugify';
 
 class BlogRepository {

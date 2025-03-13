@@ -22,20 +22,12 @@ export default function AdminDashboard() {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: 'icandicompany@gmail.com',
-                        password: 'IC&I@admin2024'
-                    }),
+                const response = await fetch('http://localhost:3002/api/auth/check', {
                     credentials: 'include'
                 });
 
                 const data = await response.json();
-                console.log('Auth response:', data);
+                console.log('Auth check response:', data);
 
                 if (data.status === 'success' && data.user) {
                     setUser(data.user);
