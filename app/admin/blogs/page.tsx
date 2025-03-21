@@ -15,6 +15,7 @@ import {
   CheckCircle,
   XCircle,
   AlertTriangle,
+  Tag,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { apiClient } from "@/lib/api";
@@ -35,13 +36,19 @@ interface Blog {
   title: string;
   content: string;
   slug: string;
-  date: string;
+  categoryId: number;
   image: string;
   published: boolean;
-  category: Category;
-  author: Author;
-  created_at: string;
-  updated_at: string;
+  authorId: number;
+  author: {
+    id: number;
+    name: string;
+    email: string;
+  };
+  category: {
+    id: number;
+    name: string;
+  };
 }
 
 interface Alert {
@@ -66,11 +73,13 @@ export default function BlogsPage() {
   });
 
   useEffect(() => {
+    console.log("[Blogs] Component mounted, fetching data...");
     fetchBlogs();
     fetchCategories();
   }, []);
+
   useEffect(() => {
-    console.log(blogs);
+    console.log("[Blogs] Current blogs state:", blogs);
   }, [blogs]);
 
   useEffect(() => {
@@ -85,16 +94,30 @@ export default function BlogsPage() {
   };
 
   const fetchBlogs = async () => {
+    console.log("[Blogs] Fetching blogs from server...");
     try {
+      console.log("[Blogs] Making API request to /api/blog");
       const response = await apiClient.get("/api/blog");
-      console.log(response);
+      console.log("[Blogs] Server response:", {
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers,
+        data: response.data
+      });
 
       if (response.statusText.toLowerCase() != "ok") {
         throw new Error("Failed to fetch blogs");
       }
-      setBlogs(response.data.posts || []);
-    } catch (error) {
-      console.error("Error fetching blogs:", error);
+      
+      const posts = response.data.posts || [];
+      console.log("[Blogs] Successfully fetched", posts.length, "posts");
+      setBlogs(posts);
+    } catch (error: any) {
+      console.error("[Blogs] Error fetching blogs:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
       showAlert("error", "Failed to fetch blogs");
     } finally {
       setIsLoading(false);
@@ -102,25 +125,34 @@ export default function BlogsPage() {
   };
 
   const fetchCategories = async () => {
+    console.log("[Blogs] Fetching categories...");
     try {
       const response = await apiClient.get("/api/blog/categories");
+      console.log("[Blogs] Categories response:", response.data);
       setCategories(response.data.categories || []);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
+    } catch (error: any) {
+      console.error("[Blogs] Error fetching categories:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
     }
   };
 
   const initiateDelete = (id: number) => {
+    console.log("[Blogs] Initiating delete for blog ID:", id);
     setDeleteConfirm({ show: true, blogId: id });
   };
 
   const handleDelete = async () => {
     if (!deleteConfirm.blogId) return;
 
+    console.log("[Blogs] Deleting blog ID:", deleteConfirm.blogId);
     try {
       const response = await apiClient.delete(
         `/api/blog/post/${deleteConfirm.blogId}`
       );
+      console.log("[Blogs] Delete response:", response.data);
 
       if (response.statusText.toLowerCase() == "ok") {
         setBlogs(blogs.filter((blog) => blog.id !== deleteConfirm.blogId));
@@ -128,8 +160,12 @@ export default function BlogsPage() {
       } else {
         throw new Error("Failed to delete blog post");
       }
-    } catch (error) {
-      console.error("Error deleting blog:", error);
+    } catch (error: any) {
+      console.error("[Blogs] Error deleting blog:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
       showAlert("error", "Failed to delete blog post");
     } finally {
       setDeleteConfirm({ show: false, blogId: null });
@@ -366,9 +402,10 @@ export default function BlogsPage() {
                             By {blog.author.name}
                           </span>
                           <span className="text-gray-600">•</span>
-                          <span className="text-blue-400">
-                            {blog.category.name}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <ImageIcon className="w-4 h-4" />
+                            <span>{blog.category.name}</span>
+                          </div>
                         </div>
                       </div>
                       <span
@@ -388,10 +425,10 @@ export default function BlogsPage() {
 
                     <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-700">
                       <div className="flex items-center gap-2 text-gray-400">
-                        <Clock className="w-4 h-4" />
-                        <span className="text-sm">
-                          {new Date(blog.date).toLocaleDateString()}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <Tag className="w-4 h-4" />
+                          <span>{blog.category.name}</span>
+                        </div>
                       </div>
                       <div className="flex items-center gap-3">
                         <Link

@@ -3,7 +3,16 @@ import { blogRepository } from '../repositories/blog-repo.js';
 
 export const createPostController = async (req, res) => {
     try {
-        const blogDTO = new BlogDTO(req.body);
+        // Get the uploaded file path if exists
+        const imagePath = req.file ? `/api/blog/uploads/${req.file.filename}` : 'placeholder.jpg';
+        
+        // Create DTO with form data and file path
+        const blogData = {
+            ...req.body,
+            image: imagePath
+        };
+        
+        const blogDTO = new BlogDTO(blogData);
         console.log('Creating new post with data:', blogDTO);
         const post = await blogRepository.createPost(blogDTO);
         console.log('Post created:', post.title);
@@ -16,9 +25,18 @@ export const createPostController = async (req, res) => {
 
 export const updatePostController = async (req, res) => {
     try {
-        const blogDTO = new BlogDTO(req.body);
+        // Get the uploaded file path if exists
+        const imagePath = req.file ? `/api/blog/uploads/${req.file.filename}` : undefined;
+        
+        // Create DTO with form data and file path
+        const blogData = {
+            ...req.body,
+            ...(imagePath && { image: imagePath })
+        };
+        
+        const blogDTO = new BlogDTO(blogData);
         console.log('Updating post with data:', blogDTO);
-        const post = await blogRepository.updatePost(blogDTO);
+        const post = await blogRepository.updatePost(req.params.id, blogDTO);
         console.log('Post updated:', post.title);
         res.status(200).json({ status: 'success', post });
     } catch (error) {

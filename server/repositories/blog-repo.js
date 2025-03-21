@@ -1,14 +1,14 @@
-
 import slugify from 'slugify';
+import prisma from '../lib/prisma.js';
 
 class BlogRepository {
     async createPost(blogDTO) {
         try {
-            // Generate slug from title
-            const slug = slugify(blogDTO.title, { 
+            // Generate slug from title if not provided
+            const slug = blogDTO.slug || slugify(blogDTO.title, { 
                 lower: true,
                 strict: true,
-                remove: /[*+~.()'"!:@]/g
+                remove: /[*+~.()"'!:@]/g
             });
 
             // Check if slug exists
@@ -21,17 +21,21 @@ class BlogRepository {
                 ? `${slug}-${Date.now()}`
                 : slug;
 
+            // Create post with minimal data
+            const data = {
+                title: blogDTO.title,
+                content: blogDTO.content,
+                slug: finalSlug,
+                categoryId: blogDTO.categoryId ? parseInt(blogDTO.categoryId) : null,
+                image: blogDTO.image || 'placeholder.jpg',
+                published: blogDTO.published,
+                authorId: blogDTO.authorId ? parseInt(blogDTO.authorId) : null
+            };
+
+            console.log('Post Data:', data); // Debugging statement
+
             return await prisma.post.create({
-                data: {
-                    title: blogDTO.title,
-                    content: blogDTO.content,
-                    slug: finalSlug,
-                    date: blogDTO.date ? new Date(blogDTO.date) : new Date(),
-                    categoryId: blogDTO.categoryId ? parseInt(blogDTO.categoryId) : null,
-                    image: blogDTO.image || 'placeholder.jpg',
-                    published: blogDTO.published || false,
-                    authorId: blogDTO.authorId ? parseInt(blogDTO.authorId) : null
-                },
+                data,
                 include: {
                     author: true,
                     category: true
@@ -42,46 +46,39 @@ class BlogRepository {
             throw error;
         }
     }
-
     async updatePost(id, blogDTO) {
-        if (!id) throw new Error('ID is required for updating a post');
-        
         try {
-            const postId = parseInt(id);
-            if (isNaN(postId)) throw new Error('Invalid post ID format');
+            const data = {};
 
-            const data = {
-                title: blogDTO.title,
-                content: blogDTO.content,
-                date: blogDTO.date ? new Date(blogDTO.date) : new Date(),
-                categoryId: blogDTO.categoryId ? parseInt(blogDTO.categoryId) : null,
-                image: blogDTO.image || 'placeholder.jpg',
-                published: blogDTO.published || false,
-                authorId: blogDTO.authorId ? parseInt(blogDTO.authorId) : null
-            };
+            // Update fields if provided
+            if (blogDTO.title) data.title = blogDTO.title;
+            if (blogDTO.content) data.content = blogDTO.content;
+            if (blogDTO.categoryId) data.categoryId = blogDTO.categoryId;
+            if (blogDTO.image) data.image = blogDTO.image;
+            if (typeof blogDTO.published !== 'undefined') data.published = blogDTO.published;
 
-            // Only update slug if title is changed
+            // Handle slug update
             if (blogDTO.title) {
-                const slug = slugify(blogDTO.title, { 
+                const slug = blogDTO.slug || slugify(blogDTO.title, {
                     lower: true,
                     strict: true,
-                    remove: /[*+~.()'"!:@]/g
+                    remove: /[*+~.()"'!:@]/g
                 });
 
-                // Check if slug exists for other posts
+                // Check if slug exists and is different from current post
                 const existingPost = await prisma.post.findFirst({
-                    where: { 
+                    where: {
                         slug,
-                        id: { not: postId }
+                        id: { not: parseInt(id) }
                     }
                 });
 
-                // If slug exists for another post, append a timestamp
+                // If slug exists, append timestamp
                 data.slug = existingPost ? `${slug}-${Date.now()}` : slug;
             }
 
             return await prisma.post.update({
-                where: { id: postId },
+                where: { id: parseInt(id) },
                 data,
                 include: {
                     author: true,
@@ -89,7 +86,7 @@ class BlogRepository {
                 }
             });
         } catch (error) {
-            console.error('Error updating post:', error);
+            console.error('Repository: Error updating post:', error);
             throw error;
         }
     }
@@ -181,7 +178,7 @@ class BlogRepository {
                     category: true
                 },
                 orderBy: {
-                    date: 'desc'
+                    id: 'desc' // Order by id instead of created_at
                 }
             });
         } catch (error) {

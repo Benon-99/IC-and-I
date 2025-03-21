@@ -3,7 +3,6 @@
 import { Edit2, Trash2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { formatDate } from "@/lib/utils";
 import { BlogPost } from "@/types/blog";
 
 interface BlogListItemProps {
@@ -20,9 +19,6 @@ export default function BlogListItem({ blog }: BlogListItemProps) {
           </h2>
           <div className="mt-1 flex items-center space-x-4">
             <span className="text-sm text-gray-500">
-              {formatDate(blog.date)}
-            </span>
-            <span className="text-sm text-gray-500">
               {blog.category}
             </span>
             <span className="text-sm text-gray-500">
@@ -36,7 +32,7 @@ export default function BlogListItem({ blog }: BlogListItemProps) {
               <Eye className="w-4 h-4" />
             </Button>
           </Link>
-          <Link href={`/admin/blogs/${blog.id}/edit`}>
+          <Link href={`/admin/blogs/edit/${blog.id}`}>
             <Button variant="ghost" size="sm">
               <Edit2 className="w-4 h-4" />
             </Button>

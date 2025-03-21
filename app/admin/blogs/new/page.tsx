@@ -28,7 +28,6 @@ interface BlogPost {
   image: string;
   published: boolean;
   authorId: number;
-  date: string;
 }
 
 export default function NewBlogPost() {
@@ -36,11 +35,10 @@ export default function NewBlogPost() {
   const [formData, setFormData] = useState<BlogPost>({
     title: "",
     content: "",
-    categoryId: 1, // Technology category
+    categoryId: 1,
     image: "placeholder.jpg",
     published: false,
     authorId: 1,
-    date: new Date().toISOString(),
   });
   const [imagePreview, setImagePreview] = useState<string>("");
   const [showPreview, setShowPreview] = useState(false);
@@ -49,41 +47,63 @@ export default function NewBlogPost() {
   const contentRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
+    console.log("[NewBlog] Component mounted, initializing...");
     fetchCategories();
     fetchCurrentUser();
   }, []);
 
+  useEffect(() => {
+    console.log("[NewBlog] Form data updated:", formData);
+  }, [formData]);
+
   const fetchCategories = async () => {
+    console.log("[NewBlog] Fetching categories...");
     try {
       const response = await apiClient.get("/api/blog/categories");
+      console.log("[NewBlog] Categories response:", response.data);
 
       setCategories(response.data.categories || []);
       if (response.data.categories?.length > 0) {
+        console.log("[NewBlog] Setting default category:", response.data.categories[0]);
         setFormData((prev) => ({
           ...prev,
           categoryId: response.data.categories[0].id,
         }));
       }
-    } catch (error) {
-      console.error("Error fetching categories:", error);
+    } catch (error: any) {
+      console.error("[NewBlog] Error fetching categories:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
     }
   };
 
   const fetchCurrentUser = async () => {
+    console.log("[NewBlog] Fetching current user...");
     try {
-      const token = localStorage.getItem("token"); // Get token from storage
+      const token = localStorage.getItem("token");
+      console.log("[NewBlog] Using token:", token ? "Present" : "Missing");
+
       const response = await apiClient.get("/api/auth/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log("[NewBlog] User response:", response.data);
+
       if (response.data.user?.id) {
+        console.log("[NewBlog] Setting author ID:", response.data.user.id);
         setFormData((prev) => ({ ...prev, authorId: response.data.user.id }));
       } else {
-        console.error("No user found - please log in");
+        console.error("[NewBlog] No user found - please log in");
       }
-    } catch (error) {
-      console.error("Error fetching user:", error);
+    } catch (error: any) {
+      console.error("[NewBlog] Error fetching user:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
     }
   };
 
@@ -93,6 +113,7 @@ export default function NewBlogPost() {
     >
   ) => {
     const { name, value } = e.target;
+    console.log("[NewBlog] Form field changed:", { field: name, value });
     setFormData((prev) => ({
       ...prev,
       [name]: name === "categoryId" ? parseInt(value) : value,
@@ -102,72 +123,74 @@ export default function NewBlogPost() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        setImagePreview(base64String);
-        setFormData((prev) => ({ ...prev, image: base64String }));
-      };
-      reader.readAsDataURL(file);
+      console.log("[NewBlog] Processing image:", { name: file.name, size: file.size });
+      // Create URL for preview
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+      setFormData((prev) => ({ ...prev, image: file.name }));
     }
   };
 
   const handlePublishToggle = () => {
+    console.log("[NewBlog] Toggling publish status");
     setFormData((prev) => ({
       ...prev,
       published: !prev.published,
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("[NewBlog] Starting blog post submission...");
     setIsSaving(true);
 
     try {
-      // Validate required fields
-      if (!formData.title || !formData.content || !formData.categoryId) {
-        alert(
-          "Please fill in all required fields (title, content, and category)"
-        );
-        return;
-      }
+        if (!formData.title || !formData.content || !formData.categoryId) {
+            alert("Please fill in all required fields (title, content, and category)");
+            return;
+        }
 
-      // Ensure categoryId is a number
-      const dataToSend = {
-        ...formData,
-        categoryId: parseInt(String(formData.categoryId)),
-        image: formData.image || "placeholder.jpg",
-        date: new Date(formData.date).toISOString(),
-      };
+        const generatedSlug = formData.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-") // Replace special characters with hyphens
+            .replace(/^-+|-+$/g, ""); // Trim leading/trailing hyphens
 
-      console.log("Submitting blog post with data:", dataToSend);
+        const formDataToSend = new FormData();
+        formDataToSend.append('title', formData.title);
+        formDataToSend.append('slug', generatedSlug);  // Ensure slug is sent
+        formDataToSend.append('content', formData.content);
+        formDataToSend.append('categoryId', String(formData.categoryId));
+        formDataToSend.append('published', String(formData.published));
+        formDataToSend.append('authorId', String(formData.authorId));
 
-      const response = await apiClient.post("/api/blog", dataToSend);
-      let responseData;
-      const contentType = response.headers["content-type"];
+        const fileInput = fileInputRef.current;
+        if (fileInput?.files?.[0]) {
+            formDataToSend.append('image', fileInput.files[0]);
+        }
 
-      console.log("Response status:", response.status);
-      console.log("Response data:", responseData);
+        console.log("[NewBlog] Submitting blog post with FormData");
 
-      if (response.statusText.toLowerCase() === "ok") {
-        console.log("Blog post created successfully");
-        window.location.href = "/admin/blogs";
-      } else {
-        const errorMessage = response.data.message || "Unknown error occurred";
-        console.error("Failed to create blog post:", errorMessage);
-        alert(`Failed to create blog post: ${errorMessage}`);
-      }
-    } catch (error) {
-      console.error("Error creating blog post:", error);
-      alert(
-        `Error creating blog post: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`
-      );
+        const response = await apiClient.post("/api/blog", formDataToSend, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        if (response.status === 201) {
+            console.log("[NewBlog] Blog post created successfully");
+            window.location.href = "/admin/blogs";
+        } else {
+            alert(`Failed to create blog post: ${response.data.message}`);
+        }
+    } catch (error: unknown) {
+        console.error("[NewBlog] Error creating blog post:", error);
+        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+        alert(`Error creating blog post: ${errorMessage}`);
     } finally {
-      setIsSaving(false);
+        setIsSaving(false);
     }
-  };
+};
+
 
   const insertText = (before: string, after: string = "") => {
     const textarea = contentRef.current;
@@ -209,6 +232,7 @@ export default function NewBlogPost() {
             </div>
             <div className="flex items-center gap-4">
               <button
+                type="button"
                 onClick={() => setShowPreview(!showPreview)}
                 className="inline-flex items-center px-4 py-2 bg-[#2e3267] text-gray-300 rounded-lg hover:bg-[#363b7e] transition-colors"
               >
@@ -222,32 +246,11 @@ export default function NewBlogPost() {
                 <X className="w-5 h-5 mr-2" />
                 Cancel
               </Link>
-              <button
-                onClick={handleSubmit}
-                disabled={isSaving}
-                className={`inline-flex items-center px-6 py-2 bg-blue-600 text-white rounded-lg transition-all transform hover:scale-105 ${
-                  isSaving
-                    ? "opacity-75 cursor-not-allowed"
-                    : "hover:bg-blue-700"
-                }`}
-              >
-                {isSaving ? (
-                  <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
-                    Saving...
-                  </div>
-                ) : (
-                  <>
-                    <Save className="w-5 h-5 mr-2" />
-                    Publish Post
-                  </>
-                )}
-              </button>
             </div>
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -293,6 +296,7 @@ export default function NewBlogPost() {
                       className="w-full h-full object-cover rounded-lg"
                     />
                     <button
+                      type="button"
                       onClick={(e) => {
                         e.stopPropagation();
                         setImagePreview("");
@@ -323,6 +327,7 @@ export default function NewBlogPost() {
               {!showPreview && (
                 <div className="flex items-center gap-2 p-2 border-b border-gray-700">
                   <button
+                    type="button"
                     onClick={() => insertText("**", "**")}
                     className="p-2 text-gray-400 hover:bg-[#2e3267] rounded"
                     title="Bold"
@@ -330,6 +335,7 @@ export default function NewBlogPost() {
                     <strong>B</strong>
                   </button>
                   <button
+                    type="button"
                     onClick={() => insertText("*", "*")}
                     className="p-2 text-gray-400 hover:bg-[#2e3267] rounded"
                     title="Italic"
@@ -337,6 +343,7 @@ export default function NewBlogPost() {
                     <em>I</em>
                   </button>
                   <button
+                    type="button"
                     onClick={() => insertText("### ")}
                     className="p-2 text-gray-400 hover:bg-[#2e3267] rounded"
                     title="Heading"
@@ -344,6 +351,7 @@ export default function NewBlogPost() {
                     H
                   </button>
                   <button
+                    type="button"
                     onClick={() => insertText("- ")}
                     className="p-2 text-gray-400 hover:bg-[#2e3267] rounded"
                     title="List"
@@ -351,6 +359,7 @@ export default function NewBlogPost() {
                     •
                   </button>
                   <button
+                    type="button"
                     onClick={() => insertText("![Alt text](", ")")}
                     className="p-2 text-gray-400 hover:bg-[#2e3267] rounded"
                     title="Image"
@@ -358,6 +367,7 @@ export default function NewBlogPost() {
                     <ImageIcon className="w-4 h-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={() => insertText("[", "](url)")}
                     className="p-2 text-gray-400 hover:bg-[#2e3267] rounded"
                     title="Link"
@@ -399,27 +409,6 @@ export default function NewBlogPost() {
 
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 bg-[#2e3267] rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Calendar className="w-5 h-5 text-gray-400" />
-                    <div>
-                      <p className="text-sm font-medium text-white">
-                        Publication Date
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        When to publish this post
-                      </p>
-                    </div>
-                  </div>
-                  <input
-                    type="datetime-local"
-                    name="date"
-                    value={formData.date.slice(0, 16)}
-                    onChange={handleChange}
-                    className="px-3 py-2 bg-[#1a1f4b] border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-[#2e3267] rounded-lg mb-4">
                   <div className="flex items-center gap-3">
                     <Tag className="w-5 h-5 text-gray-400" />
                     <div>
@@ -515,7 +504,30 @@ export default function NewBlogPost() {
               </ul>
             </div>
           </motion.div>
-        </div>
+          <div className="flex justify-end mt-6">
+            <button
+              type="submit"
+              disabled={isSaving}
+              className={`inline-flex items-center px-6 py-2 bg-blue-600 text-white rounded-lg transition-all transform hover:scale-105 ${
+                isSaving
+                  ? "opacity-75 cursor-not-allowed"
+                  : "hover:bg-blue-700"
+              }`}
+            >
+              {isSaving ? (
+                <div className="flex items-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
+                  Saving...
+                </div>
+              ) : (
+                <>
+                  <Save className="w-5 h-5 mr-2" />
+                  Publish Post
+                </>
+              )}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

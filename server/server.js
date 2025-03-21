@@ -23,17 +23,14 @@ app.use(helmet({
 // Add request logging middleware
 app.use((req, res, next) => {
   console.log(`[Server] ${req.method} request to: ${req.url}`);
+  console.log('[Server] Origin:', req.headers.origin);
   next();
 });
 
-// Get allowed origins from environment variable or default to all
-const allowedOrigins = process.env.ALLOWED_ORIGINS 
-  ? process.env.ALLOWED_ORIGINS.split(',') 
-  : ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'];
-
+// Configure CORS - only allow frontend URL (port 3000)
+const allowedOrigins = ['http://localhost:3000'];
 console.log('[Server] Allowed CORS origins:', allowedOrigins);
 
-// Enable CORS with configurable origins
 app.use(cors({
   origin: allowedOrigins,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -50,7 +47,14 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', time: new Date().toISOString() });
+  res.json({ 
+    status: 'ok', 
+    time: new Date().toISOString(),
+    cors: {
+      enabled: true,
+      allowedOrigins
+    }
+  });
 });
 
 // Use the message routes for contact form submissions
@@ -62,8 +66,15 @@ app.use('/api/auth', authRoutes);
 // Mount blog routes
 app.use('/api/blog', blogRoutes);
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('[Server] Error:', err);
+  res.status(500).json({ error: err.message });
+});
+
 // Start the server
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
-  console.log(`[Server] Email server running on port ${PORT}`);
+  console.log(`[Server] Server running on port ${PORT}`);
+  console.log(`[Server] CORS enabled for:`, allowedOrigins);
 });

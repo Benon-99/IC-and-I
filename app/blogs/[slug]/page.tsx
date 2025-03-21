@@ -8,7 +8,6 @@ import Link from 'next/link';
 const blogPosts = {
   '5-key-strategies-for-effective-hr-management-in-2024': {
     title: "5 Key Strategies for Effective HR Management in 2024",
-    date: "20-Aug-2024",
     category: "HR Management",
     author: "IC&I Team",
     image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80",
@@ -64,7 +63,6 @@ const blogPosts = {
   },
   'the-role-of-cybersecurity-in-modern-business': {
     title: "The Role of Cybersecurity in Modern Business",
-    date: "20-Aug-2024",
     category: "HR Management",
     author: "IC&I Team",
     image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&amp;fit=crop&amp;q=80",
@@ -90,7 +88,6 @@ As businesses embrace digital tools, cybersecurity must be a top priority. By pr
   },
   'how-digital-transformation-is-shaping-the-future-of-business-in-syria': {
     title: "How Digital Transformation is Shaping The Future of Business in Syria",
-    date: "20-Aug-2024",
     category: "HR Management",
     author: "IC&I Team",
     image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
@@ -163,10 +160,6 @@ export default function BlogPost() {
               {post.title}
             </h1>
             <div className="flex flex-wrap items-center gap-6 text-white/80">
-              <div className="flex items-center bg-white/5 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                <Calendar className="w-4 h-4 mr-2" />
-                {post.date}
-              </div>
               <div className="flex items-center bg-white/5 backdrop-blur-sm px-3 py-1.5 rounded-full">
                 <Tag className="w-4 h-4 mr-2" />
                 {post.category}

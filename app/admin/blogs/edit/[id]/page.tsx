@@ -30,7 +30,6 @@ interface BlogPost {
   image: string;
   published: boolean;
   authorId: number;
-  date: string;
   slug: string;
 }
 
@@ -46,7 +45,6 @@ export default function EditBlogPost() {
     image: "placeholder.jpg",
     published: false,
     authorId: 1,
-    date: new Date().toISOString(),
     slug: "",
   });
   const [imagePreview, setImagePreview] = useState<string>("");
@@ -56,41 +54,65 @@ export default function EditBlogPost() {
   const contentRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
+    console.log("[EditBlog] Component mounted, initializing...");
+    console.log("[EditBlog] Blog ID from params:", params.id);
     fetchCategories();
     fetchBlogPost();
   }, []);
 
   const fetchCategories = async () => {
+    console.log("[EditBlog] Fetching categories...");
     try {
       const response = await apiClient.get("/api/blog/categories");
+      console.log("[EditBlog] Categories response:", response.data);
 
       setCategories(response.data.categories || []);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
+    } catch (error: any) {
+      console.error("[EditBlog] Error fetching categories:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
     }
   };
 
   const fetchBlogPost = useCallback(async () => {
+    console.log("[EditBlog] Fetching blog post...");
     try {
+      const token = localStorage.getItem("token");
+      console.log("[EditBlog] Using token:", token ? "Present" : "Missing");
+
       const response = await apiClient.get(`/api/blog/post/${params.id}`, {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: "Bearer " + token,
         },
+      });
+      console.log("[EditBlog] Blog post response:", {
+        status: response.status,
+        statusText: response.statusText,
+        data: response.data
       });
 
       if (response.statusText.toLowerCase() !== "ok") {
         throw new Error("Failed to fetch blog post");
       }
 
-      setFormData({
+      const postData = {
         ...response.data.post,
-        date: new Date(response.data.post.date).toISOString().split("T")[0],
-      });
+      };
+      console.log("[EditBlog] Setting form data:", postData);
+      setFormData(postData);
+
       if (response.data.post.image) {
+        console.log("[EditBlog] Setting image preview");
         setImagePreview(response.data.post.image);
       }
-    } catch (error) {
-      console.error("Error fetching blog post:", error);
+    } catch (error: any) {
+      console.error("[EditBlog] Error fetching blog post:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
       router.push("/admin/blogs");
     }
   }, [params.id]);
@@ -99,12 +121,17 @@ export default function EditBlogPost() {
     fetchBlogPost();
   }, [fetchBlogPost]);
 
+  useEffect(() => {
+    console.log("[EditBlog] Form data updated:", formData);
+  }, [formData]);
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
     const { name, value } = e.target;
+    console.log("[EditBlog] Form field changed:", { field: name, value });
     setFormData((prev) => ({
       ...prev,
       [name]: name === "categoryId" ? parseInt(value) : value,
@@ -114,9 +141,11 @@ export default function EditBlogPost() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      console.log("[EditBlog] Processing image:", { name: file.name, size: file.size });
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
+        console.log("[EditBlog] Image converted to base64");
         setImagePreview(base64String);
         setFormData((prev) => ({ ...prev, image: base64String }));
       };
@@ -125,6 +154,7 @@ export default function EditBlogPost() {
   };
 
   const handlePublishToggle = () => {
+    console.log("[EditBlog] Toggling publish status");
     setFormData((prev) => ({
       ...prev,
       published: !prev.published,
@@ -133,11 +163,13 @@ export default function EditBlogPost() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("[EditBlog] Starting blog post update...");
     setIsSaving(true);
 
     try {
       // Validate required fields
       if (!formData.title || !formData.content || !formData.categoryId) {
+        console.error("[EditBlog] Validation failed - missing required fields");
         alert(
           "Please fill in all required fields (title, content, and category)"
         );
@@ -145,30 +177,51 @@ export default function EditBlogPost() {
       }
 
       // Ensure categoryId is a number
-      const dataToSend = {
-        ...formData,
-        categoryId: parseInt(String(formData.categoryId)),
-        image: formData.image || "placeholder.jpg",
-        date: new Date(formData.date).toISOString(),
+      const requestData = {
+        title: formData.title,
+        content: formData.content,
+        categoryId: formData.categoryId,
+        image: formData.image,
+        published: formData.published,
+        authorId: formData.authorId,
+        slug: formData.slug,
       };
+
+      console.log("[EditBlog] Submitting updated blog post:", {
+        ...requestData,
+        content: requestData.content.substring(0, 100) + "..." // Truncate content for logging
+      });
+
+      const token = localStorage.getItem("token");
+      console.log("[EditBlog] Using token for update:", token ? "Present" : "Missing");
 
       const response = await apiClient.put(
         `/api/blog/post/${params.id}`,
-        dataToSend,
+        requestData,
         {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + token,
           },
         }
       );
+      console.log("[EditBlog] Update response:", {
+        status: response.status,
+        statusText: response.statusText,
+        data: response.data
+      });
 
       if (response.statusText.toLowerCase() !== "ok") {
         throw new Error("Failed to update blog post");
       }
 
+      console.log("[EditBlog] Blog post updated successfully");
       router.push("/admin/blogs");
-    } catch (error) {
-      console.error("Error updating blog post:", error);
+    } catch (error: any) {
+      console.error("[EditBlog] Error updating blog post:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
       alert(
         `Error updating blog post: ${
           error instanceof Error ? error.message : "Unknown error"
@@ -442,27 +495,6 @@ export default function EditBlogPost() {
                       </svg>
                     </div>
                   </div>
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-[#2e3267] rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Calendar className="w-5 h-5 text-gray-400" />
-                    <div>
-                      <p className="text-sm font-medium text-white">
-                        Publication Date
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        When to publish this post
-                      </p>
-                    </div>
-                  </div>
-                  <input
-                    type="datetime-local"
-                    name="date"
-                    value={formData.date.slice(0, 16)}
-                    onChange={handleChange}
-                    className="px-3 py-2 bg-[#1a1f4b] border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
                 </div>
 
                 <div className="flex items-center justify-between p-4 bg-[#2e3267] rounded-lg">
