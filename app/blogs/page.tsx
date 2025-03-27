@@ -1,175 +1,168 @@
 "use client";
 
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight, Calendar } from "lucide-react";
+import { apiClient } from "@/lib/api";
+
+interface Author {
+  id: number;
+  name: string;
+}
+
+interface Category {
+  id: number;
+  name: string;
+}
+
+interface BlogPost {
+  id: number;
+  title: string;
+  content: string;
+  date: string;
+  image: string;
+  published: boolean;
+  slug: string;
+  author: Author;
+  category: Category;
+}
 
 export default function EnhancedBlogPage() {
-  const blogs = [
-    {
-      title: "5 Key Strategies for Effective HR Management in 2024",
-      excerpt: "As businesses face new challenges in 2024, effective HR management becomes crucial...",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80",
-      gradient: "from-[#3785CC] to-[#4A9BE4]",
-      slug: "5-key-strategies-for-effective-hr-management-in-2024"
-    },
-    {
-      title: "The Role of Cybersecurity in Modern Business",
-      excerpt: "In today's digital era, cybersecurity is essential for protecting business assets...",
-      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80",
-      gradient: "from-[#4A9BE4] to-[#8590EA]",
-      slug: "the-role-of-cybersecurity-in-modern-business"
-    },
-    {
-      title: "How Digital Transformation is Shaping the Future of Business in Syria",
-      excerpt: "As the business landscape evolves, digital transformation becomes increasingly important...",
-      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80",
-      gradient: "from-[#8590EA] to-[#B5C6F4]",
-      slug: "how-digital-transformation-is-shaping-the-future-of-business-in-syria"
-    }
-  ];
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  const fetchBlogs = async () => {
+    try {
+      const response = await apiClient.get("/api/blog");
+
+      if (response.statusText.toLowerCase() !== "ok") {
+        throw new Error("Failed to fetch blogs");
       }
+      if (response.data.status === "success") {
+        setBlogs(
+          response.data.posts.filter((post: BlogPost) => post.published)
+        );
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+      setLoading(false);
     }
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5
-      }
-    }
+  const getExcerpt = (content: string) => {
+    const plainText = content.replace(/[#*`_\[\]]/g, "");
+    return plainText.substring(0, 150).trim() + "...";
   };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  const getGradient = (index: number) => {
+    const gradients = [
+      "from-[#3785CC] to-[#4A9BE4]",
+      "from-[#4A9BE4] to-[#8590EA]",
+      "from-[#8590EA] to-[#B5C6F4]",
+    ];
+    return gradients[index % gradients.length];
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <div className="relative overflow-hidden bg-[#111240]">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC]"></div>
+          </div>
+
+          <div className="relative w-full lg:w-[1280px] mx-auto px-4 py-32">
+            <div className="animate-pulse space-y-8">
+              <div className="h-8 bg-white/10 rounded w-3/4 mx-auto" />
+              <div className="h-4 bg-white/10 rounded w-1/2 mx-auto" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fade-in {
-          animation: fadeIn 0.6s ease-out forwards;
-        }
-
-        .animate-fade-in-up {
-          animation: fadeInUp 0.5s ease-out forwards;
-        }
-
-        @keyframes gradient {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-
-        .animate-gradient {
-          animation: gradient 15s ease infinite;
-          background-size: 400% 400%;
-        }
-      `}</style>
-
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="py-32 bg-white relative overflow-hidden">
+      <div className="relative overflow-hidden bg-[#111240]">
+        {/* Animated Background */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-5"></div>
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#3785CC]/5 via-[#5B8AF0]/5 to-[#8590EA]/5 animate-gradient"></div>
+          <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC]"></div>
         </div>
-
-        <div className="w-full lg:w-[1280px] mx-auto px-4 relative">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-            className="text-center mb-16"
-          >
-            <motion.span
-              variants={itemVariants}
-              className="px-4 py-1.5 rounded-full text-sm font-medium bg-[#111240]/5 text-[#111240] backdrop-blur-sm mb-4 inline-block"
-            >
+        
+        <div className="relative w-full lg:w-[1280px] mx-auto px-4 py-32">
+          <div className="text-center">
+            <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white backdrop-blur-sm mb-6 inline-block">
               Our Blog
-            </motion.span>
-            <motion.h1
-              variants={itemVariants}
-              className="text-5xl font-bold mb-6 bg-gradient-to-r from-[#002060] to-[#002060]/80 bg-clip-text text-transparent leading-normal"
-            >
+            </span>
+            <h1 className="text-6xl font-bold text-white mb-6 leading-tight">
               Latest Insights
-            </motion.h1>
-            <motion.p
-              variants={itemVariants}
-              className="text-xl text-[#111240]/70 max-w-2xl mx-auto leading-relaxed"
-            >
+            </h1>
+            <p className="text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
               Explore our insights on technology, business, and industry trends
-            </motion.p>
-          </motion.div>
+            </p>
+          </div>
+        </div>
+      </div>
 
-          <motion.div
-            variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
+      {/* Blog Grid Section */}
+      <div className="py-24">
+        <div className="w-full lg:w-[1280px] mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs.map((blog, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="group relative"
+              <Link 
+                key={blog.id} 
+                href={`/blogs/${blog.slug}`}
+                className="group"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl transform rotate-1 scale-[1.02] opacity-50 group-hover:rotate-2 transition-transform duration-300"></div>
-                <Link href={`/blogs/${blog.slug}`}>
-                  <div className="relative rounded-2xl bg-white backdrop-blur-sm border border-gray-100 overflow-hidden transition-all duration-300 group-hover:bg-gray-50 shadow-sm">
-                    <div className={`h-48 bg-gradient-to-r ${blog.gradient} relative overflow-hidden`}>
-                      <img
-                        src={blog.image}
-                        alt={blog.title}
-                        className="w-full h-full object-cover mix-blend-overlay"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold text-[#111240] mb-3 line-clamp-2">
-                        {blog.title}
-                      </h3>
-                      <p className="text-[#111240]/70 mb-4 line-clamp-3">
-                        {blog.excerpt}
-                      </p>
-                      <div className="flex items-center text-[#111240] font-medium">
-                        Read More
-                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                      </div>
+                <article className="relative rounded-2xl bg-white overflow-hidden shadow-lg hover:shadow-xl border border-#F7F7F7 transition-all duration-300 hover:-translate-y-1">
+                  <div className="relative h-48 overflow-hidden">
+                    <Image
+                      src={
+                        blog.image ||
+                        `https://source.unsplash.com/random/800x600?${index}`
+                      }
+                      alt={blog.title}
+                      fill
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-#111240 mb-3 line-clamp-2 group-hover:text-#3785CC transition-colors duration-300">
+                      {blog.title}
+                    </h3>
+                    <p className="text-#111240/80 text-lg leading-relaxed mb-4 line-clamp-2">
+                      {getExcerpt(blog.content)}
+                    </p>
+                    <div className="flex items-center text-#3785CC font-medium hover:text-#2674bb transition-colors duration-300">
+                      Read Article
+                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300" />
                     </div>
                   </div>
-                </Link>
-              </motion.div>
+                </article>
+              </Link>
             ))}
-          </motion.div>
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
