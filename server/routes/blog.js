@@ -100,6 +100,7 @@ router.get('/stats', authenticateToken, async (req, res) => {
         });
 
         res.json({
+            status: 'success',
             stats: {
                 blogs: {
                     total: totalBlogs,
