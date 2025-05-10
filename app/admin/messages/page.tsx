@@ -72,13 +72,6 @@ export default function MessagesPage() {
     }
   };
 
-  const filterdelete = (id: number) => {
-    const messagesfiltered = messages.filter((prev) => id !== prev.id);
-    console.log(messagesfiltered);
-
-    return messagesfiltered;
-  };
-
   const removeMessageFromUI = (id: number) => {
     setHiddenMessageIds((prev) => {
       const updated = [...prev, id];
@@ -86,10 +79,6 @@ export default function MessagesPage() {
       return updated;
     });
     showAlert("info", "Message hidden from view");
-  };
-
-  const initiateDelete = (id: number) => {
-    setDeleteConfirm({ show: true, messageId: id });
   };
 
   const handleDelete = async () => {
