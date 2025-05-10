@@ -14,17 +14,22 @@ export default function MessageList() {
   }
 
   if (error) {
-    return <div className="text-center py-8 text-red-600">Error loading messages</div>;
+    return (
+      <div className="text-center py-8 text-red-600">
+        Error loading messages
+      </div>
+    );
   }
 
-  const filteredMessages = messages?.filter(message => 
-    message.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    message.email.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredMessages = messages?.filter(
+    (message) =>
+      message.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      message.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="bg-white shadow rounded-lg">
-      <MessageListHeader 
+      <MessageListHeader
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
       />

@@ -106,7 +106,7 @@ export default function EnhancedBlogPage() {
           <div className="absolute w-full h-full bg-[url('/noise.png')] opacity-20"></div>
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#181c52] via-[#181c52] to-[#3785CC]"></div>
         </div>
-        
+
         <div className="relative w-full lg:w-[1280px] mx-auto px-4 py-32">
           <div className="text-center">
             <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white backdrop-blur-sm mb-6 inline-block">
@@ -127,8 +127,8 @@ export default function EnhancedBlogPage() {
         <div className="w-full lg:w-[1280px] mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs.map((blog, index) => (
-              <Link 
-                key={blog.id} 
+              <Link
+                key={blog.id}
                 href={`/blogs/${blog.slug}`}
                 className="group"
               >
@@ -144,7 +144,7 @@ export default function EnhancedBlogPage() {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  
+
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-#111240 mb-3 line-clamp-2 group-hover:text-#3785CC transition-colors duration-300">
                       {blog.title}

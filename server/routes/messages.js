@@ -1,84 +1,112 @@
-import express from 'express';
-import { getMessages, createSubmission } from '../repositories/messageRepo.js';
-import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
+import express from "express";
+import {
+  getMessages,
+  createSubmission,
+  deleteMessageById,
+} from "../repositories/messageRepo.js";
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
 
 dotenv.config();
 
 const router = express.Router();
 
 // Get all messages
-router.get('/messages', async (req, res) => {
+router.get("/messages", async (req, res) => {
   try {
     const messages = await getMessages();
     res.json(messages);
   } catch (error) {
-    console.error('Error fetching messages:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error fetching messages:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/messages/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deleted = await deleteMessageById(id);
+
+    if (!deleted) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Message not found" });
+    }
+
+    res.json({ success: true, message: "Message deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting message:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
 
 // Post a new message - handle contact form submissions
-router.post(['/', ''], async (req, res) => {
+router.post(["/", ""], async (req, res) => {
   try {
     // Get the form data
     const { name, email, subject, message } = req.body;
-    
+
     // Log received data
-    console.log('[Message Route] Request received:', {
+    console.log("[Message Route] Request received:", {
       name,
       email,
       subject,
-      message: message ? `${message.substring(0, 20)}...` : 'undefined'
+      message: message ? `${message.substring(0, 20)}...` : "undefined",
     });
-    
+
     // Basic validation
     if (!name || !email || !message) {
-      console.log('[Message Route] Validation failed - missing required fields');
-      return res.status(400).json({ 
-        success: false, 
-        message: "Required fields missing" 
+      console.log(
+        "[Message Route] Validation failed - missing required fields"
+      );
+      return res.status(400).json({
+        success: false,
+        message: "Required fields missing",
       });
     }
-    
+
     // Send acknowledgment response
     res.status(200).json({
       success: true,
-      message: "Message received successfully"
+      message: "Message received successfully",
     });
-    
+    console.log(1);
+
     // Store in database (async, after response sent)
     try {
-      await createSubmission({ 
-        name, 
-        email, 
-        message, 
-        subject: subject || "No Subject" 
+      await createSubmission({
+        name,
+        email,
+        message,
+        subject: subject || "No Subject",
       });
-      console.log('[Message Route] Submission saved to database');
+      console.log("[Message Route] Submission saved to database");
     } catch (dbError) {
-      console.error('[Message Route] Database error:', dbError.message);
+      console.error("[Message Route] Database error:", dbError.message);
     }
-    
+
     // Send email if configured
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+      console.log("there is an account");
+
       try {
-        console.log('[Message Route] Attempting to send email');
-        
+        console.log("[Message Route] Attempting to send email");
+
         // Create transporter
         const transporter = nodemailer.createTransport({
-          host: 'smtp.gmail.com',
+          host: "smtp.gmail.com",
           port: 465,
           secure: true,
           auth: {
             user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-          }
+            pass: process.env.EMAIL_PASS,
+          },
         });
-        
+
         // Setup email data
         const mailOptions = {
-          from: `"Contact Form" <${process.env.EMAIL_USER}>`,
+          from: `"${name}" <${email}>`,
           to: process.env.EMAIL_USER,
           subject: `Contact Form: ${subject || "New Message"}`,
           text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
@@ -88,18 +116,21 @@ router.post(['/', ''], async (req, res) => {
             <p><strong>Email:</strong> ${email}</p>
             <p><strong>Subject:</strong> ${subject || "Not provided"}</p>
             <p><strong>Message:</strong> ${message}</p>
-          `
+          `,
         };
-        
+
         // Send email
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
-            console.error('[Message Route] Email error:', error.message);
+            console.error("[Message Route] Email error:", error.message);
           } else {
-            console.log('[Message Route] Email sent successfully:', info.messageId);
+            console.log(
+              "[Message Route] Email sent successfully:",
+              info.messageId
+            );
           }
         });
-        
+
         // Send thank you email to the client
         const thankYouMailOptions = {
           from: `"IC & I" <${process.env.EMAIL_USER}>`,
@@ -114,30 +145,37 @@ router.post(['/', ''], async (req, res) => {
               <p>Here's a summary of your inquiry:</p>
               <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 15px 0;">
                 <p><strong>Subject:</strong> ${subject || "Not provided"}</p>
-                <p><strong>Message:</strong> ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}</p>
+                <p><strong>Message:</strong> ${message.substring(0, 100)}${
+            message.length > 100 ? "..." : ""
+          }</p>
               </div>
               <p>Regards,<br>The IC & I Team</p>
             </div>
-          `
+          `,
         };
-        
+
         // Send thank you email
         transporter.sendMail(thankYouMailOptions, (error, info) => {
           if (error) {
-            console.error('[Message Route] Thank you email error:', error.message);
+            console.error(
+              "[Message Route] Thank you email error:",
+              error.message
+            );
           } else {
-            console.log('[Message Route] Thank you email sent successfully:', info.messageId);
+            console.log(
+              "[Message Route] Thank you email sent successfully:",
+              info.messageId
+            );
           }
         });
       } catch (emailError) {
-        console.error('[Message Route] Email setup error:', emailError.message);
+        console.error("[Message Route] Email setup error:", emailError.message);
       }
     } else {
-      console.log('[Message Route] Skipping email send - no credentials');
+      console.log("[Message Route] Skipping email send - no credentials");
     }
-    
   } catch (error) {
-    console.error('[Message Route] General error:', error);
+    console.error("[Message Route] General error:", error);
     // No need to send response as it was already sent
   }
 });

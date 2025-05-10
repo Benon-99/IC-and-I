@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
-import bcryptjs from "bcryptjs";
+import bcrypt from "bcrypt";
+import { LoginDTO } from "../DTOs/loginDTO.js";
+import { userRepository } from "../repositories/user-repo.js";
 
 export const loginController = async (req, res) => {
   console.log("login");
@@ -7,38 +9,33 @@ export const loginController = async (req, res) => {
   try {
     console.log("Login request received:", { email: req.body.email });
 
-    const { email, password } = req.body;
+    const loginData = new LoginDTO(req.body);
     console.log(1);
 
+    const loginUser = await userRepository.loginUser(loginData);
     // For testing purposes - replace with database lookup in production
-    if (email === "icandicompany@gmail.com" && password === "IC&I@admin2024") {
+    if (loginUser) {
       console.log(2);
 
-      const user = {
-        userId: "1",
-        email,
-        role: "admin",
-        name: "IC&I Admin",
-      };
-      console.log(33);
-
-      const token = jwt.sign(user, process.env.JWT_SECRET || 'your-secret-key', {
-        expiresIn: "24h",
-      });
-      console.log(3);
+      const token = jwt.sign(
+        { userId: loginUser.id }, // Payload as object
+        process.env.JWT_SECRET || "your-secret-key",
+        { expiresIn: "24h" }
+      );
 
       // Set token as HTTP-only cookie
       res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: false, // Explicitly set to false for HTTP in development
         sameSite: "lax",
+        path: "/", // Ensure cookie is accessible everywhere
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
       });
 
-      console.log("Login successful for:", email);
+      console.log("Login successful for:", loginUser.email);
       return res.status(200).json({
         status: "success",
-        user,
+        user: loginUser,
       });
     }
 

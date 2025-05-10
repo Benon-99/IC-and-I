@@ -1,4 +1,5 @@
 import prisma from "../prisma/client.js";
+import bcrypt from "bcrypt";
 
 export const userRepository = {
   async loginUser(loginDTO) {
@@ -8,15 +9,19 @@ export const userRepository = {
       const user = await prisma.user.findUnique({
         where: { email: loginDTO.email },
       });
-
       if (!user) {
-        return { error: "User not found" };
+        return null;
       }
 
-      return {
-        user,
-        storedHashedPassword: user.password,
-      };
+      const isMatch = await bcrypt.compare(loginDTO.password, user.password);
+      if (isMatch) {
+        return user;
+      }
+
+      // return {
+      //   user,
+      //   storedHashedPassword: user.password,
+      // };
     } catch (error) {
       console.error("Error in loginUser:", error);
       throw error;

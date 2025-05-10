@@ -1,8 +1,19 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Search, Trash2, Mail, Clock, Eye, AlertCircle, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from "react";
+import {
+  Search,
+  Trash2,
+  Mail,
+  Clock,
+  Eye,
+  AlertCircle,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { apiClient } from "@/lib/api";
 
 interface Message {
   id: number;
@@ -14,53 +25,67 @@ interface Message {
 }
 
 interface Alert {
-  type: 'success' | 'error' | 'info';
+  type: "success" | "error" | "info";
   message: string;
 }
 
 export default function MessagesPage() {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [alert, setAlert] = useState<Alert | null>(null);
-  const [deleteConfirm, setDeleteConfirm] = useState<{ show: boolean; messageId: number | null }>({
+  const [currentPage, setCurrentPage] = useState(1);
+  const [messagesPerPage, setMessagePerPage] = useState(10);
+  const [hiddenMessageIds, setHiddenMessageIds] = useState<number[]>([]);
+
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    show: boolean;
+    messageId: number | null;
+  }>({
     show: false,
-    messageId: null
+    messageId: null,
   });
 
-  useEffect(() => {
-    fetchMessages();
-  }, []);
+  const mailRef = useRef<HTMLAnchorElement | null>(null);
 
-  useEffect(() => {
-    if (alert) {
-      const timer = setTimeout(() => setAlert(null), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [alert]);
-
-  const showAlert = (type: Alert['type'], message: string) => {
+  const showAlert = (type: Alert["type"], message: string) => {
     setAlert({ type, message });
   };
 
   const fetchMessages = async () => {
     try {
-      console.log('Fetching messages...');
-      const response = await fetch('http://localhost:8000/api/messages');
-      console.log('Response status:', response.status);
-      if (!response.ok) {
-        throw new Error('Failed to fetch messages');
+      console.log("Fetching messages...");
+      const response = await apiClient.get("/api/contact/messages");
+      console.log("Response status:", response.status);
+      if (!response.status) {
+        throw new Error("Failed to fetch messages");
       }
-      const data = await response.json();
-      console.log('Received data:', data);
+      const data = await response.data;
+      console.log("Received data:", data);
       const messagesList = Array.isArray(data) ? data : data.messages || [];
-      console.log('Setting messages:', messagesList);
+      console.log("Setting messages:", messagesList);
       setMessages(messagesList);
     } catch (error) {
-      console.error('Error fetching messages:', error);
+      console.error("Error fetching messages:", error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const filterdelete = (id: number) => {
+    const messagesfiltered = messages.filter((prev) => id !== prev.id);
+    console.log(messagesfiltered);
+
+    return messagesfiltered;
+  };
+
+  const removeMessageFromUI = (id: number) => {
+    setHiddenMessageIds((prev) => {
+      const updated = [...prev, id];
+      localStorage.setItem("hiddenMessageIds", JSON.stringify(updated)); // 💾 Save
+      return updated;
+    });
+    showAlert("info", "Message hidden from view");
   };
 
   const initiateDelete = (id: number) => {
@@ -69,57 +94,59 @@ export default function MessagesPage() {
 
   const handleDelete = async () => {
     if (!deleteConfirm.messageId) return;
-    
+
     try {
-      const response = await fetch(`http://localhost:8000/api/messages/${deleteConfirm.messageId}`, {
-        method: 'DELETE',
-      });
-      
-      if (response.ok) {
-        setMessages(messages.filter(message => message.id !== deleteConfirm.messageId));
-        showAlert('success', 'Message deleted successfully');
+      const response = await apiClient.delete(
+        `/api/contact/messages/${deleteConfirm.messageId}`
+      );
+
+      if (response) {
+        setMessages(
+          messages.filter((message) => message.id !== deleteConfirm.messageId)
+        );
+        showAlert("success", "Message deleted successfully");
       } else {
-        throw new Error('Failed to delete message');
+        throw new Error("Failed to delete message");
       }
     } catch (error) {
-      console.error('Error deleting message:', error);
-      showAlert('error', 'Failed to delete message');
+      console.error("Error deleting message:", error);
+      showAlert("error", "Failed to delete message");
     } finally {
       setDeleteConfirm({ show: false, messageId: null });
     }
   };
 
-  const handleReply = async (email: string, subject: string) => {
-    try {
-      const response = await fetch('http://localhost:3001/message/reply', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          to: email,
-          subject: `Re: ${subject}`,
-          text: 'Thank you for your message. We will get back to you shortly.',
-        }),
-      });
+  const filteredMessages = messages
+    .filter(
+      (message) =>
+        message.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        message.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        message.message.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .filter((message) => !hiddenMessageIds.includes(message.id)); // ✨ hide "deleted"
 
-      if (response.ok) {
-        showAlert('success', 'Reply sent successfully');
-      } else {
-        throw new Error('Failed to send reply');
-      }
-    } catch (error) {
-      console.error('Error sending reply:', error);
-      showAlert('error', 'Failed to send reply');
-    }
-  };
-
-  const filteredMessages = messages.filter(message =>
-    message.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    message.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    message.message.toLowerCase().includes(searchTerm.toLowerCase())
+  const totalPages = Math.ceil(filteredMessages.length / messagesPerPage);
+  const startIndex = (currentPage - 1) * messagesPerPage;
+  const currentMessages = filteredMessages.slice(
+    startIndex,
+    startIndex + messagesPerPage
   );
 
+  useEffect(() => {
+    fetchMessages();
+
+    const savedHiddenIds = localStorage.getItem("hiddenMessageIds");
+    if (savedHiddenIds) {
+      setHiddenMessageIds(JSON.parse(savedHiddenIds));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (alert) {
+      const timer = setTimeout(() => setAlert(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [alert]);
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f1035] to-[#2e3267] p-8">
       <div className="max-w-7xl mx-auto">
@@ -134,14 +161,19 @@ export default function MessagesPage() {
             >
               <div className="flex items-center gap-3 mb-4">
                 <AlertTriangle className="h-6 w-6 text-yellow-500" />
-                <h3 className="text-xl font-semibold text-white">Delete Message?</h3>
+                <h3 className="text-xl font-semibold text-white">
+                  Delete Message?
+                </h3>
               </div>
               <p className="text-gray-300 mb-6">
-                This action cannot be undone. The message will be permanently removed from the system.
+                This action cannot be undone. The message will be permanently
+                removed from the system.
               </p>
               <div className="flex justify-end gap-3">
                 <button
-                  onClick={() => setDeleteConfirm({ show: false, messageId: null })}
+                  onClick={() =>
+                    setDeleteConfirm({ show: false, messageId: null })
+                  }
                   className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
                 >
                   Cancel
@@ -165,14 +197,22 @@ export default function MessagesPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg flex items-center space-x-2 z-50 ${
-                alert.type === 'success' ? 'bg-green-500' :
-                alert.type === 'error' ? 'bg-red-500' :
-                'bg-blue-500'
+                alert.type === "success"
+                  ? "bg-green-500"
+                  : alert.type === "error"
+                  ? "bg-red-500"
+                  : "bg-blue-500"
               }`}
             >
-              {alert.type === 'success' && <CheckCircle className="w-5 h-5 text-white" />}
-              {alert.type === 'error' && <XCircle className="w-5 h-5 text-white" />}
-              {alert.type === 'info' && <AlertCircle className="w-5 h-5 text-white" />}
+              {alert.type === "success" && (
+                <CheckCircle className="w-5 h-5 text-white" />
+              )}
+              {alert.type === "error" && (
+                <XCircle className="w-5 h-5 text-white" />
+              )}
+              {alert.type === "info" && (
+                <AlertCircle className="w-5 h-5 text-white" />
+              )}
               <p className="text-white font-medium">{alert.message}</p>
             </motion.div>
           )}
@@ -181,14 +221,19 @@ export default function MessagesPage() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-white">Messages</h1>
-            <p className="text-gray-400">Manage incoming messages and inquiries</p>
+            <p className="text-gray-400">
+              Manage incoming messages and inquiries
+            </p>
           </div>
           <div className="relative">
             <input
               type="text"
               placeholder="Search messages..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1); // 🔄 Reset to first page
+              }}
               className="w-full md:w-64 px-4 py-2 pl-10 bg-[#1a1f4b] border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
@@ -202,13 +247,17 @@ export default function MessagesPage() {
         ) : filteredMessages.length === 0 ? (
           <div className="text-center py-12">
             <Mail className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-white">No messages found</h3>
-            <p className="text-gray-400">No messages match your search criteria</p>
+            <h3 className="text-lg font-medium text-white">
+              No messages found
+            </h3>
+            <p className="text-gray-400">
+              No messages match your search criteria
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6">
             <AnimatePresence mode="popLayout">
-              {filteredMessages.map((message) => (
+              {currentMessages.map((message) => (
                 <motion.div
                   key={message.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -218,9 +267,15 @@ export default function MessagesPage() {
                 >
                   <div className="flex flex-col md:flex-row justify-between gap-4">
                     <div className="space-y-2">
-                      <h3 className="text-lg font-medium text-white">{message.name}</h3>
+                      <h3 className="text-lg font-medium text-white">
+                        {message.name}
+                      </h3>
                       <p className="text-blue-400 hover:text-blue-300 transition-colors">
-                        <a href={`mailto:${message.email}`} className="flex items-center gap-2">
+                        <a
+                          ref={mailRef}
+                          href={`mailto:${message.email}`}
+                          className="flex items-center gap-2"
+                        >
                           <Mail className="w-4 h-4" />
                           {message.email}
                         </a>
@@ -233,14 +288,16 @@ export default function MessagesPage() {
                     </div>
                     <div className="flex items-center gap-3">
                       <button
-                        onClick={() => handleReply(message.email, message.subject)}
+                        onClick={() => {
+                          mailRef.current?.click();
+                        }}
                         className="p-2 text-blue-400 hover:text-blue-300 transition-colors"
                         title="Reply to message"
                       >
                         <Mail className="w-5 h-5" />
                       </button>
                       <button
-                        onClick={() => initiateDelete(message.id)}
+                        onClick={() => removeMessageFromUI(message.id)}
                         className="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-all duration-200 hover:scale-105"
                         title="Delete message"
                       >
@@ -251,6 +308,27 @@ export default function MessagesPage() {
                 </motion.div>
               ))}
             </AnimatePresence>
+            <div className="flex justify-center items-center gap-4 mt-8 text-white">
+              <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 disabled:opacity-50"
+              >
+                ← Prev
+              </button>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 disabled:opacity-50"
+              >
+                Next →
+              </button>
+            </div>
           </div>
         )}
       </div>
