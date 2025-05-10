@@ -41,7 +41,7 @@ export default function AdminHeader() {
             {/* Navigation items */}
             <nav className="hidden md:flex items-center gap-6">
               <Link
-                href="/admin/dashboard"
+                href="/admin"
                 className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
               >
                 Dashboard
