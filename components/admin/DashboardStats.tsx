@@ -25,12 +25,26 @@ export default function DashboardStats() {
       messages: { total: 0, lastMonth: 0 },
     },
   });
+  const [totMess, setTotMess] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  const GetMessIds = JSON.parse(
+    localStorage.getItem("hiddenMessageIds") || "[]"
+  );
+
+  const fetchMessages = async () => {
+    const response = await apiClient.get("/api/contact/messages");
+
+    const filteredmes = response.data.filter(
+      (message: { id: any }) => !GetMessIds.includes(message.id)
+    );
+    setTotMess(filteredmes.length);
+    console.log(totMess);
+  };
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        
         const response = await apiClient.get("/api/blog/stats");
         const responsePost = await apiClient.get("/api/blog/");
         setStats((prev) => ({
@@ -63,6 +77,10 @@ export default function DashboardStats() {
 
     fetchStats();
   }, []);
+
+  useEffect(() => {
+    fetchMessages();
+  }, [totMess]);
 
   // Rest of your component code remains the same...
 
@@ -107,9 +125,7 @@ export default function DashboardStats() {
               <MessageSquare className="h-4 w-4 mr-2" />
               Total Messages
             </p>
-            <h2 className="text-4xl font-bold text-white">
-              {stats.stats.messages.total}
-            </h2>
+            <h2 className="text-4xl font-bold text-white">{totMess}</h2>
           </div>
           <div className="bg-purple-500/10 p-3 rounded-full">
             <MessageSquare className="h-8 w-8 text-purple-500" />

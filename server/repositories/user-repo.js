@@ -18,10 +18,7 @@ export const userRepository = {
         return user;
       }
 
-      // return {
-      //   user,
-      //   storedHashedPassword: user.password,
-      // };
+    
     } catch (error) {
       console.error("Error in loginUser:", error);
       throw error;
